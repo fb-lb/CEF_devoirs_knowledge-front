@@ -1,0 +1,43 @@
+@use '../../styles/variables' as *;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: $light-blue;
+    padding: 20px;
+    border-bottom: 5px solid $medium-blue;
+}
+
+.header__logo-link {
+    max-width: 200px;
+    height: fit-content;
+
+}
+
+.header__logo-image {
+    width: 100%;
+}
+
+.header__nav {
+
+}
+
+.header__nav-list {
+    list-style: none;
+}
+
+.header__nav-link {
+
+}
+
+.header__nav-item--with-submenu {}
+
+.header__nav-link {}
+
+.header__submenu {}
+
+.header__submenu-item {
+    list-style: none;
+}
+
+.header__submenu-link {}

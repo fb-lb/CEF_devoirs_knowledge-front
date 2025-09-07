@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: normal;
+    font-family: 'Comic Sans MS';
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+@font-face {
+    font-family: 'Comic Sans MS';
+    src: url('/assets/fonts/ComicSansMS-BoldItalic.woff2') format('woff2'),
+         url('/assets/fonts/ComicSansMS-BoldItalic.woff') format('woff'),
+         url('/assets/fonts/ComicSansMS-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Comic Sans MS';
+    src:url('/assets/fonts/ComicSansMS-Italic.woff2') format('woff2'),
+        url('/assets/fonts/ComicSansMS-Italic.woff') format('woff'),
+        url('/assets/fonts/ComicSansMS-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Comic Sans MS';
+    src:url('/assets/fonts/ComicSansMS.woff2') format('woff2'),
+        url('/assets/fonts/ComicSansMS.woff') format('woff'),
+        url('/assets/fonts/ComicSansMS.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Comic Sans MS';
+    src:url('/assets/fonts/ComicSansMS-Bold.woff2') format('woff2'),
+        url('/assets/fonts/ComicSansMS-Bold.woff') format('woff'),
+        url('/assets/fonts/ComicSansMS-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
