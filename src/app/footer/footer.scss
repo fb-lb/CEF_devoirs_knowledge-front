@@ -1,0 +1,133 @@
+@use '../../styles/variables' as *;
+@use '../../styles/breakpoints' as *;
+
+.footer {
+    color: $dark-blue;
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    background-color: $light-blue;
+    border-top: 5px solid $medium-blue;
+
+    @include for-s {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    @include for-m {
+        padding: 50px;
+    }
+
+    @include for-l {
+        padding: 80px;
+    }
+}
+
+.footer__logo-link {
+    max-width: 200px;
+    height: fit-content;
+
+    @include for-m {
+        max-width: 300px;
+    }
+
+    @include for-l {
+        max-width: 300px;
+    }
+}
+
+.footer__logo-image {
+    width: 100%;
+}
+
+.footer__content {
+    display: flex;
+    flex-direction: column;
+
+    @include for-s {
+        gap: 40px;
+    }
+
+    @include for-m {
+        width: 50%;
+        gap: 40px;
+    }
+
+    @include for-l {
+        flex-direction: row;
+        width: 50%;
+        justify-content: space-between;
+    }
+}
+
+.footer__legal-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer__legal-title {
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.footer__legal-list {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer__legal-item {
+    transition: all 0.3s ease;
+}
+
+.footer__legal-item:hover {
+    transform: scale(1.05);
+}
+
+.footer__legal-link {}
+
+.footer__legal-link:hover {
+    color: $dark-blue;
+}
+
+.footer__contact-section {}
+
+.footer__contact-title {
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 15px;
+}
+
+.footer__contact-content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+
+    @include for-l {
+        gap: 30px;
+    }
+}
+
+.footer__contact-map {
+    transition: all 0.3s ease;
+}
+
+.footer__contact-map:hover {
+    transform: scale(1.05);
+    color: $dark-blue;
+}
+
+.footer__contact-tel {
+    transition: all 0.3s ease;
+}
+
+.footer__contact-tel:hover {
+    transform: scale(1.05);
+    color: $dark-blue;
+}
