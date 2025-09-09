@@ -1,0 +1,117 @@
+@use '../../styles/variables' as *;
+@use '../../styles/breakpoints' as *;
+
+.home {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.home__title-1 {
+    color: $dark-blue;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.home__section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    @include for-m {
+        gap: 50px;
+    }
+
+    @include for-l {
+        gap: 50px;
+    }
+}
+
+.home__sub-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include for-l {
+        gap: 25px;
+    }
+}
+
+.home__title-2 {
+    color: $dark-blue;
+    font-weight: bold;
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.home__small {
+    font-size: 0.85rem;
+    font-style: italic;
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.home__title-3 {
+    color: $medium-blue;
+    font-style: italic;
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.home__sub-section:nth-of-type(odd) .home__title-3 {
+    @include for-m {
+        text-align: start;
+    }
+}
+
+.home__sub-section:nth-of-type(even) .home__title-3 {
+    @include for-m {
+        text-align: end;
+    }
+}
+
+.home__text {
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.home__sub-section:nth-of-type(odd) .home__text {
+    @include for-m {
+        text-align: start;
+        padding-right: 15%;
+    }
+}
+
+.home__sub-section:nth-of-type(even) .home__text {
+    @include for-m {
+        text-align: end;
+        padding-left: 15%;
+    }
+}
+
+.home__stripe-link {
+    color: $medium-blue;
+    display: inline-block;
+    transform-origin: bottom;
+    transition: all 0.3s ease;
+}
+
+.home__stripe-link:hover {
+    color: $dark-blue;
+    transform: scale(1.03);
+    padding: 0 4px;
+}

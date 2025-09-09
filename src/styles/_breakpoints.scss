@@ -1,0 +1,20 @@
+$breakpoint-s: 769px;
+$breakpoint-m: 993px;
+
+@mixin for-s {
+    @media screen and (max-width: #{$breakpoint-s - 1}) {
+        @content;
+    }
+}
+
+@mixin for-m {
+    @media screen and (min-width: #{$breakpoint-s}) and (max-width: #{$breakpoint-m - 1}) {
+        @content;
+    }
+}
+
+@mixin for-l {
+    @media screen and (min-width: #{$breakpoint-m}) {
+        @content;
+    }
+}

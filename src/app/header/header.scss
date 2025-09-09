@@ -1,0 +1,160 @@
+@use '../../styles/variables' as *;
+@use '../../styles/breakpoints' as *;
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: $light-blue;
+    padding: 20px;
+    border-bottom: 5px solid $medium-blue;
+
+    @include for-m {
+        flex-direction: row;
+    }
+
+    @include for-l {
+        padding: 40px;
+        gap: 50px;
+    }
+}
+
+.header__icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include for-l {
+        justify-content: center;
+    }
+}
+
+.header__logo-link {
+    max-width: 200px;
+    height: fit-content;
+}
+
+.header__logo-image {
+    width: 100%;
+}
+
+.header__burger-menu-icon {
+    padding-right: 20px;
+}
+
+:host ::ng-deep .header__burger-menu-icon svg {
+    font-size: 3rem;
+    cursor: pointer;
+    color: $medium-blue;
+}
+
+.header__nav {
+    align-self: flex-end;
+
+    max-height: 600px;
+    transform-origin: top;
+    transition: all 0.8s ease;
+
+    @include for-l {
+        width: 100%;
+    }
+}
+
+.header__nav-list {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 15px;
+
+    @include for-m {
+        padding-right: 20px;
+    }
+
+    @include for-l {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-evenly;
+    }
+}
+
+.header__nav-item {
+    transform-origin: right;
+    transition: transform 0.3s ease;
+
+    @include for-l {
+        transform-origin: center;
+    }
+}
+
+.header__nav-item:hover {
+    transform: scale(1.1);
+}
+
+.header__nav-link {
+    cursor: pointer;
+    color: $medium-blue;
+}
+
+.header__nav-link:hover {
+    transform-origin: right;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+
+    @include for-l {
+        transform-origin: center;
+    }
+}
+
+.header__nav-link.active-menu-link {
+    color: $dark-blue;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.header__nav-item--with-submenu {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.header__nav-item--with-submenu:hover {
+    transform: scale(1);
+}
+
+.header__submenu {
+    margin-top: 10px;
+    padding-right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 7px;
+
+    max-height: 100px;
+    transform-origin: top;
+    transition: all 0.8s ease;
+
+    @include for-l {
+        align-items: center;
+        padding: 0;
+    }
+}
+
+.header__submenu-item {
+    transition: transform 0.3s ease;
+}
+
+.header__submenu-item:hover {
+    transform: scale(1.1);
+}
+
+.header__submenu-link {
+    font-style: italic;
+}
+
+.smoothHidden {
+    margin: 0;
+    max-height: 0;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
