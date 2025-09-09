@@ -23,6 +23,12 @@
 
 .header__nav-link {}
 
+.header__nav-link.active-menu-link {
+    color: $dark-blue;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
 .header__nav-item--with-submenu {}
 
 .header__nav-link {}
