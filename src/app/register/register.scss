@@ -106,20 +106,62 @@ h1 {
     }
 }
 
-.form__submit {
+.form__action {
+    cursor: pointer;
     background-color: white;
     color: $medium-blue;
-    padding: 10px;
+    padding: 10px 25px;
     width: 100%;
     max-width: 145px;
     border: 2px solid $medium-blue;
     border-radius: 20px;
+    text-align: center;
     font-weight: bold;
     transition: all 0.3s ease;
 }
 
-.form__submit:hover {
+.form__action:hover {
     background-color: $medium-blue;
     color: white;
     transform: scale(1.1);
+}
+
+.form__action--disabled {
+    cursor:default;
+    background-color: $brown;
+    color: white;
+    padding: 10px 25px;
+    width: 100%;
+    max-width: 145px;
+    border: 2px solid $brown;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.form__action--disabled:hover {
+    background-color: $brown;
+    color: white;
+    transform: scale(1.0);
+}
+
+.form__account-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.form__account-text {
+    width: 100%;
+    border-top: 7px double $medium-blue;
+    padding-top: 20px;
+    color: $medium-blue;
+    text-align: center;
+
+    @include for-l {
+        padding-top: 40px;
+    }
 }
