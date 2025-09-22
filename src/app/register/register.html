@@ -7,9 +7,9 @@
                 <input class="form__input" type="text" id="last_name" formControlName="lastName">
             </div>
             @if (isInputValid('lastName')) {
-                <div class="form__error-group">
+                <div class="form__message-group">
                     @for (message of getAllErrorMessages('lastName'); track $index) {
-                        <p class="form__error-message">
+                        <p class="form__message error">
                             {{ message }}
                         </p>
                     }
@@ -22,9 +22,9 @@
                 <input class="form__input" type="text" id="first_name" formControlName="firstName">
             </div>
             @if (isInputValid('firstName')) {
-                <div class="form__error-group">
+                <div class="form__message-group">
                     @for (message of getAllErrorMessages('firstName'); track $index) {
-                        <p class="form__error-message">
+                        <p class="form__message error">
                             {{ message }}
                         </p>
                     }
@@ -37,9 +37,9 @@
                 <input class="form__input" type="email" id="email" formControlName="email">
             </div>
             @if (isInputValid('email')) {
-                <div class="form__error-group">
+                <div class="form__message-group">
                     @for (message of getAllErrorMessages('email'); track $index) {
-                        <p class="form__error-message">
+                        <p class="form__message error">
                             {{ message }}
                         </p>
                     }
@@ -52,9 +52,9 @@
                 <input class="form__input" type="password" id="password" formControlName="password">
             </div>
             @if (isInputValid('password')) {
-                <div class="form__error-group">
+                <div class="form__message-group">
                     @for (message of getAllErrorMessages('password'); track $index) {
-                        <p class="form__error-message">
+                        <p class="form__message error">
                             {{ message }}
                         </p>
                     }
@@ -67,9 +67,9 @@
                 <input class="form__input" type="password" id="confirm-password" formControlName="confirmPassword">
             </div>
             @if (isInputValid('confirmPassword')) {
-                <div class="form__error-group">
+                <div class="form__message-group">
                     @for (message of getAllErrorMessages('confirmPassword'); track $index) {
-                        <p class="form__error-message">
+                        <p class="form__message error">
                             {{ message }}
                         </p>
                     }
@@ -77,9 +77,10 @@
             }
         </div>
         <button class="form__action" type="submit" [class.form__action--disabled]="form.invalid">S'inscrire</button>
-        @if (formError) {
-            <div class="form__error-group">
-                <p class="form__error-message form__error-message--global">{{formError}}</p>
+        @if (formError || formSuccess) {
+            <div class="form__message-group">
+                <p class="form__message form__message--global error">{{formError}}</p>
+                <p class="form__message form__message--global success">{{formSuccess}}</p>
             </div>
         }
         <div class="form__account-group">

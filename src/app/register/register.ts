@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../core/models/api-response.model';
 
 @Component({
   selector: 'app-register',
@@ -16,21 +17,23 @@ export class Register {
   
   constructor(private http: HttpClient) {}
   formError: string = '';
+  formSuccess: string = '';
 
   //---------------
   // FORM PART
   //---------------
-
-   form = new FormGroup({
+  
+  // If you modify one of these validator, make sure that back end User.ts (in models) and validators (in form.service.ts) are also modified
+  form = new FormGroup({
     firstName: new FormControl('John', [
       Validators.required,
       Validators.maxLength(60),
-      Validators.pattern('[a-zA-Zéèêàîùôçïäâëüöœ -]*'),
+      Validators.pattern(/^[a-zA-Zéèêàîùôçïäâëüöœ '\-\.]*$/),
     ]),
     lastName: new FormControl('Doe', [
       Validators.required,
       Validators.maxLength(60),
-      Validators.pattern('[a-zA-Zéèêàîùôçïäâëüöœ -]*'),
+      Validators.pattern(/^[a-zA-Zéèêàîùôçïäâëüöœ '\-\.]*$/),
     ]),
     email: new FormControl('fb.lubre@free.fr', [
       Validators.required,
@@ -47,17 +50,17 @@ export class Register {
       Validators.minLength(8),
       Validators.maxLength(100),
     ]),
-   });
+  });
 
-   // Function used in template to display form errors
-   isInputValid(inputName: string):boolean {
+  // Function used in template to display form errors
+  isInputValid(inputName: string):boolean {
     const inputField = this.form.get(inputName);
     const result = inputField && inputField.invalid && (!inputField.pristine || inputField.touched);
     return !!result;
-   }
+  }
 
-   // Used in template to retrieve all field errors in form
-   getAllErrorMessages(inputName: string): string[] {
+  // Used in template to retrieve all field errors in form
+  getAllErrorMessages(inputName: string): string[] {
     const inputField = this.form.get(inputName);
     const messages: string[] = [];
 
@@ -79,10 +82,11 @@ export class Register {
       }
     }
     return messages;
-   } 
+  } 
 
-   async onSubmit() {
+  async onSubmit() {
     this.form.markAllAsTouched();
+    this.formSuccess = '';
     if (this.form.valid) {
       this.formError = "";
       try {
@@ -93,11 +97,17 @@ export class Register {
           this.formError = 'Les deux mots de passe doivent être identiques.';
           return
         }
-        const reponse = await firstValueFrom(this.http.post('http://', this.form.value));
+        const response = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/inscription', this.form.value, { withCredentials: true }));
+        this.formSuccess = response.message;
+        this.form.reset();
       } catch (error) {
-        console.error('Erreur : ', error); // add external service like Sentry to save the error
+        if (error instanceof HttpErrorResponse) {
+          const response = error.error as ApiResponse;
+          response.message ? this.formError = response.message : this.formError = "Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.";
+          // add external service like Sentry to save the error
+        }
       }
     }
-   }
+  }
 
 }

@@ -79,15 +79,13 @@ h1 {
     }
 }
 
-.form__error-group {
+.form__message-group {
     display: flex;
     flex-direction: column;
     gap: 3px;
 }
 
-.form__error-message {
-    color: $red;
-    font-size: 0.9rem;
+.form__message {
     text-align: center;
     
     @include for-m {
@@ -100,7 +98,10 @@ h1 {
     }
 }
 
-.form__error-message--global {
+.form__message--global {
+    text-align: center;
+    white-space: pre-line;
+
     @include for-l {
         padding: 0;
     }
