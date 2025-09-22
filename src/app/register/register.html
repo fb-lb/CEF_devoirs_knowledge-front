@@ -1,0 +1,91 @@
+<main>
+    <h1>Inscription</h1>
+    <form  class="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+        <div class="form__part">
+            <div class="form__input-container">
+                <label class="form__label" for="last_name">Nom</label>
+                <input class="form__input" type="text" id="last_name" formControlName="lastName">
+            </div>
+            @if (isInputValid('lastName')) {
+                <div class="form__message-group">
+                    @for (message of getAllErrorMessages('lastName'); track $index) {
+                        <p class="form__message error">
+                            {{ message }}
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        <div class="form__part">
+            <div class="form__input-container">
+                <label class="form__label" for="first_name">Prénom</label>
+                <input class="form__input" type="text" id="first_name" formControlName="firstName">
+            </div>
+            @if (isInputValid('firstName')) {
+                <div class="form__message-group">
+                    @for (message of getAllErrorMessages('firstName'); track $index) {
+                        <p class="form__message error">
+                            {{ message }}
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        <div class="form__part">
+            <div class="form__input-container">
+                <label class="form__label" for="email">E-mail</label>
+                <input class="form__input" type="email" id="email" formControlName="email">
+            </div>
+            @if (isInputValid('email')) {
+                <div class="form__message-group">
+                    @for (message of getAllErrorMessages('email'); track $index) {
+                        <p class="form__message error">
+                            {{ message }}
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        <div class="form__part">
+            <div class="form__input-container">
+                <label class="form__label" for="password">Mot de passe</label>
+                <input class="form__input" type="password" id="password" formControlName="password">
+            </div>
+            @if (isInputValid('password')) {
+                <div class="form__message-group">
+                    @for (message of getAllErrorMessages('password'); track $index) {
+                        <p class="form__message error">
+                            {{ message }}
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        <div class="form__part">
+            <div class="form__input-container">
+                <label class="form__label" for="confirm-password">Confirmation du mot de passe</label>
+                <input class="form__input" type="password" id="confirm-password" formControlName="confirmPassword">
+            </div>
+            @if (isInputValid('confirmPassword')) {
+                <div class="form__message-group">
+                    @for (message of getAllErrorMessages('confirmPassword'); track $index) {
+                        <p class="form__message error">
+                            {{ message }}
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        <button class="form__action" type="submit" [class.form__action--disabled]="form.invalid">S'inscrire</button>
+        @if (formError || formSuccess) {
+            <div class="form__message-group">
+                <p class="form__message form__message--global error">{{formError}}</p>
+                <p class="form__message form__message--global success">{{formSuccess}}</p>
+            </div>
+        }
+        <div class="form__account-group">
+            <p class="form__account-text">Vous avez déjà un compte ?</p>
+            <a class="form__action">Page de connexion</a>
+        </div>
+    </form>
+</main>

@@ -1,0 +1,168 @@
+@use '../../styles/variables' as * ;
+@use '../../styles/breakpoints' as *;
+
+main {
+    padding: 30px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+h1 {
+    color: $dark-blue;
+    text-decoration: underline;
+    text-align: center;
+    font-weight: bold;
+}
+
+.form {
+    background-color: $light-blue;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    border: 3px solid $medium-blue;
+    border-radius: 40px;
+
+    @include for-m {
+        width: 50%;
+    }
+
+    @include for-l {
+        min-width: 530px;
+        width: 50%;
+    }
+}
+
+.form__part {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form__input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include for-l {
+        flex-direction: row;
+    }
+}
+
+.form__label {
+    color: $medium-blue;
+    font-weight: bold;
+    text-align: center;
+
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: right;
+        width: 200px;
+    }
+}
+
+.form__input {
+    padding: 5px;
+    width: 100%;
+    border: 1px solid $medium-blue;
+    border-radius: 10px;
+
+    @include for-l {
+        max-width:100%;
+    }
+}
+
+.form__message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.form__message {
+    text-align: center;
+    
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: left;
+        padding-left: 160px;
+    }
+}
+
+.form__message--global {
+    text-align: center;
+    white-space: pre-line;
+
+    @include for-l {
+        padding: 0;
+    }
+}
+
+.form__action {
+    cursor: pointer;
+    background-color: white;
+    color: $medium-blue;
+    padding: 10px 25px;
+    width: 100%;
+    max-width: 145px;
+    border: 2px solid $medium-blue;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.form__action:hover {
+    background-color: $medium-blue;
+    color: white;
+    transform: scale(1.1);
+}
+
+.form__action--disabled {
+    cursor:default;
+    background-color: $brown;
+    color: white;
+    padding: 10px 25px;
+    width: 100%;
+    max-width: 145px;
+    border: 2px solid $brown;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.form__action--disabled:hover {
+    background-color: $brown;
+    color: white;
+    transform: scale(1.0);
+}
+
+.form__account-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.form__account-text {
+    width: 100%;
+    border-top: 7px double $medium-blue;
+    padding-top: 20px;
+    color: $medium-blue;
+    text-align: center;
+
+    @include for-l {
+        padding-top: 40px;
+    }
+}

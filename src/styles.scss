@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use './styles/variables' as *;
+
 * {
     margin: 0;
     padding: 0;
@@ -46,6 +48,18 @@ button {
     pointer-events: none;
 
     //display:none;
+}
+
+.error {
+    color: $red;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.success {
+    color: $green;
+    font-size: 0.9rem;
+    font-weight: bold;
 }
 
 @font-face {
