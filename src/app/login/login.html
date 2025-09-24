@@ -1,28 +1,35 @@
 <main>
     <h1>Connexion</h1>
     <div class="content">
-        <form class="form" action="">
+        <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form__part">
                 <div class="form__field-container">
                     <label class="form__label" for="email">E-mail</label>
-                    <input class="form__field" type="email" name="email" id="email">
+                    <input class="form__field" type="email" formControlName="email" id="email">
                 </div>
-                <div class="form__message-group">
-                    <p class="form__message error">Message d'erreur</p>
-                    <p class="form__message error">Message d'erreur</p>
-                </div>
+                @if (formService.isInputValid(form, 'email')) {
+                    <div class="form__message-group">
+                        @for (message of formService.getAllErrorMessages(form, 'email'); track $index) {
+                            <p class="form__message error">{{ message }}</p>
+                        }
+                    </div>
+                }
             </div>
             <div class="form__part">
                 <div class="form__field-container">
                     <label class="form__label" for="password">Mot de passe</label>
-                    <input class="form__field" type="password" name="password" id="password">
+                    <input class="form__field" type="password" formControlName="password" id="password">
                 </div>
-                <div class="form__message-group">
-                    <p class="form__message error">Message d'erreur</p>
-                </div>
+                @if (formService.isInputValid(form, 'password')) {
+                    <div class="form__message-group">
+                        @for(message of formService.getAllErrorMessages(form, 'password'); track $index){
+                            <p class="form__message error">{{ message }}</p>
+                        }
+                    </div>
+                }
             </div>
-            <button class="form__submit-button" type="submit">Se connecter</button>
-            <p  class="form__message form__message--global error">Message d'erreur</p>
+            <button class="form__submit-button" type="submit" [class.form__submit-button--disabled]="form.invalid">Se connecter</button>
+            <p class="form__message form__message--global error">Message d'erreur</p>
         </form>
         <div class="registration-group">
             <p class="registration-group__text">Vous n'êtes pas encore inscrit chez nous ?</p>

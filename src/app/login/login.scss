@@ -122,6 +122,14 @@ h1 {
     transform: scale(1.1);
 }
 
+.form__submit-button--disabled {
+    pointer-events: none;
+    background-color: $brown;
+    color: white;
+    border: 2px solid $brown;
+}
+
+
 .registration-group {
     padding-top: 30px;
     margin-top: 30px;

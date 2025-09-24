@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../core/models/api-response.model';
 import { RouterLink } from "@angular/router";
+import { FormService } from '../services/form.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ import { RouterLink } from "@angular/router";
 })
 export class Register {
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public formService: FormService) {}
   formError: string = '';
   formSuccess: string = '';
 
@@ -24,7 +25,7 @@ export class Register {
   // FORM PART
   //---------------
   
-  // If you modify one of these validator, make sure that back end User.ts (in models) and validators (in form.service.ts) are also modified
+  // If you modify one of these validator, make sure that back end User.ts (in models) and registration validators (in form.service.ts) are also modified
   form = new FormGroup({
     firstName: new FormControl('John', [
       Validators.required,
@@ -53,40 +54,8 @@ export class Register {
     ]),
   });
 
-  // Function used in template to display form errors
-  isInputValid(inputName: string):boolean {
-    const inputField = this.form.get(inputName);
-    const result = inputField && inputField.invalid && (!inputField.pristine || inputField.touched);
-    return !!result;
-  }
-
-  // Used in template to retrieve all field errors in form
-  getAllErrorMessages(inputName: string): string[] {
-    const inputField = this.form.get(inputName);
-    const messages: string[] = [];
-
-    if (this.isInputValid(inputName)) {
-      if (inputField?.errors?.['required']) {
-        messages.push('Ce champ est obligatoire');
-      }
-      if (inputField?.errors?.['maxlength']) {
-        messages.push(`Maximum ${inputField.errors['maxlength'].requiredLength} caractères.`);
-      }
-      if (inputField?.errors?.['minlength']) {
-        messages.push(`Minimum ${inputField.errors['minlength'].requiredLength} caractères.`);
-      }
-      if (inputField?.errors?.['pattern']) {    
-        messages.push('Caractères non autorisés.')
-      }
-      if (inputField?.errors?.['email']) {
-        messages.push('Format e-mail nécessaire.')
-      }
-    }
-    return messages;
-  } 
-
   async onSubmit() {
-    this.form.markAllAsTouched();
+    this.form.markAllAsTouched(); // if a user try to send without touching a field, required mention will appear
     this.formSuccess = '';
     if (this.form.valid) {
       this.formError = "";
@@ -105,6 +74,9 @@ export class Register {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
           response.message ? this.formError = response.message : this.formError = "Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.";
+        } else {
+          this.formError = "Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.";
+          console.error(error);
           // add external service like Sentry to save the error
         }
       }
