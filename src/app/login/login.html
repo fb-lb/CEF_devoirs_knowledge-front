@@ -1,0 +1,32 @@
+<main>
+    <h1>Connexion</h1>
+    <div class="content">
+        <form class="form" action="">
+            <div class="form__part">
+                <div class="form__field-container">
+                    <label class="form__label" for="email">E-mail</label>
+                    <input class="form__field" type="email" name="email" id="email">
+                </div>
+                <div class="form__message-group">
+                    <p class="form__message error">Message d'erreur</p>
+                    <p class="form__message error">Message d'erreur</p>
+                </div>
+            </div>
+            <div class="form__part">
+                <div class="form__field-container">
+                    <label class="form__label" for="password">Mot de passe</label>
+                    <input class="form__field" type="password" name="password" id="password">
+                </div>
+                <div class="form__message-group">
+                    <p class="form__message error">Message d'erreur</p>
+                </div>
+            </div>
+            <button class="form__submit-button" type="submit">Se connecter</button>
+            <p  class="form__message form__message--global error">Message d'erreur</p>
+        </form>
+        <div class="registration-group">
+            <p class="registration-group__text">Vous n'êtes pas encore inscrit chez nous ?</p>
+            <a class="registration-group__link" routerLink="/inscription">Page d'inscription</a>
+        </div>
+    </div>
+</main>
