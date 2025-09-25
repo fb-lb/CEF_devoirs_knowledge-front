@@ -1,0 +1,30 @@
+@use '../../styles/variables' as *;
+
+main {
+    margin: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+p {
+    text-align: center;
+    color: $medium-blue;
+}
+
+a {
+    width: fit-content;
+    padding: 20px;
+    background-color: $light-blue;
+    color: $medium-blue;
+    border: 3px solid $medium-blue;
+    border-radius: 15px;
+    transition: all 0.3s ease-in;
+}
+
+a:hover {
+    background-color: $medium-blue;
+    color: $light-blue;
+    transform: scale(1.1);
+}
