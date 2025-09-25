@@ -94,6 +94,8 @@
 .header__nav-link {
     cursor: pointer;
     color: $medium-blue;
+    border: none;
+    background-color: none;
 }
 
 .header__nav-link:hover {
