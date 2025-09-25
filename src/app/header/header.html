@@ -7,12 +7,12 @@
         <ul class="header__nav-list">
             <li class="header__nav-item"><a class="header__nav-link" routerLink="" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
             <li class="header__nav-item"><a class="header__nav-link" href="#">Nos formations</a></li>
-            <li class="header__nav-item"><a class="header__nav-link" href="#">Mes cours</a></li>
+            <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-cours">Mes cours</a></li>
             <li class="header__nav-item"><a class="header__nav-link" href="#">Mes certifications</a></li>
             <li class="header__nav-item header__nav-item--with-submenu">
                 <p class="header__nav-link" (click)="toggleElement('back-office-submenu')">Back-office</p>
                 <ul id="back-office-submenu" class="header__submenu smoothHidden">
-                    <li class="header__submenu-item"><a class="header__submenu-link" href="#">Utilisateurs</a></li>
+                    <li class="header__submenu-item"><a class="header__submenu-link" routerLink="/back-office/utilisateurs">Utilisateurs</a></li>
                     <li class="header__submenu-item"><a class="header__submenu-link" href="#">Contenus</a></li>
                     <li class="header__submenu-item"><a class="header__submenu-link" href="#">Achats</a></li>
                 </ul>
