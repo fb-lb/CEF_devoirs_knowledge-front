@@ -29,7 +29,9 @@
                 }
             </div>
             <button class="form__submit-button" type="submit" [class.form__submit-button--disabled]="form.invalid">Se connecter</button>
-            <p class="form__message form__message--global error">Message d'erreur</p>
+            @if (formError) {
+                <p class="form__message form__message--global error">{{ formError }}</p>
+            }
         </form>
         <div class="registration-group">
             <p class="registration-group__text">Vous n'êtes pas encore inscrit chez nous ?</p>

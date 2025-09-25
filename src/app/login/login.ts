@@ -19,7 +19,6 @@ export class Login {
 
   constructor(public formService: FormService, private http: HttpClient, private router: Router) {}
   formError: string = '';
-  formSuccess: string = '';
 
   // --------------
   // FORM PART
@@ -41,7 +40,6 @@ export class Login {
 
   async onSubmit() {
     this.form.markAllAsTouched(); // if a user try to send without touching a field, required mention will appear
-    this.formSuccess = "";
     if (this.form.valid) {
       this.formError = "";
       try {
