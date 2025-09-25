@@ -43,7 +43,7 @@ export class Login {
     if (this.form.valid) {
       this.formError = "";
       try {
-        await firstValueFrom(this.http.post(environment.backUrl + '/api/connexion', this.form.value, { withCredentials: true }));
+        await firstValueFrom(this.http.post(environment.backUrl + '/api/authentication/connexion', this.form.value, { withCredentials: true }));
         this.router.navigate(['/']);
       } catch (error) {
         if (error instanceof HttpErrorResponse) {

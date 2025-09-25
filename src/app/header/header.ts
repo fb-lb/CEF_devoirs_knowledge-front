@@ -1,9 +1,12 @@
 import { Component, HostListener } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { NgClass } from "@angular/common";
+import { firstValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +19,8 @@ export class Header {
   faBars: IconDefinition = faBars;
   isIconHidden: boolean = true;
   isMenuHidden: boolean = true;
+
+  constructor(private http: HttpClient, private router: Router){}
 
   ngOnInit():void {
     this.onResize();
@@ -36,4 +41,21 @@ export class Header {
     }
     hiddenElement?.classList.toggle('smoothHidden');
   };
+
+  // Logout request
+  async onClickLogout() {
+    try {
+      await firstValueFrom(this.http.get(environment.backUrl + '/api/authentication/deconnexion', { withCredentials : true }));
+      this.router.navigate(['/']);
+    } catch (error) {
+      console.error(error);
+      // add external service like Sentry to save the error
+      this.router.navigate(['/'], {
+        queryParams: {
+          success: false,
+          message: "Nous ne sommes pas parvenus à vous déconnecter pour le moment, veuillez ré-essayer ultérieurement. Nous sommes désolé pour la gène occasionnée. Nous mettons tout en oeuvre pour solutionner le problème.",
+        }
+      });
+    }
+  }
 }
