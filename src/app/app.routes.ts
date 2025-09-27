@@ -5,13 +5,16 @@ import { EmailCheck } from './email-check/email-check';
 import { Login } from './login/login';
 import { LessonsPayed } from './lessons-payed/lessons-payed';
 import { BackOfficeUsers } from './back-office-users/back-office-users';
+import { userAuthGuard } from './guards/user-auth-guard';
+import { adminAuthGuard } from './guards/admin-auth-guard';
+import { notAuthGuard } from './guards/not-auth-guard';
 
 
 export const routes: Routes = [
-    {path: "", component: Home},
-    {path: "inscription", component: Register},
-    {path: "inscription/check-email/:token", component: EmailCheck},
-    {path: "connexion", component: Login},
-    {path: "mes-cours", component: LessonsPayed},
-    {path: "back-office/utilisateurs", component: BackOfficeUsers}
+    { path: "", component: Home },
+    { path: "inscription", component: Register, canActivate: [notAuthGuard] },
+    { path: "inscription/check-email/:token", component: EmailCheck },
+    { path: "connexion", component: Login, canActivate: [notAuthGuard] },
+    { path: "mes-cours", component: LessonsPayed, canActivate: [userAuthGuard] },
+    { path: "back-office/utilisateurs", component: BackOfficeUsers, canActivate: [adminAuthGuard] },
 ];

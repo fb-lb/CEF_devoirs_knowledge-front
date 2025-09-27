@@ -1,17 +1,18 @@
 import { Component, HostListener } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { NgClass } from "@angular/common";
-import { firstValueFrom } from 'rxjs';
+import { NgClass, AsyncPipe } from "@angular/common";
+import { BehaviorSubject, filter, firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, NgClass],
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, NgClass, AsyncPipe],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
@@ -19,11 +20,28 @@ export class Header {
   faBars: IconDefinition = faBars;
   isIconHidden: boolean = true;
   isMenuHidden: boolean = true;
+  isUserAuthenticated$ = new BehaviorSubject<boolean>(false);
+  isAdminAuthenticated$ = new BehaviorSubject<boolean>(false);
+  private routerSub!: Subscription;
 
-  constructor(private http: HttpClient, private router: Router){}
+  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService){}
 
   ngOnInit():void {
     this.onResize();
+    this.checkIsAuthCookie();
+    this.routerSub = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => this.checkIsAuthCookie());
+  }
+
+  ngOnDestroy():void {
+    this.routerSub.unsubscribe();
+  }
+
+  // Check presence of isAuth cookie and update related BehaviorSubject
+  checkIsAuthCookie() {
+    const isUserAuth = this.cookieService.check('isAuth');
+    const isAdminAuth = this.cookieService.check('isAdmin');
+    this.isUserAuthenticated$.next(isUserAuth);
+    this.isAdminAuthenticated$.next(isAdminAuth);
   }
 
   // Add event listener on window's size to hide/show menu and burger menu icon
@@ -46,6 +64,8 @@ export class Header {
   async onClickLogout() {
     try {
       await firstValueFrom(this.http.get(environment.backUrl + '/api/authentication/deconnexion', { withCredentials : true }));
+      this.isUserAuthenticated$.next(false);
+      this.isAdminAuthenticated$.next(false);
       this.router.navigate(['/']);
     } catch (error) {
       console.error(error);

@@ -13,7 +13,7 @@ import { ApiResponse } from '../core/models/api-response.model';
   styleUrl: './email-check.scss'
 })
 export class EmailCheck {
-  declare token: string;
+  private token!: string;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private http: HttpClient) {}
 
