@@ -3,7 +3,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { NgClass, AsyncPipe } from "@angular/common";
+import { NgClass, AsyncPipe } from '@angular/common';
 import { BehaviorSubject, filter, firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -14,7 +14,7 @@ import { CookieService } from 'ngx-cookie-service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, FontAwesomeModule, NgClass, AsyncPipe],
   templateUrl: './header.html',
-  styleUrl: './header.scss'
+  styleUrl: './header.scss',
 })
 export class Header {
   faBars: IconDefinition = faBars;
@@ -24,15 +24,21 @@ export class Header {
   isAdminAuthenticated$ = new BehaviorSubject<boolean>(false);
   private routerSub!: Subscription;
 
-  constructor(private http: HttpClient, private router: Router, private cookieService: CookieService){}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cookieService: CookieService
+  ) {}
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.onResize();
     this.checkIsAuthCookie();
-    this.routerSub = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => this.checkIsAuthCookie());
+    this.routerSub = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => this.checkIsAuthCookie());
   }
 
-  ngOnDestroy():void {
+  ngOnDestroy(): void {
     this.routerSub.unsubscribe();
   }
 
@@ -46,24 +52,28 @@ export class Header {
 
   // Add event listener on window's size to hide/show menu and burger menu icon
   @HostListener('window:resize')
-  onResize():void {
+  onResize(): void {
     this.isIconHidden = window.innerWidth >= 769;
     this.isMenuHidden = window.innerWidth < 769;
   }
-  
-  // Toggle hidden class on element 
-  toggleElement(hiddenElementId: string):void {
+
+  // Toggle hidden class on element
+  toggleElement(hiddenElementId: string): void {
     const hiddenElement: HTMLElement | null = document.getElementById(hiddenElementId);
     if (hiddenElementId === 'nav-menu' && hiddenElement?.classList.contains('hidden')) {
       hiddenElement?.classList.remove('hidden');
     }
     hiddenElement?.classList.toggle('smoothHidden');
-  };
+  }
 
   // Logout request
   async onClickLogout() {
     try {
-      await firstValueFrom(this.http.get(environment.backUrl + '/api/authentication/deconnexion', { withCredentials : true }));
+      await firstValueFrom(
+        this.http.get(environment.backUrl + '/api/authentification/deconnexion', {
+          withCredentials: true,
+        })
+      );
       this.isUserAuthenticated$.next(false);
       this.isAdminAuthenticated$.next(false);
       this.router.navigate(['/']);
@@ -73,8 +83,9 @@ export class Header {
       this.router.navigate(['/'], {
         queryParams: {
           success: false,
-          message: "Nous ne sommes pas parvenus à vous déconnecter pour le moment, veuillez ré-essayer ultérieurement. Nous sommes désolé pour la gène occasionnée. Nous mettons tout en oeuvre pour solutionner le problème.",
-        }
+          message:
+            'Nous ne sommes pas parvenus à vous déconnecter pour le moment, veuillez ré-essayer ultérieurement. Nous sommes désolé pour la gène occasionnée. Nous mettons tout en oeuvre pour solutionner le problème.',
+        },
       });
     }
   }
