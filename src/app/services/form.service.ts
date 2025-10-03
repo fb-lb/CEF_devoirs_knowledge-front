@@ -33,6 +33,9 @@ export class FormService {
       if (inputField?.errors?.['email']) {
         messages.push('Format e-mail nécessaire.')
       }
+      if (inputField?.errors?.['min']) {
+        messages.push(`La valeur doit être supérieure ou égale à ${inputField.errors['min'].min}.`)
+      }
     }
     return messages;
   }

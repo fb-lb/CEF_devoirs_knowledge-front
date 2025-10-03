@@ -1,3 +1,168 @@
 <main>
     <h1>Gestion des utilisateurs</h1>
+    <section class="update">
+        <h2 class="update__title">Mise à jour des données d'un utilisateur</h2>
+        <div class="update__text-group">
+            <p class="update__text">Dans la liste ci-dessous, recherchez l'identifiant de l'utilisateur dont vous souhaitez modifier les données. </p>
+            <p class="update__text">Ensuite, renseignez cet identifiant dans le champ correspondant, les données actuelles devraient apparaître.</p>
+            <p class="update__text">Vous pouvez maintenant les modifier et cliquer sur 'Modifier' pour que les modifications soient prises en compte.</p>
+        </div>
+        <form class="update__form" [formGroup]="updateForm" (submit)="onSubmitUpdateForm()">
+            <div class="update__form-part">
+                <div class="update__field-group">
+                    <label class="update__form-label" for="updateId">Identifiant</label>
+                    <input class="update__form-input" type="number" formControlName="id" id="updateId" (input)="onIdUpdateFormChange(getIdValue(this.updateForm))">
+                </div>
+                @if (formService.isInputValid(updateForm, 'id')) {
+                    <div class="update__message-group">
+                        @for (message of formService.getAllErrorMessages(updateForm, 'id'); track $index) {
+                         <p class="update__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="update__form-part">
+                <div class="update__field-group">
+                    <label class="update__form-label" for="updateLastName">Nom</label>
+                    <input class="update__form-input" type="text" formControlName="lastName" id="updateLastName">
+                </div>
+                @if (formService.isInputValid(updateForm, 'lastName')) {
+                    <div class="update__message-group">
+                        @for (message of formService.getAllErrorMessages(updateForm, 'lastName'); track $index) {
+                         <p class="update__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="update__form-part">
+                <div class="update__field-group">
+                    <label class="update__form-label" for="updateFirstName">Prénom</label>
+                    <input class="update__form-input" type="text" formControlName="firstName" id="updateFirstName">
+                </div>
+                @if (formService.isInputValid(updateForm, 'firstName')) {
+                    <div class="update__message-group">
+                        @for (message of formService.getAllErrorMessages(updateForm, 'firstName'); track $index) {
+                         <p class="update__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="update__form-part">
+                <div class="update__field-group">
+                    <label class="update__form-label" for="updateEmail">E-mail</label>
+                    <input class="update__form-input" type="email" formControlName="email" id="updateEmail">
+                </div>
+                @if (formService.isInputValid(updateForm, 'email')) {
+                    <div class="update__message-group">
+                        @for (message of formService.getAllErrorMessages(updateForm, 'email'); track $index) {
+                         <p class="update__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <fieldset class="update__field-group update__field-group--roles">
+                <legend class="update__form-label">Autorisations</legend>
+                <label class="update__form-checkbox-name">
+                    <input class="update__form-input" type="checkbox" (change)="onRoleChange($event, 'admin')" value="admin" [checked]="this.updateForm.get('roles')?.value?.includes('admin')">Admin
+                </label>
+            </fieldset>
+            <div class="update__field-group">
+                <label class="update__form-label" for="updateIsVerified">
+                    Vérifié<input class="update__form-input" type="checkbox" formControlName="isVerified" id="updateIsVerified" value="true">
+                </label>
+            </div>
+            <button class="update__form-submit" [class.update__form-submit--disabled]="updateForm.invalid" type="submit">Modifier</button>
+            @if(updateGlobalMessage){<p class="update__message update__message--global"  [ngClass]="isUpdateGlobalMessageSuccess ? 'success' : 'error'">{{ updateGlobalMessage }}</p>}
+        </form>
+    </section>
+    <section class="delete">
+        <h2 class="delete__title">Suppression d'un utilisateur</h2>
+        <div class="delete__text-group">
+            <p class="delete__text">Dans la liste ci-dessous, recherchez l'identifiant de l'utilisateur que vous souhaitez supprimer de la base de données.</p>
+            <p class="delete__text">Ensuite, renseignez cet identifiant dans le champ correspondant, les données actuelles devraient apparaître.</p>
+            <p class="delete__text">Vous pouvez maintenant cliquer sur 'Supprimer'. Attention, cette action est irréversible.</p>
+        </div>
+        <form class="delete__form" [formGroup]="deleteForm"(submit)="onSubmitDeleteForm()">
+            <div class="delete__form-part">
+                <div class="delete__field-group">
+                    <label class="delete__form-label" for="deleteId">Identifiant</label>
+                    <input class="delete__form-input" type="number" formControlName="id" id="deleteId" (input)="onIdDeleteFormChange(getIdValue(this.deleteForm))">
+                </div>
+                @if (formService.isInputValid(deleteForm, 'id')) {
+                    <div class="update__message-group">
+                        @for (message of formService.getAllErrorMessages(deleteForm, 'id'); track $index) {
+                         <p class="update__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <button class="delete__form-submit" [class.delete__form-submit--disabled]="deleteForm.invalid" type="submit">Supprimer</button>
+            @if(deleteGlobalMessage){<p class="delete__message delete__message--global"  [ngClass]="isDeleteGlobalMessageSuccess ? 'success' : 'error'">{{ deleteGlobalMessage }}</p>}
+        </form>
+        <table class="delete__table">
+            <thead class="delete__thead">
+                <tr class="delete__thead-row">
+                    <th class="delete__thead-column delete__thead-column--corner-left">Id</th>
+                    <th class="delete__thead-column">Nom</th>
+                    <th class="delete__thead-column">Prénom</th>
+                    <th class="delete__thead-column">E-mail</th>
+                    <th class="delete__thead-column">Rôles</th>
+                    <th class="delete__thead-column">Vérifié</th>
+                    <th class="delete__thead-column">Date de création</th>
+                    <th class="delete__thead-column">Date de modification</th>
+                    <th class="delete__thead-column delete__thead-column--corner-right">Modifié par</th>
+                </tr>
+            </thead>
+            <tbody class="delete__tbody">
+                <tr class="delete__tbody-row">
+                    <td class="delete__tbody-column delete__tbody-column--corner-left">{{ deleteId }}</td>
+                    <td class="delete__tbody-column">{{ deleteLastName }}</td>
+                    <td class="delete__tbody-column">{{ deleteFirstName }}</td>
+                    <td class="delete__tbody-column">{{ deleteEmail }}</td>
+                    <td class="delete__tbody-column">{{ deleteRolesText }}</td>
+                    <td class="delete__tbody-column">{{ deleteIsVerified }}</td>
+                    <td class="delete__tbody-column">{{ deleteCreatedAt }}</td>
+                    <td class="delete__tbody-column">{{ deleteUpdatedAt }}</td>
+                    <td class="delete__tbody-column delete__tbody-column--corner-right">{{ deleteUpdatedBy }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="read">
+        <h2 class="read__title">Liste des utilisateurs</h2>
+        <form class="read__form" [formGroup]="readForm">
+            <label class="read__form-label" for="search">Rechercher</label>
+            <input class="read__form-input" type="text" formControlName="search" id="search" (input)="onSearchReadFormChange()">
+        </form>
+        <table class="read__table">
+            <thead class="read__thead">
+                <tr class="read__thead-row">
+                    <th class="read__thead-column read__thead-column--left-corner">Id</th>
+                    <th class="read__thead-column">Nom</th>
+                    <th class="read__thead-column">Prénom</th>
+                    <th class="read__thead-column">E-mail</th>
+                    <th class="read__thead-column">Rôles</th>
+                    <th class="read__thead-column">Vérifié</th>
+                    <th class="read__thead-column">Date de création</th>
+                    <th class="read__thead-column">Date de modification</th>
+                    <th class="read__thead-column read__thead-column--right-corner">Modifié par</th>
+                </tr>
+            </thead>
+            <tbody class="read__tbody">
+                @for (user of filteredUsers; track $index) {
+                    <tr class="read__tbody-row">
+                        <td class="read__tbody-column read__tbody-column--left-corner">{{ user.id }}</td>
+                        <td class="read__tbody-column">{{ user.lastName }}</td>
+                        <td class="read__tbody-column">{{ user.firstName }}</td>
+                        <td class="read__tbody-column">{{ user.email }}</td>
+                        <td class="read__tbody-column">{{ user.rolesText }}</td>
+                        <td class="read__tbody-column">{{ user.isVerified ? "Oui" : "Non" }}</td>
+                        <td class="read__tbody-column">{{ user.createdAt }}</td>
+                        <td class="read__tbody-column">{{ user.updatedAt }}</td>
+                        <td class="read__tbody-column read__tbody-column--right-corner">{{ user.updatedBy ? user.updatedByName + ` (${user.updatedBy})` : user.updatedByName }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
 </main>
