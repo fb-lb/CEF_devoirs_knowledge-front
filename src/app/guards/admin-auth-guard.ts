@@ -24,7 +24,7 @@ export const adminAuthGuard: CanActivateFn = async (route, state) => {
         },
       });
     }
-    console.log(error);
+    console.error(error);
     // add external service like Sentry to save the error
     return router.createUrlTree(['/'], {
       queryParams: {
