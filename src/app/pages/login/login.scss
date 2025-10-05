@@ -1,8 +1,8 @@
-@use '../../styles/variables' as * ;
-@use '../../styles/breakpoints' as *;
+@use '../../../styles/variables' as *;
+@use '../../../styles/breakpoints' as*;
 
 main {
-    padding: 30px 10%;
+    padding: 30px 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -11,29 +11,24 @@ main {
 
 h1 {
     color: $dark-blue;
-    text-decoration: underline;
-    text-align: center;
     font-weight: bold;
+    text-decoration: underline;
+}
+
+.content {
+    padding: 25px;
+    background-color: $light-blue;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid $medium-blue;
+    border-radius: 40px;
 }
 
 .form {
-    background-color: $light-blue;
-    padding: 25px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 25px;
-    border: 3px solid $medium-blue;
-    border-radius: 40px;
-
-    @include for-m {
-        width: 50%;
-    }
-
-    @include for-l {
-        min-width: 530px;
-        width: 50%;
-    }
+    align-items: center;
 }
 
 .form__part {
@@ -43,7 +38,8 @@ h1 {
     gap: 5px;
 }
 
-.form__input-container {
+.form__field-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -63,16 +59,16 @@ h1 {
     }
 
     @include for-l {
+        width: 150px;
         text-align: right;
-        width: 200px;
     }
 }
 
-.form__input {
-    padding: 5px;
+.form__field {
     width: 100%;
+    padding: 5px;
     box-sizing: border-box;
-    border: 1px solid $medium-blue;
+    border: 0.8px solid $medium-blue;
     border-radius: 10px;
     text-align: center;
 
@@ -81,7 +77,6 @@ h1 {
     }
 
     @include for-l {
-        max-width:100%;
         text-align: left;
     }
 }
@@ -89,74 +84,65 @@ h1 {
 .form__message-group {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 5px;
 }
 
 .form__message {
     text-align: center;
-    
+
     @include for-m {
         text-align: left;
     }
 
     @include for-l {
+        padding-left: 125px;
         text-align: left;
-        padding-left: 160px;
     }
 }
 
 .form__message--global {
+    padding: 0;
+    max-width: 500px;
     text-align: center;
-    white-space: pre-line;
-
-    @include for-l {
-        padding: 0;
-    }
 }
 
-.form__action {
-    cursor: pointer;
-    background-color: white;
-    color: $medium-blue;
+.form__submit-button, .registration-group__link {
+    width: fit-content;
     padding: 10px 25px;
-    width: 100%;
-    max-width: 145px;
-    border: 2px solid $medium-blue;
+    background-color: white;
+    border: 1.6px solid $medium-blue;
     border-radius: 20px;
     text-align: center;
+    color: $medium-blue;
     font-weight: bold;
     transition: all 0.3s ease;
 }
 
-.form__action:hover {
+.form__submit-button:hover, .registration-group__link:hover {
     background-color: $medium-blue;
     color: white;
     transform: scale(1.1);
 }
 
-.form__action--disabled {
+.form__submit-button--disabled {
     pointer-events: none;
     background-color: $brown;
     color: white;
     border: 2px solid $brown;
 }
 
-.form__account-group {
-    width: 100%;
+
+.registration-group {
+    padding-top: 30px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 25px;
+    border-top: 7px double $medium-blue;
 }
 
-.form__account-text {
-    width: 100%;
-    border-top: 7px double $medium-blue;
-    padding-top: 20px;
+.registration-group__text {
     color: $medium-blue;
     text-align: center;
-
-    @include for-l {
-        padding-top: 40px;
-    }
 }

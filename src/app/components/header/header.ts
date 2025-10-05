@@ -6,7 +6,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { NgClass, AsyncPipe } from '@angular/common';
 import { BehaviorSubject, filter, firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
