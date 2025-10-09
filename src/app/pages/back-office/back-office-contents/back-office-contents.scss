@@ -1,0 +1,204 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/breakpoints' as *;
+
+.dashboard {
+    padding: 30px 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.dashboard__title {
+    color: $dark-blue;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dashboard__course, .dashboard__info, .dashboard__search {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard__course-title, .dashboard__info-title, .dashboard__search-title {
+    color: $medium-blue;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dashboard__course-sections {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+
+    @include for-l {
+        padding: 0;
+        flex-direction: row;
+        gap: 0;
+        justify-content: space-between;
+    }
+}
+
+.course-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.course-section:nth-child(-n + 2) {
+    border-bottom: 2px dotted $medium-blue;
+    
+    @include for-l {
+        border-bottom: 0;
+        border-right: 2px dotted $medium-blue;
+    }
+}
+
+.course-section__title {
+    color: $medium-blue;
+    font-size: 1.5rem;
+}
+
+.course-section__content {
+    padding: 0 3%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+
+    @include for-l {
+        flex-direction: column;
+        gap: 10px;
+        flex-wrap: unset;
+        justify-content: unset;
+    }
+}
+
+.course-section__content-group {
+    padding: 7px;
+    background-color: $light-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include for-l {
+        width: fit-content;
+    }
+}
+
+.course-section__content-info {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include for-l {
+        flex-direction: row-reverse;
+        gap: 15px;
+    }
+}
+
+.course-section__content-icons {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 30px;
+    justify-content: space-between;
+
+    @include for-l {
+        flex-direction: column;
+        justify-content: unset;
+        gap: 15px;
+        margin-left: -40px;
+    }
+}
+
+.course-section__content-actions {
+    padding-right: 3px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.course-section__content-icon {
+    cursor: pointer;
+    transition: transform 0.3s ease-in;
+}
+
+.course-section__content-icon:hover {
+    transform: scale(1.4);  
+}
+
+.course-section__content-icon--update {
+    color: $medium-blue;
+}
+
+.course-section__content-icon--delete {
+    color: $red;
+}
+
+.course-section__content-icon--up {
+    transform: rotate(270deg);
+
+    @include for-l {
+        transform: rotate(0deg);
+    }
+}
+
+.course-section__content-icon--down {
+    transform: rotate(270deg);
+
+    @include for-l {
+        transform: rotate(0deg);
+    }
+}
+
+.course-section__content-move {
+    color: $dark-blue;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
+    @include for-l {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0;
+    }
+}
+
+.course-section__content-name {
+    text-align: center;
+    
+    @include for-l {
+        padding-top: 45px;
+    }
+}
+
+.addForm {}
+
+
+
+
+.no-display {
+    display: none;
+}
+
+.little-padding {
+    padding: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}

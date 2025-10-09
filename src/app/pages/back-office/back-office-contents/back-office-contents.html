@@ -1,0 +1,116 @@
+<main class="dashboard">
+    <h1 class="dashboard__title">Gestion des contenus</h1>
+    <section class="dashboard__course">
+        <h2 class="dashboard__course-title">Arborescence des cours</h2>
+        <div class="dashboard__course-sections">
+            <section class="course-section">
+                <h3 class="course-section__title">Thèmes</h3>
+                <div class="course-section__content">
+                    @for (theme of allThemes; track theme.id){
+                        <div class="course-section__content-group" [class.pointer]="activeThemeId !== theme.id" (click)="activeTheme(theme.id)">
+                            <div class="course-section__content-info">
+                                <div class="course-section__content-icons" [class.no-display]="activeThemeId !== theme.id">
+                                    <div class="course-section__content-actions">
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--update" [icon]="faPen"></fa-icon>
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--delete" [icon]="faTrash"></fa-icon> 
+                                    </div>
+                                    <div class="course-section__content-move">
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--up" (click)="changeOrder($event, 'theme', theme.id, 'up')" [icon]="faCaretUp"></fa-icon>
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--down" (click)="changeOrder($event, 'theme', theme.id, 'down')" [icon]="faCaretDown"></fa-icon>
+                                    </div>
+                                </div>
+                                <p class="course-section__content-name" [class.little-padding]="activeThemeId !== theme.id">{{ theme.name }}</p>
+                            </div>
+                            <form class="addForm" [class.no-display]="activeThemeId !== theme.id" action="">Formulaire</form>
+                        </div>
+                    }
+                </div>
+                <form class="course-section__form" action=""></form>
+            </section>
+            <section class="course-section">
+                <h3 class="course-section__title">Cursus</h3>
+                <div class="course-section__content">
+                    @for (cursus of selectedCursus; track cursus.id){
+                        <div class="course-section__content-group" [class.pointer]="activeCursusId !== cursus.id" (click)="activeCursus(cursus.id)">
+                            <div class="course-section__content-info">
+                                <div class="course-section__content-icons" [class.no-display]="activeCursusId !== cursus.id">
+                                    <div class="course-section__content-actions">
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--update" [icon]="faPen"></fa-icon>
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--delete" [icon]="faTrash"></fa-icon> 
+                                    </div>
+                                    <div class="course-section__content-move">
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--up" (click)="changeOrder($event, 'cursus', cursus.id, 'up')" [icon]="faCaretUp"></fa-icon>
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--down" (click)="changeOrder($event, 'cursus', cursus.id, 'down')" [icon]="faCaretDown"></fa-icon>
+                                    </div>
+                                </div>
+                                <p class="course-section__content-name" [class.little-padding]="activeCursusId !== cursus.id">{{ cursus.name }}</p>
+                            </div>
+                            <form class="addForm" [class.no-display]="activeCursusId !== cursus.id" action="">Formulaire</form>
+                        </div>
+                    }
+                </div>
+                <form class="course-section__form" action=""></form>
+            </section>
+            <section class="course-section">
+                <h3 class="course-section__title">Leçons</h3>
+                <div class="course-section__content">
+                    @for (lesson of selectedLessons; track lesson.id){
+                        <div class="course-section__content-group" [class.pointer]="activeLessonId !== lesson.id" (click)="activeLesson(lesson.id)">
+                            <div class="course-section__content-info">
+                                <div class="course-section__content-icons" [class.no-display]="activeLessonId !== lesson.id">
+                                    <div class="course-section__content-actions">
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--update" [icon]="faPen"></fa-icon>
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--delete" [icon]="faTrash"></fa-icon> 
+                                    </div>
+                                    <div class="course-section__content-move">
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--up" (click)="changeOrder($event, 'lesson', lesson.id, 'up')" [icon]="faCaretUp"></fa-icon>
+                                        <fa-icon class="course-section__content-icon course-section__content-icon--down" (click)="changeOrder($event, 'lesson', lesson.id, 'down')" [icon]="faCaretDown"></fa-icon>
+                                    </div>
+                                </div>
+                                <p class="course-section__content-name" [class.little-padding]="activeLessonId !== lesson.id">{{ lesson.name }}</p>
+                            </div>
+                            <form class="addForm" [class.no-display]="activeLessonId !== lesson.id" action="">Formulaire</form>
+                        </div>
+                    }
+                </div>
+                <form class="course-section__form" action=""></form>
+            </section>
+        </div>
+        <div class="dashboard__course-contents">
+            texte / image
+        </div>
+    </section>
+    <section class="dashboard__info">
+        <h2 class="dashboard__info-title">Informations relatives à l'élément sélectionné</h2>
+    </section>
+    <section class="dashboard__search">
+        <h2 class="dashboard__search-title">Rechercher un élément en particulier</h2>
+    </section>
+
+    <!--
+    arborescence des themes / cursus / lessons
+    bouton modifié / supprimé pour chacun des themes / cursus / lessons
+    avoir en dessous la liste des éléments (texts/images) qui composent la leçon sélectionnée + bouton modifier/supprimer :
+    le clic sur le bouton modifier fait apparaître un input et un bouton 'Modifier'
+    le clic sur le bouton supprimer fait apparaître une alert avec un message relatif à l'élément et 'Voulez-vous vraiment supprimer cet
+    élement ?' 'oui / non'
+
+    pour chacun des types, mettre en bas un formulaire d'ajout
+    
+    pour chacun des éléments de chaque type, mettre des flèches vers le haut ou vers bas avec modifications visuelles du DOM quand on clique dessus + actualisation
+    de l'ordre des éléments sélectionnés + envoie au back-end pour enregistrement directement + message de succès au retour pour
+    que l'admin sache que c'est bien pris en compte
+     -->
+
+     <!--
+     mettre un petit tableau avec les informations relatives à l'élément sélectionné, les colonnes du tableau vairent en
+     fonction du type de l'élément sélectionné
+     -->
+
+    <!--
+    liste des themes, cursus, lessons, text, image
+    pouvoir filtrer les résultats par thèmes
+    pouvoir filtrer les résultats type : thèmes, cursus, leçons, textes, images
+    colonnes du tableau qui varient en fonction de la sélection du type
+    -->
+</main>
