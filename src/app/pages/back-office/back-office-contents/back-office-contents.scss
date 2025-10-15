@@ -28,6 +28,12 @@
     text-align: center;
 }
 
+
+// -----------------------------------
+// course-sections && course-section
+//------------------------------------
+
+
 .dashboard__course-sections {
     display: flex;
     flex-direction: column;
@@ -96,15 +102,17 @@
     }
 }
 
-.course-section__content-info {
+.course-section__content-infos {
     width: fit-content;
     display: flex;
     flex-direction: column;
     gap: 10px;
 
     @include for-l {
+        width: 100%;
         flex-direction: row-reverse;
-        gap: 15px;
+        //gap: 15px;
+        align-content: flex-end;
     }
 }
 
@@ -117,8 +125,7 @@
     @include for-l {
         flex-direction: column;
         justify-content: unset;
-        gap: 15px;
-        margin-left: -40px;
+        //gap: 15px;
     }
 }
 
@@ -133,11 +140,7 @@
 
 .course-section__content-icon {
     cursor: pointer;
-    transition: transform 0.3s ease-in;
-}
-
-.course-section__content-icon:hover {
-    transform: scale(1.4);  
+    transition: transform 0.15s ease-in;
 }
 
 .course-section__content-icon--update {
@@ -146,6 +149,10 @@
 
 .course-section__content-icon--delete {
     color: $red;
+}
+
+.course-section__content-icon--update:hover, .course-section__content-icon--delete:hover {
+    transform: scale(1.4);
 }
 
 .course-section__content-icon--up {
@@ -161,6 +168,14 @@
 
     @include for-l {
         transform: rotate(0deg);
+    }
+}
+
+.course-section__content-icon--up:hover, .course-section__content-icon--down:hover {
+    transform: rotate(270deg) scale(1.4);
+
+    @include for-l {
+        transform: scale(1.4) rotate(0deg);
     }
 }
 
@@ -182,13 +197,194 @@
     text-align: center;
     
     @include for-l {
+        width: 100%;
         padding-top: 45px;
+        padding-left: 55px;
     }
 }
 
-.addForm {}
+.course-section__content-date {
+    font-size: 0.85rem;
+    align-self: flex-start;
+}
+
+.course-section__content-date span {
+    font-weight: bold;
+}
+
+.course-section__updateForm {}
+
+.course-section__addForm {}
 
 
+// -----------------------------------
+// course-elements & course-element
+// -----------------------------------
+
+.dashboard__course-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.course-elements__title {
+    color: $medium-blue;
+    font-size: 1.5rem;
+}
+
+.course-elements__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.course-elements__element-group {
+    padding: 15px;
+    background-color: $light-blue;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.course-elements__element-group--active {
+    border: 3px solid $medium-blue;
+}
+
+.course-elements__element-content {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.course-elements__element-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.course-elements__text-title1 {
+    font-weight: bold;
+    font-size: 1.7rem;
+    text-decoration: underline;
+}
+
+.course-elements__text-title2 {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.course-elements__text-title3 {
+    font-weight: bold;
+    font-size: 1.3rem;
+    font-style: italic;
+}
+
+.course-elements__text-paragraph {
+    font-weight: bold;
+}
+
+.course-elements__image-legend {}
+
+.course-elements__image-legend span {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.course-elements__image {
+    width: 100%;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.course-elements__image--active {
+    width: 100%;
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.course-elements__details {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 30px;
+    row-gap: 15px;
+}
+
+.course-elements__details-image {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.course-elements__detail-image {
+    max-width: 500px;
+}
+
+.course-elements__detail-image span, .course-elements__detail-date span {
+    font-weight: bold;
+}
+
+.course-elements__details-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.course-elements__detail-date {}
+
+
+.course-elements__element-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.course-elements__element-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.course-elements__element-icon {
+    cursor: pointer;
+    transition: transform 0.15s ease-in;
+}
+
+.course-elements__element-icon:hover {
+    transform: scale(1.4);
+}
+
+.course-elements__element-icon--update {
+    color: $medium-blue;
+}
+
+.course-elements__element-icon--delete {
+    color: $red;
+}
+
+.course-elements__element-move {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.course-elements__element-icon--up {
+    color: $brown;
+}
+
+.course-elements__element-icon--down {
+    color: $brown;
+}
+
+.course-elements__updateForm {}
+
+.course-elements__addForm {}
+
+
+// -----------------
+// Dynamic classes
+// -----------------
 
 
 .no-display {
@@ -201,4 +397,13 @@
 
 .pointer {
     cursor: pointer;
+}
+
+.current-course-section {
+    border-width: 3px;
+    align-items: center;
+}
+
+.current-course-name {
+    font-weight: bold;
 }

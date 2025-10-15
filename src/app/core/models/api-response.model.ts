@@ -26,6 +26,14 @@ export interface ThemeData {
   updatedAt: string;
   createdBy: number | null;
   updatedBy: number | null;
+
+  createdAtDate: string;
+  createdAtTime: string;
+  createdByName: string;
+
+  updatedAtDate: string;
+  updatedAtTime: string;
+  updatedByName: string;
 }
 
 export interface CursusData {
@@ -38,6 +46,14 @@ export interface CursusData {
   updatedAt: string;
   createdBy: number | null;
   updatedBy: number | null;
+
+  createdAtDate: string;
+  createdAtTime: string;
+  createdByName: string;
+
+  updatedAtDate: string;
+  updatedAtTime: string;
+  updatedByName: string;
 }
 
 export interface LessonData {
@@ -50,18 +66,43 @@ export interface LessonData {
   updatedAt: string;
   createdBy: number | null;
   updatedBy: number | null;
+
+  createdAtDate: string;
+  createdAtTime: string;
+  createdByName: string;
+
+  updatedAtDate: string;
+  updatedAtTime: string;
+  updatedByName: string;
 }
 
-export interface ElementData {
+interface BaseElement {
   id: number;
   lessonId: number;
-  type: 'text' | 'image';
   order: number;
   createdAt: string;
   updatedAt: string;
   createdBy: number | null;
   updatedBy: number | null;
-  content?: string;
-  source?: string;
-  alternative?: string;
+
+  createdAtDate: string;
+  createdAtTime: string;
+  createdByName: string;
+
+  updatedAtDate: string;
+  updatedAtTime: string;
+  updatedByName: string;
 }
+
+export type ElementData =
+  | (BaseElement & {
+    type: 'text';
+    textType: 'title1' | 'title2' | 'title3' | 'paragraph';
+    content: string;
+  })
+  | (BaseElement & {
+    type: 'image';
+    legend: string | null;
+    source: string;
+    alternative: string;
+  });
