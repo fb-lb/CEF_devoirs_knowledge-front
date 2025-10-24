@@ -82,7 +82,7 @@
             <p class="delete__text">Ensuite, renseignez cet identifiant dans le champ correspondant, les données actuelles devraient apparaître.</p>
             <p class="delete__text">Vous pouvez maintenant cliquer sur 'Supprimer'. Attention, cette action est irréversible.</p>
         </div>
-        <form class="delete__form" [formGroup]="deleteForm"(submit)="onSubmitDeleteForm()">
+        <form class="delete__form" [formGroup]="deleteForm" (submit)="onSubmitDeleteForm()">
             <div class="delete__form-part">
                 <div class="delete__field-group">
                     <label class="delete__form-label" for="deleteId">Identifiant</label>

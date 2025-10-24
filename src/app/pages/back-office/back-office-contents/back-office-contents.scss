@@ -203,6 +203,15 @@
     }
 }
 
+.course-section__content-price {
+    font-size: 0.85rem;
+    align-self: flex-start;
+}
+
+.course-section__content-price span {
+    font-weight: bold;
+}
+
 .course-section__content-date {
     font-size: 0.85rem;
     align-self: flex-start;
@@ -212,9 +221,107 @@
     font-weight: bold;
 }
 
-.course-section__updateForm {}
+.course-section__updateForm {
+    margin-top: 20px;
+    padding: 10px 5px;
+    background-color: white;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
 
-.course-section__addForm {}
+.course-section__updateForm-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.course-section__updateForm-label {
+    font-weight: bold;
+}
+
+.course-section__updateForm-input {
+    width: 80%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    background-color: $light-blue;
+    border: 1px solid $medium-blue;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.course-section__updateForm-button {
+    padding: 5px 30px;
+    color: white;
+    background-color: $medium-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.course-section__updateForm-button:hover {
+    transform: scale(1.1);
+    color: $medium-blue;
+    background-color: white;
+}
+
+.course-section__addForm {
+    margin: 20px 0;
+    padding: 20px 10px;
+    background-color: $light-blue;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.course-section__addForm-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.course-section__addForm-label {
+    font-weight: bold;
+}
+
+.course-section__addForm-input {
+    width: 70%;
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.course-section__addForm-message {
+    text-align: center;
+}
+
+.course-section__addForm-button {
+    width: fit-content;
+    padding: 5px 30px;
+    color: white;
+    background-color: $medium-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.course-section__addForm-button:hover {
+    transform: scale(1.1);
+    color: $medium-blue;
+    background-color: white;
+}
+
+.course-section__addForm-global-message {
+    text-align: center;
+}
 
 
 // -----------------------------------
@@ -379,7 +486,102 @@
 
 .course-elements__updateForm {}
 
-.course-elements__addForm {}
+.course-elements__addForm::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    border-top: 2px dotted $medium-blue;
+    width: 100%;
+}
+
+.course-elements__addForm {
+    margin-top: 30px;
+    position: relative;
+    padding: 20px;
+    background-color: $light-blue;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.course-elements__addForm-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.course-elements__addForm-label {
+    text-align: center;
+    font-weight: bold;
+}
+
+.course-elements__addForm-label--file {
+    display: flex;
+    width: fit-content;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid $medium-blue;
+    border-radius: 10px;
+}
+
+.course-elements__addForm-label--file span {
+    margin: 20px 5px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: $light-blue;
+}
+
+.course-elements__addForm-image {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    max-width: 300px;
+    object-fit: contain;
+}
+
+.course-elements__addForm-input {
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.course-elements__addForm-text-area {
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+}
+
+.course-elements__addForm-input-file {
+    display: none;
+}
+
+.course-elements__addForm-message {
+    text-align: center;
+}
+
+.course-elements__addForm-button {
+    padding: 5px 20px;
+    color: white;
+    background-color: $medium-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.course-elements__addForm-button:hover {
+    transform: scale(1.1);
+    color: $medium-blue;
+    background-color: white;
+}
+
+.course-elements__addForm-global-message {
+    text-align: center;
+}
 
 
 // -----------------
