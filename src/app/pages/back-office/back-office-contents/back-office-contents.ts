@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserData } from '../../../core/models/api-response.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCaretUp, faPen, faTrash, faCaretDown, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
 import { CommonModule } from '@angular/common';
 
@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './back-office-contents.scss'
 })
 export class BackOfficeContents {
+  environment = environment;
+
   faPen: IconDefinition = faPen;
   faTrash: IconDefinition = faTrash;
   faCaretUp: IconDefinition = faCaretUp;
@@ -57,7 +59,12 @@ export class BackOfficeContents {
 
   imagePreviewUrl: string | null = null;
 
-  constructor(private http: HttpClient, public formService: FormService) {}
+  updateThemeForms = new Map<number, FormGroup>();
+
+  updateThemeGlobalMessage: string = "";
+  isUpdateThemeGlobalMessageSuccess: boolean = true;
+
+  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder) {}
 
   async ngOnInit(): Promise<void> {
     // Subscription to type form control on add element form to add/remove required validator on other form control
@@ -118,6 +125,20 @@ export class BackOfficeContents {
       console.error(error);
       // add external service like Sentry to save the error
     }
+
+    // Creation of each update theme form
+    this.allThemes.forEach(theme => {
+      this.updateThemeForms.set(
+        theme.id,
+        this.formBuilder.group({
+          name: this.formBuilder.control('', [
+            Validators.required,
+            Validators.maxLength(255),
+            Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
+          ])
+        })
+      );
+    });
   }
 
   ngOnDestroy() {
@@ -559,5 +580,40 @@ export class BackOfficeContents {
         // add external service like Sentry to save the error
       }
     }
+  }
+
+
+  // -------------------
+  // UPDATE THEME PART
+  // -------------------
+
+  async onUpdateThemeForm(themeId: number) {
+    try {
+      const updateForm = this.updateThemeForms.get(themeId);
+      if (!updateForm) throw new Error('update form not found in updateThemeForms map with provided theme id');
+
+      updateForm.markAllAsTouched();
+      this.updateThemeGlobalMessage = "";
+
+      const response = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/content/theme/update/${themeId}`, updateForm, { withCredentials: true }));
+      if (response.data) {
+        this.allThemes = response.data.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
+        this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
+      }
+      updateForm.reset();
+    } catch (error: any) {
+      if (error.message === 'update form not found in updateThemeForms map with provided theme id') {
+        alert("Un erreur interne est survenue lors de l'envoie du formulaire, merci de contacter le support pour solutionner le problème au plus vite.");
+      } else if (error instanceof HttpErrorResponse) {
+        const response = error.error as ApiResponse;
+        this.isUpdateThemeGlobalMessageSuccess = response.success;
+        this.updateThemeGlobalMessage = response.message;
+      } else {
+        alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+      }
+      console.error(error);
+      // add external service like Sentry to save the error
+    }
+    
   }
 }

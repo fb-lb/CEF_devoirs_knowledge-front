@@ -25,12 +25,16 @@
                                 <p class="course-section__content-date"><span>Création :</span><br>le {{ theme.createdAtDate }} à {{ theme.createdAtTime }} par {{ theme.createdByName }}</p>
                                 <p class="course-section__content-date"><span>Modification :</span><br>{{ theme.updatedAt !== theme.createdAt ? 'le ' + theme.updatedAtDate + ' à ' + theme.updatedAtTime + ' par ' + theme.updatedByName : 'Non modifié' }}</p>
                             }
-                            <form class="course-section__updateForm" [class.no-display]="activeThemeId !== theme.id || activeUpdateFormId !== theme.id">
+                            <form [formGroup]="updateThemeForms.get(theme.id)!" class="course-section__updateForm" [class.no-display]="activeThemeId !== theme.id || activeUpdateFormId !== theme.id">
                                 <div class="course-section__updateForm-group">
                                     <label class="course-section__updateForm-label" for="updateTheme{{theme.id}}">Nom du thème</label>
-                                    <input class="course-section__updateForm-input" type="text" name="name" id="updateTheme{{theme.id}}">
+                                    <input class="course-section__updateForm-input" type="text" formControlName="name" id="updateTheme{{theme.id}}">
                                 </div>
+                                @for (message of formService.getAllErrorMessages(updateThemeForms.get(theme.id)!, 'name'); track $index) {
+                                    <p class="course-section__updateForm-message error">{{message}}</p>
+                                }
                                 <button class="course-section__updateForm-button" type="submit">Modifier</button>
+                                @if (updateThemeGlobalMessage) {<p class="course-section__updateForm-global-message" [class.success]="isUpdateThemeGlobalMessageSuccess" [ngClass]="isUpdateThemeGlobalMessageSuccess ? 'success' : 'error'">{{updateThemeGlobalMessage}}</p>}
                             </form>
                         </div>
                     }
@@ -173,7 +177,7 @@
 
                                 @if(element.type === 'image') {
                                     <p class="course-elements__image-legend"><span>Légende :</span> {{ element.legend ?? 'Absence de légende' }}</p>
-                                    <img class="course-elements__image" [class.course-elements__image--active]="activeElementId === element.id" src='/assets/images/courses/{{ element.source }}' alt="{{ element.alternative }}">
+                                    <img class="course-elements__image" [class.course-elements__image--active]="activeElementId === element.id" [src]="environment.backUrl +'/api/content/element/image/private/'+ element.source" [alt]="element.alternative">
                                 }
 
                                 @if (activeElementId === element.id) {
