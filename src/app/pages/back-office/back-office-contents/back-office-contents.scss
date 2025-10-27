@@ -15,13 +15,17 @@
     text-align: center;
 }
 
-.dashboard__course, .dashboard__info, .dashboard__search {
+.dashboard__course,
+.dashboard__info,
+.dashboard__search {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.dashboard__course-title, .dashboard__info-title, .dashboard__search-title {
+.dashboard__course-title,
+.dashboard__info-title,
+.dashboard__search-title {
     color: $medium-blue;
     font-size: 1.5rem;
     font-weight: bold;
@@ -151,7 +155,8 @@
     color: $red;
 }
 
-.course-section__content-icon--update:hover, .course-section__content-icon--delete:hover {
+.course-section__content-icon--update:hover,
+.course-section__content-icon--delete:hover {
     transform: scale(1.4);
 }
 
@@ -171,7 +176,8 @@
     }
 }
 
-.course-section__content-icon--up:hover, .course-section__content-icon--down:hover {
+.course-section__content-icon--up:hover,
+.course-section__content-icon--down:hover {
     transform: rotate(270deg) scale(1.4);
 
     @include for-l {
@@ -299,7 +305,8 @@
     text-align: center;
 }
 
-.course-section__addForm-message, .course-section__updateForm-message {
+.course-section__addForm-message,
+.course-section__updateForm-message {
     text-align: center;
 }
 
@@ -319,7 +326,8 @@
     background-color: white;
 }
 
-.course-section__addForm-global-messag, .course-section__updateForm-global-message {
+.course-section__addForm-global-messag,
+.course-section__updateForm-global-message {
     text-align: center;
 }
 
@@ -428,7 +436,8 @@
     max-width: 500px;
 }
 
-.course-elements__detail-image span, .course-elements__detail-date span {
+.course-elements__detail-image span,
+.course-elements__detail-date span {
     font-weight: bold;
 }
 
@@ -484,7 +493,124 @@
     color: $brown;
 }
 
-.course-elements__updateForm {}
+.course-elements__updateForm {
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+}
+
+.course-elements__updateForm-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.course-elements__updateForm-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    @include for-m {
+        align-items: unset;
+        flex-direction: row;
+    }
+
+    @include for-l {
+        align-items: unset;
+        flex-direction: row;
+    }
+}
+
+.course-elements__updateForm-label {
+    font-weight: bold;
+    text-align: center;
+    
+    @include for-m {
+        min-width: max-content;
+    }
+
+    @include for-l {
+        min-width: max-content;
+    }
+}
+
+.course-elements__updateForm-label--file {
+    margin: 0 auto;
+    display: flex;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid $medium-blue;
+    border-radius: 10px;
+}
+
+.course-elements__updateForm-label--file span {
+    margin: 20px 5px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: $light-blue;
+}
+
+.course-elements__updateForm-text-area {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: 100px;
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+}
+
+.course-elements__updateForm-message {}
+
+.course-elements__updateForm-input-file {
+    display: none;
+}
+
+.course-elements__updateForm-image {
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    padding: 5px;
+    object-fit: contain;
+}
+
+.course-elements__updateForm-input {
+    width: 100%;
+    max-width: 230px;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+}
+
+.course-elements__updateForm-button {
+    width: fit-content;
+    background-color: $medium-blue;
+    color: white;
+    align-self: center;
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.course-elements__updateForm-button:hover {
+    transform: scale(1.1);
+    background-color: white;
+    color: $medium-blue;
+}
+
+.course-elements__updateForm-global-message {}
 
 .course-elements__addForm::before {
     content: "";
@@ -608,4 +734,14 @@
 
 .current-course-name {
     font-weight: bold;
+}
+
+.course-section__updateForm-button--disabled,
+.course-section__addForm-button--disabled,
+.course-elements__addForm-button--disabled,
+.course-elements__updateForm-button--disabled {
+    pointer-events: none;
+    background-color: $brown;
+    color: white;
+    border: 2px solid $brown;
 }

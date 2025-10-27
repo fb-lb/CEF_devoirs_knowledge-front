@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserData } from '../../../core/models/api-response.model';
@@ -56,15 +56,28 @@ export class BackOfficeContents {
   isAddElementGlobalErrorMessageSuccess: boolean = true;
 
   private addElementTypeChangeSub?: Subscription;
+  private addElementTextTypeChangeSub?: Subscription;
 
   imagePreviewUrl: string | null = null;
+  updateImagePreviewUrls = new Map<number, string | null>();
 
   updateThemeForms = new Map<number, FormGroup>();
+  updateCursusForms = new Map<number, FormGroup>();
+  updateLessonForms = new Map<number, FormGroup>();
+  updateElementForms = new Map<number, FormGroup>();
 
   updateThemeGlobalMessage: string = "";
   isUpdateThemeGlobalMessageSuccess: boolean = true;
+  updateCursusGlobalMessage: string = "";
+  isUpdateCursusGlobalMessageSuccess: boolean = true;
+  updateLessonGlobalMessage: string = "";
+  isUpdateLessonGlobalMessageSuccess: boolean = true;
+  updateTextElementGlobalMessage: string = "";
+  isUpdateTextElementGlobalMessageSuccess: boolean = true;
+  updateImageElementGlobalMessage: string = "";
+  isUpdateImageElementGlobalMessageSuccess: boolean = true;
 
-  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder) {}
+  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder, private cdr: ChangeDetectorRef) {}
 
   async ngOnInit(): Promise<void> {
     // Subscription to type form control on add element form to add/remove required validator on other form control
@@ -95,7 +108,11 @@ export class BackOfficeContents {
         fileControl?.updateValueAndValidity({ emitEvent: false });
         alternativeControl?.updateValueAndValidity({ emitEvent: false });
       }
+
+      this.cdr.detectChanges();
     });
+
+    this.addElementTextTypeChangeSub = this.addElementForm.get('textType')?.valueChanges.subscribe(() => this.cdr.detectChanges());
 
     try {
       // Users retrieval
@@ -131,18 +148,100 @@ export class BackOfficeContents {
       this.updateThemeForms.set(
         theme.id,
         this.formBuilder.group({
-          name: this.formBuilder.control('', [
+          name: [theme.name, [
             Validators.required,
             Validators.maxLength(255),
             Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
-          ])
+          ]],
         })
       );
+    });
+
+    // Creation of each update cursus form
+    this.allCursus.forEach(cursus => {
+      this.updateCursusForms.set(
+        cursus.id,
+        this.formBuilder.group({
+          name: [cursus.name, [
+            Validators.required,
+            Validators.maxLength(255),
+            Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
+          ]],
+          price: [cursus.price, [
+            Validators.required,
+            Validators.min(0),
+          ]],
+        })
+      );
+    });
+
+    // Creation of each update lesson form
+    this.allLessons.forEach(lesson => {
+      this.updateLessonForms.set(
+        lesson.id,
+        this.formBuilder.group({
+          name: [lesson.name, [
+            Validators.required,
+            Validators.maxLength(255),
+            Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
+          ]],
+          price: [lesson.price, [
+            Validators.required,
+            Validators.min(0),
+          ]],
+        })
+      );
+    });
+
+    // Creation of each update element form
+    this.allElements.forEach(async element => {
+      if (element.type === 'text') {;
+        this.updateElementForms.set(
+          element.id,
+          this.formBuilder.group({
+            content: [element.content, [Validators.required]],
+            textType: [element.textType, [Validators.required]],
+          })
+        );
+      }
+
+      if (element.type === 'image') {
+        try {
+          const fileBlob = await firstValueFrom(this.http.get(environment.backUrl +'/api/content/element/image/private/'+ element.source, { withCredentials: true, responseType: 'blob' }));
+          const file = new File([fileBlob], element.source, { type: fileBlob.type });
+
+          this.updateImagePreviewUrls.set(element.id, URL.createObjectURL(fileBlob));
+        
+          this.updateElementForms.set(
+            element.id,
+            this.formBuilder.group({
+              file: [file, [Validators.required]],
+              source: [element.source, [Validators.required]],
+              alternative: [element.alternative, [Validators.required]],
+              legend: [element.legend],
+            })
+          );
+        } catch (error) {
+          if (error instanceof HttpErrorResponse) {
+            const response = error.error as ApiResponse;
+            alert(response.message);
+          } else {
+            alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");  
+          }
+          console.error(error);
+          // add external service like Sentry to save the error
+        }
+      }
     });
   }
 
   ngOnDestroy() {
     this.addElementTypeChangeSub?.unsubscribe();
+    this.addElementTextTypeChangeSub?.unsubscribe();
+    this.updateImagePreviewUrls.forEach(url => {
+      if (url) URL.revokeObjectURL(url);
+    });
+    this.updateImagePreviewUrls.clear();
   }
 
   // Add createdAtDate, createdAtTime, updatedAtDate, updatedAtTime, createdByName, updatedByName properties
@@ -181,12 +280,16 @@ export class BackOfficeContents {
   activeTheme(id: number | null) {
     this.activeThemeId = id;
     this.activeUpdateFormId = null;
-    //if (this.currentThemeId !== id) this.activeThemeUpdateFormId = null;
+
     if (id) {
       this.currentThemeId = id;
       this.currentCursusId = null;
       this.currentLessonId = null;
 
+      this.addCursusForm.get('themeId')?.setValue(this.currentThemeId);
+      this.addLessonForm.get('cursusId')?.setValue(this.currentCursusId);
+      this.addElementForm.get('lessonId')?.setValue(this.currentLessonId);
+      
       this.activeCursus(null);
       this.activeLesson(null);
       this.activeElement(null);
@@ -204,6 +307,9 @@ export class BackOfficeContents {
       this.currentCursusId = id;
       this.currentLessonId = null;
 
+      this.addLessonForm.get('cursusId')?.setValue(this.currentCursusId);
+      this.addElementForm.get('lessonId')?.setValue(this.currentLessonId);
+
       this.activeTheme(null);
       this.activeLesson(null);
       this.activeElement(null);
@@ -218,6 +324,7 @@ export class BackOfficeContents {
     this.activeUpdateFormId = null;
     if (id) {
       this.currentLessonId = id;
+      this.addElementForm.get('lessonId')?.setValue(this.currentLessonId);
 
       this.activeTheme(null);
       this.activeCursus(null);
@@ -295,7 +402,7 @@ export class BackOfficeContents {
   }
 
   // ---------------------
-  // ADD THEME FORM PART
+  // ADD THEME PART
   // ---------------------
 
   addThemeForm = new FormGroup({
@@ -327,7 +434,21 @@ export class BackOfficeContents {
           this.allThemes = response.data.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
           this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
         }
+
         this.addThemeForm.reset();
+
+        // Add an update form for this new theme
+        const newTheme = this.allThemes.reduce((previous, current) => previous.id > current.id ? previous : current );
+        this.updateThemeForms.set(
+          newTheme.id,
+          this.formBuilder.group({
+            name: [newTheme.name, [
+              Validators.required,
+              Validators.maxLength(255),
+              Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
+            ]],
+          })
+        );
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
@@ -345,7 +466,7 @@ export class BackOfficeContents {
   }
 
   // ---------------------
-  // ADD CURSUS FORM PART
+  // ADD CURSUS PART
   // ---------------------
 
   addCursusForm = new FormGroup({
@@ -355,14 +476,13 @@ export class BackOfficeContents {
       Validators.maxLength(255),
       Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
     ]),
-    price: new FormControl('', [
+    price: new FormControl(null, [
       Validators.required,
       Validators.min(0),
     ]),
   });
 
   async onSubmitAddCursusForm() {
-    this.addCursusForm.patchValue({themeId: this.currentThemeId});
     this.addCursusForm.markAllAsTouched();
     this.addCursusGlobalErrorMessage = "";
 
@@ -383,7 +503,26 @@ export class BackOfficeContents {
           this.allCursus = this.addProperties(response.data, this.allUsers) as CursusData[];
           if (this.currentThemeId) this.selectCursusToDisplay(this.currentThemeId);
         }
+
         this.addCursusForm.reset();
+        this.addCursusForm.get('themeId')?.setValue(this.currentThemeId);
+
+        // Add an update form for this new cursus
+        const newCursus = this.allCursus.reduce((previous, current) => previous.id > current.id ? previous : current);
+        this.updateCursusForms.set(
+          newCursus.id,
+          this.formBuilder.group({
+            name: [newCursus.name, [
+              Validators.required,
+              Validators.maxLength(255),
+              Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
+            ]],
+            price: [newCursus.price, [
+              Validators.required,
+              Validators.min(0),
+            ]],
+          })
+        );
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
@@ -401,7 +540,7 @@ export class BackOfficeContents {
   }
 
   // ---------------------
-  // ADD LESSON FORM PART
+  // ADD LESSON PART
   // ---------------------
 
   addLessonForm = new FormGroup({
@@ -418,7 +557,6 @@ export class BackOfficeContents {
   });
 
   async onSubmitAddLessonForm() {
-    this.addLessonForm.patchValue({cursusId: this.currentCursusId});
     this.addLessonForm.markAllAsTouched();
     this.addLessonGlobalErrorMessage = "";
 
@@ -439,7 +577,26 @@ export class BackOfficeContents {
           this.allLessons = this.addProperties(response.data, this.allUsers) as LessonData[];
           if (this.currentCursusId) this.selectLessonsToDisplay(this.currentCursusId);
         }
+
         this.addLessonForm.reset();
+        this.addLessonForm.get('cursusId')?.setValue(this.currentCursusId);
+
+        // Add an update form for this new lesson
+        const newLesson = this.allLessons.reduce((previous, current) => previous.id > current.id ? previous : current);
+        this.updateLessonForms.set(
+          newLesson.id,
+          this.formBuilder.group({
+            name: [newLesson.name, [
+              Validators.required,
+              Validators.maxLength(255),
+              Validators.pattern(/^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ?!\/:'"(),.\-]*$/),
+            ]],
+            price: [newLesson.price, [
+              Validators.required,
+              Validators.min(0),
+            ]],
+          })
+        );
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
@@ -457,11 +614,11 @@ export class BackOfficeContents {
   }
 
   // ---------------------
-  // ADD ELEMENT FORM PART
+  // ADD ELEMENT PART
   // ---------------------
 
   addElementForm = new FormGroup({
-    lessonId: new FormControl(this.currentLessonId),
+    lessonId: new FormControl(this.currentLessonId, [Validators.required]),
     type: new FormControl('', [Validators.required]),
 
     content: new FormControl(''),
@@ -474,7 +631,11 @@ export class BackOfficeContents {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0 ) return;
+    if (!input.files || input.files.length === 0 ) {
+      this.addElementForm.get('file')?.setValue(null);
+      this.imagePreviewUrl = null;
+      return
+    };
 
     const file = input.files[0];
 
@@ -491,11 +652,9 @@ export class BackOfficeContents {
       this.imagePreviewUrl = reader.result as string | null;
     };
     reader.readAsDataURL(file);
-    
   }
 
   async onSubmitAddElementForm() {
-    this.addElementForm.patchValue({lessonId: this.currentLessonId});
     this.addElementForm.markAllAsTouched();
     this.addElementGlobalErrorMessage = "";
 
@@ -515,9 +674,8 @@ export class BackOfficeContents {
           const file = this.addElementForm.get('file')?.value;
           if (file) formData.append('file', file);
         }
-        let response: ApiResponse<ElementData[]> = {success: true, message: '', data: []};
-        if(this.addElementForm.get('type')?.value === 'image') response = await firstValueFrom(this.http.post<ApiResponse<ElementData[]>>(environment.backUrl + '/api/content/element/image/add', formData, {withCredentials: true}));
-        if(this.addElementForm.get('type')?.value === 'text') response = await firstValueFrom(this.http.post<ApiResponse<ElementData[]>>(environment.backUrl + '/api/content/element/text/add', formData, {withCredentials: true}));
+
+        const response = await firstValueFrom(this.http.post<ApiResponse<ElementData[]>>(environment.backUrl + `/api/content/element/${this.addElementForm.get('type')?.value}/add`, formData, {withCredentials: true}));
         
         this.addElementGlobalErrorMessage = response.message;
         this.isAddElementGlobalErrorMessageSuccess = true;
@@ -525,7 +683,50 @@ export class BackOfficeContents {
           this.allElements = this.addProperties(response.data, this.allUsers) as ElementData[];
           if (this.currentLessonId) this.selectElementsToDisplay(this.currentLessonId);
         }
+
         this.addElementForm.reset();
+        this.addElementForm.get('lessonId')?.setValue(this.currentLessonId);
+        this.imagePreviewUrl = null;
+
+        // Add an update form for this new lesson
+        const newElement = this.allElements.reduce((previous, current) => previous.id > current.id ? previous : current);
+        if (newElement.type === 'text') {;
+        this.updateElementForms.set(
+          newElement.id,
+          this.formBuilder.group({
+            content: [newElement.content, [Validators.required]],
+            textType: [newElement.textType, [Validators.required]],
+          })
+        );
+      }
+
+      if (newElement.type === 'image') {
+        try {
+          const fileBlob = await firstValueFrom(this.http.get(environment.backUrl +'/api/content/element/image/private/'+ newElement.source, { withCredentials: true, responseType: 'blob' }));
+          const file = new File([fileBlob], newElement.source, { type: fileBlob.type });
+
+          this.updateImagePreviewUrls.set(newElement.id, URL.createObjectURL(fileBlob));
+        
+          this.updateElementForms.set(
+              newElement.id,
+              this.formBuilder.group({
+                file: [file, [Validators.required]],
+                source: [newElement.source, [Validators.required]],
+                alternative: [newElement.alternative, [Validators.required]],
+                legend: [newElement.legend],
+              })
+            );
+          } catch (error) {
+            if (error instanceof HttpErrorResponse) {
+              const response = error.error as ApiResponse;
+              alert(response.message);
+            } else {
+              alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");  
+            }
+            console.error(error);
+            // add external service like Sentry to save the error
+          }
+        }
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
@@ -555,20 +756,24 @@ export class BackOfficeContents {
         this.allThemes = newList.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
         this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
         this.selectedCursus = [];
+        this.updateThemeForms.delete(id);
       }
       if(type === 'cursus') {
         this.allCursus = this.addProperties(newList, this.allUsers) as CursusData[];;
         if (this.currentThemeId) this.selectCursusToDisplay(this.currentThemeId);
         this.selectedLessons = [];
+        this.updateCursusForms.delete(id);
       }
       if(type === 'lesson') {
         this.allLessons = this.addProperties(newList, this.allUsers) as LessonData[];
         if (this.currentCursusId) this.selectLessonsToDisplay(this.currentCursusId);
         this.selectedElements = [];
+        this.updateLessonForms.delete(id);
       }
       if(type === 'element') {
         this.allElements = this.addProperties(newList, this.allUsers) as ElementData[];
         if(this.currentLessonId) this.selectElementsToDisplay(this.currentLessonId);
+        this.updateElementForms.delete(id);
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
@@ -594,16 +799,16 @@ export class BackOfficeContents {
 
       updateForm.markAllAsTouched();
       this.updateThemeGlobalMessage = "";
+      if (updateForm.invalid) return;
 
-      const response = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/content/theme/update/${themeId}`, updateForm, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.patch<ApiResponse<ThemeData[]>>(environment.backUrl + `/api/content/theme/${themeId}`, updateForm.value, { withCredentials: true }));
       if (response.data) {
         this.allThemes = response.data.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
         this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
       }
-      updateForm.reset();
     } catch (error: any) {
       if (error.message === 'update form not found in updateThemeForms map with provided theme id') {
-        alert("Un erreur interne est survenue lors de l'envoie du formulaire, merci de contacter le support pour solutionner le problème au plus vite.");
+        alert("Une erreur interne est survenue lors de l'envoie du formulaire, merci de contacter le support pour solutionner le problème au plus vite.");
       } else if (error instanceof HttpErrorResponse) {
         const response = error.error as ApiResponse;
         this.isUpdateThemeGlobalMessageSuccess = response.success;
@@ -614,6 +819,155 @@ export class BackOfficeContents {
       console.error(error);
       // add external service like Sentry to save the error
     }
-    
+  }
+
+  // -------------------
+  // UPDATE CURSUS PART
+  // -------------------
+
+  async onUpdateCursusForm(cursusId: number) {
+    try {
+      const updateForm = this.updateCursusForms.get(cursusId);
+      if (!updateForm) throw new Error('update form not found in updateCursusForms map with provided cursus id');
+
+      updateForm.markAllAsTouched();
+      this.updateCursusGlobalMessage = "";
+      if (updateForm.invalid) return;
+
+      const response = await firstValueFrom(this.http.patch<ApiResponse<CursusData[]>>(environment.backUrl + `/api/content/cursus/${cursusId}`, updateForm.value, { withCredentials: true }));
+      if (response.data) {
+        this.allCursus = this.addProperties(response.data, this.allUsers) as CursusData[];
+        if (this.currentThemeId) this.selectCursusToDisplay(this.currentThemeId);
+      }
+    } catch (error: any) {
+      if (error.message === 'update form not found in updateCursusForms map with provided cursus id') {
+        alert("Une erreur interne est survenue lors de l'envoie du formulaire, merci de contacter le support pour solutionner le problème au plus vite.");
+      } else if (error instanceof HttpErrorResponse) {
+        const response = error.error as ApiResponse;
+        this.isUpdateCursusGlobalMessageSuccess = response.success;
+        this.updateCursusGlobalMessage = response.message;
+      } else {
+        alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+      }
+      console.error(error);
+      // add external service like Sentry to save the error
+    }
+  }
+
+  // -------------------
+  // UPDATE LESSON PART
+  // -------------------
+
+  async onUpdateLessonForm(lessonId: number) {
+    try {
+      const updateForm = this.updateLessonForms.get(lessonId);
+      if (!updateForm) throw new Error('update form not found in updateLessonForms map with provided lesson id');
+
+      updateForm.markAllAsTouched();
+      this.updateLessonGlobalMessage = "";
+      if (updateForm.invalid) return;
+
+      const response = await firstValueFrom(this.http.patch<ApiResponse<LessonData[]>>(environment.backUrl + `/api/content/lesson/${lessonId}`, updateForm.value, { withCredentials: true }));
+      if (response.data) {
+        this.allLessons = this.addProperties(response.data, this.allUsers) as LessonData[];
+        if (this.currentCursusId) this.selectLessonsToDisplay(this.currentCursusId);
+      }
+    } catch (error: any) {
+      if (error.message === 'update form not found in updateLessonForms map with provided lesson id') {
+        alert("Une erreur interne est survenue lors de l'envoie du formulaire, merci de contacter le support pour solutionner le problème au plus vite.");
+      } else if (error instanceof HttpErrorResponse) {
+        const response = error.error as ApiResponse;
+        this.isUpdateLessonGlobalMessageSuccess = response.success;
+        this.updateLessonGlobalMessage = response.message;
+      } else {
+        alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+      }
+      console.error(error);
+      // add external service like Sentry to save the error
+    }
+  }
+
+  // -------------------
+  // UPDATE ELEMENT PART
+  // -------------------
+
+  onUpdateFileSelected(event: Event, elementId: number): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0 ) {
+      this.updateElementForms.get(elementId)?.get('file')?.setValue(null);
+      this.updateElementForms.get(elementId)?.get('source')?.setValue(null);
+      this.updateImagePreviewUrls.set(elementId, null);
+      return
+    };
+
+    const file = input.files[0];
+
+    if (file.size > 5 * 1024 * 1024) {
+      this.isUpdateImageElementGlobalMessageSuccess = false;
+      this.updateImageElementGlobalMessage = "La taille maximale autorisée pour le fichier est de 5 Mo.";
+      return;
+    }
+
+    this.updateElementForms.get(elementId)?.get('file')?.setValue(file);
+    this.updateElementForms.get(elementId)?.get('source')?.setValue(file.name);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.updateImagePreviewUrls.set(elementId, reader.result as string | null);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async onUpdateElementForm(type: "text" | "image", elementId: number) {
+    try {
+      const updateForm = this.updateElementForms.get(elementId);
+      if (!updateForm) throw new Error('update form not found in updateElementForms map with provided element id');
+
+      updateForm.markAllAsTouched();
+      if (type === 'text') this.updateTextElementGlobalMessage = "";
+      if (type === 'image') this.updateImageElementGlobalMessage = "";
+
+      if (updateForm.invalid) return;
+
+      const formData = new FormData();
+      formData.append('lessonId', this.currentLessonId?.toString() || '');
+      formData.append('type', this.updateElementForms.get(elementId)?.get('type')?.value || '');
+      if (type === 'text') {
+        formData.append('content', this.updateElementForms.get(elementId)?.get('content')?.value || '');
+        formData.append('textType', this.updateElementForms.get(elementId)?.get('textType')?.value || '');
+      }
+      if (type === 'image') {
+        formData.append('legend', this.updateElementForms.get(elementId)?.get('legend')?.value || '');
+        formData.append('alternative', this.updateElementForms.get(elementId)?.get('alternative')?.value || '');
+        formData.append('source', this.updateElementForms.get(elementId)?.get('source')?.value || '');
+        
+        const file = this.updateElementForms.get(elementId)?.get('file')?.value;
+        if (file) formData.append('file', file);
+      }
+
+      const response = await firstValueFrom(this.http.patch<ApiResponse<ElementData[]>>(environment.backUrl + `/api/content/element/${type}/${elementId}`, formData, { withCredentials: true }));
+      if (response.data) {
+        this.allElements = this.addProperties(response.data, this.allUsers) as ElementData[];
+        if (this.currentLessonId) this.selectElementsToDisplay(this.currentLessonId);
+      }
+    } catch (error: any) {
+      if (error.message === 'update form not found in updateElementForms map with provided element id') {
+        alert("Une erreur interne est survenue lors de l'envoie du formulaire, merci de contacter le support pour solutionner le problème au plus vite.");
+      } else if (error instanceof HttpErrorResponse) {
+        const response = error.error as ApiResponse;
+        if (type === 'text') {
+          this.isUpdateTextElementGlobalMessageSuccess = response.success;
+          this.updateTextElementGlobalMessage = response.message;
+        }
+        if (type === 'image') {
+          this.isUpdateImageElementGlobalMessageSuccess = response.success;
+          this.updateImageElementGlobalMessage = response.message;
+        }
+      } else {
+        alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+      }
+      console.error(error);
+      // add external service like Sentry to save the error
+    }
   }
 }

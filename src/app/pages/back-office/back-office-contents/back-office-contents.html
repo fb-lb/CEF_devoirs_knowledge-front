@@ -25,17 +25,19 @@
                                 <p class="course-section__content-date"><span>Création :</span><br>le {{ theme.createdAtDate }} à {{ theme.createdAtTime }} par {{ theme.createdByName }}</p>
                                 <p class="course-section__content-date"><span>Modification :</span><br>{{ theme.updatedAt !== theme.createdAt ? 'le ' + theme.updatedAtDate + ' à ' + theme.updatedAtTime + ' par ' + theme.updatedByName : 'Non modifié' }}</p>
                             }
-                            <form [formGroup]="updateThemeForms.get(theme.id)!" class="course-section__updateForm" [class.no-display]="activeThemeId !== theme.id || activeUpdateFormId !== theme.id">
-                                <div class="course-section__updateForm-group">
-                                    <label class="course-section__updateForm-label" for="updateTheme{{theme.id}}">Nom du thème</label>
-                                    <input class="course-section__updateForm-input" type="text" formControlName="name" id="updateTheme{{theme.id}}">
-                                </div>
-                                @for (message of formService.getAllErrorMessages(updateThemeForms.get(theme.id)!, 'name'); track $index) {
-                                    <p class="course-section__updateForm-message error">{{message}}</p>
-                                }
-                                <button class="course-section__updateForm-button" type="submit">Modifier</button>
-                                @if (updateThemeGlobalMessage) {<p class="course-section__updateForm-global-message" [class.success]="isUpdateThemeGlobalMessageSuccess" [ngClass]="isUpdateThemeGlobalMessageSuccess ? 'success' : 'error'">{{updateThemeGlobalMessage}}</p>}
-                            </form>
+                            @if (updateThemeForms.get(theme.id)) {
+                                <form [formGroup]="updateThemeForms.get(theme.id)!" (submit)="onUpdateThemeForm(theme.id)" class="course-section__updateForm" [class.no-display]="activeThemeId !== theme.id || activeUpdateFormId !== theme.id">
+                                    <div class="course-section__updateForm-group">
+                                        <label class="course-section__updateForm-label" for="updateThemeName{{theme.id}}">Nom du thème</label>
+                                        <input class="course-section__updateForm-input" type="text" formControlName="name" id="updateThemeName{{theme.id}}">
+                                        @for (message of formService.getAllErrorMessages(updateThemeForms.get(theme.id)!, 'name'); track $index) {
+                                            <p class="course-section__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <button class="course-section__updateForm-button" [class.course-section__updateForm-button--disabled]="updateThemeForms.get(theme.id)?.invalid" type="submit">Modifier</button>
+                                    @if (updateThemeGlobalMessage) {<p class="course-section__updateForm-global-message" [ngClass]="isUpdateThemeGlobalMessageSuccess ? 'success' : 'error'">{{updateThemeGlobalMessage}}</p>}
+                                </form>
+                            }
                         </div>
                     }
                 </div>
@@ -47,8 +49,8 @@
                             <p class="course-section__addForm-message error">{{message}}</p>
                         }
                     </div>
-                    <button class="course-section__addForm-button" type="submit">Ajouter</button>
-                    @if (addThemeGlobalErrorMessage) {<p class="course-section__addForm-global-message" [class.success]="isAddThemeGlobalErrorMessageSuccess" [ngClass]="isAddThemeGlobalErrorMessageSuccess ? 'success' : 'error'">{{addThemeGlobalErrorMessage}}</p>}
+                    <button class="course-section__addForm-button" [class.course-section__addForm-button--disabled]="addThemeForm.invalid" type="submit">Ajouter</button>
+                    @if (addThemeGlobalErrorMessage) {<p class="course-section__addForm-global-message" [ngClass]="isAddThemeGlobalErrorMessageSuccess ? 'success' : 'error'">{{addThemeGlobalErrorMessage}}</p>}
                 </form>
             </section>
             <section class="course-section">
@@ -74,13 +76,26 @@
                                 <p class="course-section__content-date"><span>Création :</span><br>le {{ cursus.createdAtDate }} à {{ cursus.createdAtTime }} par {{ cursus.createdByName }}</p>
                                 <p class="course-section__content-date"><span>Modification :</span><br>{{ cursus.updatedAt !== cursus.createdAt ? 'le ' + cursus.updatedAtDate + ' à ' + cursus.updatedAtTime + ' par ' + cursus.updatedByName : 'Non modifié' }}</p>
                             }
-                            <form class="course-section__updateForm" [class.no-display]="activeCursusId !== cursus.id || activeUpdateFormId !== cursus.id" action="">
-                                <div class="course-section__updateForm-group">
-                                    <label class="course-section__updateForm-label" for="updateCursus{{cursus.id}}">Nom du cursus</label>
-                                    <input class="course-section__updateForm-input" type="text" name="" id="updateCursus{{cursus.id}}">
-                                </div>
-                                <button class="course-section__updateForm-button" type="submit">Modifier</button>
-                            </form>
+                            @if(updateCursusForms.get(cursus.id)) {
+                                <form [formGroup]="updateCursusForms.get(cursus.id)!" (submit)="onUpdateCursusForm(cursus.id)" class="course-section__updateForm" [class.no-display]="activeCursusId !== cursus.id || activeUpdateFormId !== cursus.id">
+                                    <div class="course-section__updateForm-group">
+                                        <label class="course-section__updateForm-label" for="updateCursusName{{cursus.id}}">Nom du cursus</label>
+                                        <input class="course-section__updateForm-input" type="text" formControlName="name" id="updateCursusName{{cursus.id}}">
+                                        @for (message of formService.getAllErrorMessages(updateCursusForms.get(cursus.id)!, 'name'); track $index) {
+                                            <p class="course-section__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <div class="course-section__updateForm-group">
+                                        <label class="course-section__updateForm-label" for="updateCursusPrice{{cursus.id}}">Prix du cursus</label>
+                                        <input class="course-section__updateForm-input" type="number" formControlName="price" id="updateCursusPrice{{cursus.id}}">
+                                        @for (message of formService.getAllErrorMessages(updateCursusForms.get(cursus.id)!, 'price'); track $index) {
+                                            <p class="course-section__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <button class="course-section__updateForm-button" [class.course-section__updateForm-button--disabled]="updateCursusForms.get(cursus.id)?.invalid" type="submit">Modifier</button>
+                                    @if (updateCursusGlobalMessage) {<p class="course-section__updateForm-global-message" [ngClass]="isUpdateCursusGlobalMessageSuccess ? 'success' : 'error'">{{updateCursusGlobalMessage}}</p>}
+                                </form>
+                            }
                         </div>
                     }
                 </div>
@@ -100,8 +115,8 @@
                                 <p class="course-section__addForm-message error">{{message}}</p>
                             }
                         </div>
-                        <button class="course-section__addForm-button" type="submit">Ajouter</button>
-                        @if (addCursusGlobalErrorMessage) {<p class="course-section__addForm-global-message" [class.success]="isAddCursusGlobalErrorMessageSuccess" [ngClass]="isAddCursusGlobalErrorMessageSuccess ? 'success' : 'error'">{{addCursusGlobalErrorMessage}}</p>}
+                        <button class="course-section__addForm-button" [class.course-section__addForm-button--disabled]="addCursusForm.invalid" type="submit">Ajouter</button>
+                        @if (addCursusGlobalErrorMessage) {<p class="course-section__addForm-global-message" [ngClass]="isAddCursusGlobalErrorMessageSuccess ? 'success' : 'error'">{{addCursusGlobalErrorMessage}}</p>}
                     </form>
                 }
             </section>
@@ -128,13 +143,26 @@
                                 <p class="course-section__content-date"><span>Création :</span><br>le {{ lesson.createdAtDate }} à {{ lesson.createdAtTime }} par {{ lesson.createdByName }}</p>
                                 <p class="course-section__content-date"><span>Modification :</span><br>{{ lesson.updatedAt !== lesson.createdAt ? 'le ' + lesson.updatedAtDate + ' à ' + lesson.updatedAtTime + ' par ' + lesson.updatedByName : 'Non modifié' }}</p>
                             }
-                            <form class="course-section__updateForm" [class.no-display]="activeLessonId !== lesson.id || activeUpdateFormId !== lesson.id" action="">
-                                <div class="course-section__updateForm-group">
-                                    <label class="course-section__updateForm-label" for="updateLesson{{lesson.id}}">Nom de la leçon</label>
-                                    <input class="course-section__updateForm-input" type="text" name="" id="updateLesson{{lesson.id}}">
-                                </div>
-                                <button class="course-section__updateForm-button" type="submit">Modifier</button>
-                            </form>
+                            @if (updateLessonForms.get(lesson.id)) {
+                                <form [formGroup]="updateLessonForms.get(lesson.id)!" (submit)="onUpdateLessonForm(lesson.id)" class="course-section__updateForm" [class.no-display]="activeLessonId !== lesson.id || activeUpdateFormId !== lesson.id" >
+                                    <div class="course-section__updateForm-group">
+                                        <label class="course-section__updateForm-label" for="updateLessonName{{lesson.id}}">Nom de la leçon</label>
+                                        <input class="course-section__updateForm-input" type="text" formControlName="name" id="updateLessonName{{lesson.id}}">
+                                        @for (message of formService.getAllErrorMessages(updateLessonForms.get(lesson.id)!, 'name'); track $index) {
+                                            <p class="course-section__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <div class="course-section__updateForm-group">
+                                        <label class="course-section__updateForm-label" for="updateLessonPrice{{lesson.id}}">Prix de la leçon</label>
+                                        <input class="course-section__updateForm-input" type="number" formControlName="price" id="updateLessonPrice{{lesson.id}}">
+                                        @for (message of formService.getAllErrorMessages(updateLessonForms.get(lesson.id)!, 'price'); track $index) {
+                                            <p class="course-section__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <button class="course-section__updateForm-button" [class.course-section__updateForm-button--disabled]="updateLessonForms.get(lesson.id)?.invalid" type="submit">Modifier</button>
+                                    @if (updateLessonGlobalMessage) {<p class="course-section__updateForm-global-message" [ngClass]="isUpdateLessonGlobalMessageSuccess ? 'success' : 'error'">{{updateLessonGlobalMessage}}</p>}
+                                </form>
+                            }
                         </div>
                     }
                 </div>
@@ -154,8 +182,8 @@
                                 <p class="course-section__addForm-message error">{{message}}</p>
                             }
                         </div>
-                        <button class="course-section__addForm-button" type="submit">Ajouter</button>
-                        @if (addLessonGlobalErrorMessage) {<p class="course-section__addForm-global-message" [class.success]="isAddLessonGlobalErrorMessageSuccess" [ngClass]="isAddLessonGlobalErrorMessageSuccess ? 'success' : 'error'">{{addLessonGlobalErrorMessage}}</p>}
+                        <button class="course-section__addForm-button" [class.course-section__addForm-button--disabled]="addLessonForm.invalid" type="submit">Ajouter</button>
+                        @if (addLessonGlobalErrorMessage) {<p class="course-section__addForm-global-message" [ngClass]="isAddLessonGlobalErrorMessageSuccess ? 'success' : 'error'">{{addLessonGlobalErrorMessage}}</p>}
                     </form>
                 }
             </section>
@@ -206,7 +234,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <form class="course-elements__updateForm" [class.no-display]="activeElementId !== element.id || activeUpdateFormId !== element.id" action="">Formulaire</form>
+                            @if (element.type === 'text' && updateElementForms.get(element.id)) {
+                                <form [formGroup]="updateElementForms.get(element.id)!" (submit)="onUpdateElementForm('text', element.id)" class="course-elements__updateForm" [class.no-display]="activeElementId !== element.id || activeUpdateFormId !== element.id">
+                                    <div class="course-elements__updateForm-group">
+                                        <label class="course-elements__updateForm-label" for="updateElementTextType{{element.id}}">Type du texte</label>
+                                        <select formControlName="textType" id="updateElementTextType{{element.id}}">
+                                            <option value="title1">Titre 1</option>
+                                            <option value="title2">Titre 2</option>
+                                            <option value="title3">Titre 3</option>
+                                            <option value="paragraph">Paragraphe</option>
+                                        </select>
+                                    </div>
+                                    @if (updateElementForms.get(element.id)?.get('textType')?.value) {
+                                        <div class="course-elements__updateForm-container">
+                                            <div class="course-elements__updateForm-group">
+                                                <label class="course-elements__updateForm-label" for="updateElementContent{{element.id}}">
+                                                    {{updateElementForms.get(element.id)?.get('textType')?.value === 'title1' ? 'Titre 1' : null}}
+                                                    {{updateElementForms.get(element.id)?.get('textType')?.value === 'title2' ? 'Titre 2' : null}}
+                                                    {{updateElementForms.get(element.id)?.get('textType')?.value === 'title3' ? 'Titre 3' : null}}
+                                                    {{updateElementForms.get(element.id)?.get('textType')?.value === 'paragraph' ? 'Paragraphe' : null}}
+                                                </label>
+                                                <textarea class="course-elements__updateForm-text-area" formControlName="content" id="updateElementContent{{element.id}}"></textarea>
+                                            </div>
+                                            @for (message of formService.getAllErrorMessages(updateElementForms.get(element.id)!, 'content'); track $index) {
+                                                <p class="course-elements__updateForm-message error">{{message}}</p>
+                                            }
+                                        </div>
+                                    }
+                                    <button class="course-elements__updateForm-button" [class.course-elements__updateForm-button--disabled]="updateElementForms.get(element.id)?.invalid" type="submit">Modifier</button>
+                                    @if (updateTextElementGlobalMessage) {<p class="course-elements__updateForm-global-message" [ngClass]="isUpdateTextElementGlobalMessageSuccess ? 'success' : 'error'">{{updateTextElementGlobalMessage}}</p>}
+                                </form>
+                            }
+                            @if (element.type === 'image' && updateElementForms.get(element.id)) {
+                                <form [formGroup]="updateElementForms.get(element.id)!" (submit)="onUpdateElementForm('image', element.id)" class="course-elements__updateForm" [class.no-display]="activeElementId !== element.id || activeUpdateFormId !== element.id">
+                                    <div class="course-elements__updateForm-container">
+                                        <div class="course-elements__updateForm-group">
+                                            <input type="file" class="course-elements__updateForm-input-file" id="updateElementFile{{element.id}}" (change)="onUpdateFileSelected($event, element.id)" accept="image/*">
+                                            <label class="course-elements__updateForm-label course-elements__updateForm-label--file" for="updateElementFile{{element.id}}">
+                                                <span [class.no-display]="updateImagePreviewUrls.get(element.id)">Cliquez pour ajouter un fichier<br>(max 5 Mo)</span>
+                                                <img class="course-elements__updateForm-image" [class.no-display]="!updateImagePreviewUrls.get(element.id)" src="{{updateImagePreviewUrls.get(element.id)}}" alt="Image à ajouter par l'utilisateur, le texte alternatif peut être renseigné par la suite dans le formulaire.">
+                                            </label>
+                                        </div>
+                                        @for (message of formService.getAllErrorMessages(updateElementForms.get(element.id)!, 'file'); track $index) {
+                                            <p class="course-elements__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <div class="course-elements__updateForm-container">
+                                        <div class="course-elements__updateForm-group">
+                                            <label class="course-elements__updateForm-label" for="updateElementLegend{{element.id}}">Légende</label>
+                                            <input type="text" class="course-elements__updateForm-input" id="updateElementLegend{{element.id}}" formControlName="legend">
+                                        </div>
+                                        @for (message of formService.getAllErrorMessages(updateElementForms.get(element.id)!, 'legend'); track $index) {
+                                            <p class="course-elements__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <div class="course-elements__updateForm-container">
+                                        <div class="course-elements__updateForm-group">
+                                            <label class="course-elements__updateForm-label" for="updateElementAlternative{{element.id}}">Texte alternatif</label>
+                                            <textarea class="course-elements__updateForm-text-area" id="updateElementAlternative{{element.id}}" formControlName="alternative"></textarea>
+                                        </div>
+                                        @for (message of formService.getAllErrorMessages(updateElementForms.get(element.id)!, 'alternative'); track $index) {
+                                            <p class="course-elements__updateForm-message error">{{message}}</p>
+                                        }
+                                    </div>
+                                    <button class="course-elements__updateForm-button" [class.course-elements__updateForm-button--disabled]="updateElementForms.get(element.id)?.invalid" type="submit">Modifier</button>
+                                    @if (updateImageElementGlobalMessage) {<p class="course-elements__updateForm-global-message" [ngClass]="isUpdateImageElementGlobalMessageSuccess ? 'success' : 'error'">{{updateImageElementGlobalMessage}}</p>}
+                                </form>
+                            }
                         </div>
                     }
                 </div>
@@ -270,43 +364,10 @@
                                 }
                             </div>
                         }
-                        <button class="course-elements__addForm-button" type="submit">Ajouter</button>
-                        @if (addElementGlobalErrorMessage) {<p class="course-elements__addForm-global-message" [class.success]="isAddElementGlobalErrorMessageSuccess" [ngClass]="isAddElementGlobalErrorMessageSuccess ? 'success' : 'error'">{{addElementGlobalErrorMessage}}</p>}
+                        <button class="course-elements__addForm-button" [class.course-elements__addForm-button--disabled]="addElementForm.invalid" type="submit">Ajouter</button>
+                        @if (addElementGlobalErrorMessage) {<p class="course-elements__addForm-global-message" [ngClass]="isAddElementGlobalErrorMessageSuccess ? 'success' : 'error'">{{addElementGlobalErrorMessage}}</p>}
                     </form>
                 }
         </div>
     </section>
-    <section class="dashboard__info">
-        <h2 class="dashboard__info-title">Informations relatives à l'élément sélectionné</h2>
-    </section>
-    <section class="dashboard__search">
-        <h2 class="dashboard__search-title">Rechercher un élément en particulier</h2>
-    </section>
-
-    <!--
-    arborescence des themes / cursus / lessons
-    bouton modifié / supprimé pour chacun des themes / cursus / lessons
-    avoir en dessous la liste des éléments (texts/images) qui composent la leçon sélectionnée + bouton modifier/supprimer :
-    le clic sur le bouton modifier fait apparaître un input et un bouton 'Modifier'
-    le clic sur le bouton supprimer fait apparaître une alert avec un message relatif à l'élément et 'Voulez-vous vraiment supprimer cet
-    élement ?' 'oui / non'
-
-    pour chacun des types, mettre en bas un formulaire d'ajout
-    
-    pour chacun des éléments de chaque type, mettre des flèches vers le haut ou vers bas avec modifications visuelles du DOM quand on clique dessus + actualisation
-    de l'ordre des éléments sélectionnés + envoie au back-end pour enregistrement directement + message de succès au retour pour
-    que l'admin sache que c'est bien pris en compte
-     -->
-
-     <!--
-     mettre un petit tableau avec les informations relatives à l'élément sélectionné, les colonnes du tableau vairent en
-     fonction du type de l'élément sélectionné
-     -->
-
-    <!--
-    liste des themes, cursus, lessons, text, image
-    pouvoir filtrer les résultats par thèmes
-    pouvoir filtrer les résultats type : thèmes, cursus, leçons, textes, images
-    colonnes du tableau qui varient en fonction de la sélection du type
-    -->
 </main>
