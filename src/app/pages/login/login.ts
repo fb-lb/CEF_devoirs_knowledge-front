@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { FormService } from '../services/form.service';
+import { FormService } from '../../services/form.service';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { ApiResponse } from '../core/models/api-response.model';
+import { environment } from '../../../environments/environment';
+import { ApiResponse } from '../../core/models/api-response.model';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,7 @@ export class Login {
 
   // If you modify one of these validator, make sure that back end login validators (in form.service.ts) are also modified
   form = new FormGroup({
-    email: new FormControl('fb.lubre@free.fr', [
+    email: new FormControl('john.doe@test.com', [
       Validators.required,
       Validators.email,
       Validators.maxLength(80),
