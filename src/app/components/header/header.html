@@ -6,10 +6,10 @@
     <nav id="nav-menu" class="header__nav " [ngClass]="{'hidden smoothHidden': isMenuHidden}">
         <ul class="header__nav-list">
             <li class="header__nav-item"><a class="header__nav-link" routerLink="" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
-            <li class="header__nav-item"><a class="header__nav-link" href="#">Nos formations</a></li>
+            <li class="header__nav-item"><a class="header__nav-link" routerLink="/nos-formations" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Nos formations</a></li>
             @if(isUserAuthenticated$ | async){
-                <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-cours">Mes cours</a></li>
-                <li class="header__nav-item"><a class="header__nav-link" href="#">Mes certifications</a></li>
+                <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-cours" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Mes cours</a></li>
+                <li class="header__nav-item"><a class="header__nav-link" href="#" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Mes certifications</a></li>
             }
             @if(isAdminAuthenticated$ | async) {
                 <li class="header__nav-item header__nav-item--with-submenu">
@@ -23,7 +23,7 @@
             }
             @if(!(isUserAuthenticated$ | async)){
                 <li class="header__nav-item"><a class="header__nav-link" routerLink="/inscription" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Inscription</a></li>
-                <li class="header__nav-item"><a class="header__nav-link" routerLink="/connexion">Connexion</a></li>
+                <li class="header__nav-item"><a class="header__nav-link" routerLink="/connexion" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Connexion</a></li>
             }
             @if(isUserAuthenticated$ | async){<li class="header__nav-item"><button class="header__nav-link" (click)="onClickLogout()">Déconnexion</button></li>}
         </ul>
