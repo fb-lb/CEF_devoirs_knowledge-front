@@ -1,0 +1,10 @@
+<div class="modal">
+    <div class="modal__overlay" (click)="closeModal()"></div>
+    <div class="modal__content">
+        <fa-icon class="modal__close" [icon]="faSquareXMark" (click)="closeModal()"></fa-icon>
+        <h2 class="modal__title">Paiement sécurisé</h2>
+        <div class="modal__info" #cardElementContainer></div>
+        <button class="modal__payment-button" [class.modal__payment-button--hidden]="isProcessing || isPayed" [disabled]="isProcessing || isPayed" (click)="pay()">{{isProcessing ? 'Paiement en cours, veuillez patienter....' : 'Acheter'}}</button>
+        @if(message) {<p class="modal__message" [ngClass]="isMessageSuccess ? 'success': 'error'">{{ message }}</p>}
+    </div>
+</div>

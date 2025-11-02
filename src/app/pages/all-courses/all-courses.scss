@@ -1,0 +1,335 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/breakpoints' as *;
+
+main {
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+
+    @include for-m {
+        padding: 50px 80px;
+    }
+}
+
+h1 {
+    text-align: center;
+    font-weight: bold;
+    color: $dark-blue;
+}
+
+.all-courses {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    @include for-m {
+        max-width: 750px;
+    }
+
+    @include for-l {
+        max-width: 750px;
+    }
+}
+
+.theme {
+    display: flex;
+    flex-direction: column;
+}
+
+.theme__bar {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: $light-blue;
+    border: 1px solid $medium-blue;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.theme--active .theme__bar {
+    border: 3px solid $medium-blue;
+}
+
+.theme__name {
+    color: $medium-blue;
+}
+
+.theme--active .theme__name {
+    font-weight: bold;
+}
+
+.theme__icon {
+    transform: scale(1.4);
+}
+
+.theme__icon, .cursus__icon {
+    color: $medium-blue;
+}
+
+.theme__cursus {
+    margin: 0 7px;
+    border: 0px solid $medium-blue;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+    background-color: $light-blue;
+    
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: 
+        max-height 0.7s ease-in-out,
+        opacity 0.5s ease-in;
+}
+
+.theme--active .theme__cursus {
+    border: 1px solid $medium-blue;
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.cursus {
+    display: flex;
+    flex-direction: column;
+}
+
+.cursus__bar {
+    padding: 7px;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.cursus__info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    @include for-m {
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    @include for-l {
+        flex-direction: row;
+        gap: 30px;
+    }
+}
+
+.cursus--active .cursus__info {
+    @include for-s {
+        gap: 0;
+    }
+}
+
+.cursus__name {
+    margin: auto 0;
+    color: $medium-blue;
+    cursor: pointer;
+}
+
+.cursus__buy-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: center;
+
+    max-height: 100px;
+    opacity: 1;
+    transition: 
+        max-height 0.7s ease-in-out,
+        opacity 0.5s ease-in-out;
+
+    @include for-m {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    @include for-l {
+        flex-direction: row;
+        gap: 20px;
+    }
+}
+
+.cursus--active .cursus__buy-group {
+    @include for-s {
+       max-height: 0;
+        opacity: 0;
+        overflow: hidden; 
+    }
+}
+
+.cursus__price {
+    color: $brown;
+}
+
+.cursus__buy-button {
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    background-color: $medium-blue;
+    color: white;
+    transition: all 0.4s ease;
+}
+
+.cursus__buy-button:hover {
+    background-color: white;
+    color: $medium-blue;
+    transform: scale(1.1);
+}
+
+.cursus__available {
+    margin: 0 10px 0 auto;
+    width: fit-content;
+    padding: 3px 5px 5px 5px;
+    text-align: center;
+    border: 1px solid $medium-blue;
+    border-radius: 5px;
+    background-color: white;
+    color: $medium-blue;
+
+    @include for-s {
+        margin: 0 auto;
+    }
+}
+
+.cursus__icon {
+    margin-top: 7px;
+    transform: scale(1.2);
+    cursor: pointer;
+    max-height: 24px;
+
+    @include for-m {
+        margin: auto 0;
+    }
+
+    @include for-l {
+        margin: auto 0;
+    }
+}
+
+.cursus__lessons {
+    margin: 0;
+    padding: 0;
+    border: 1px solid $medium-blue;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: 
+        all 0.5s ease-in-out,
+        max-height 0.7s ease-in-out,
+        opacity 0.5s ease-in-out;
+}
+
+.cursus--active .cursus__lessons {
+    margin: 10px;
+    padding: 10px;
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.lesson {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid $medium-blue;
+    background-color: $light-blue;
+    border-radius: 5px;
+}
+
+.lesson__name {
+    color: $brown;
+    margin: auto 0;
+}
+
+.lesson__buy-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    @include for-m {
+        flex-direction: row;
+        gap: 15px;
+    }
+
+    @include for-l {
+        flex-direction: row;
+        gap: 15px;
+    }
+}
+
+.lesson__price {
+    margin: auto 0;
+    text-align: center;
+}
+
+.lesson__buy-button {
+    padding: 5px 10px;
+    background-color: $medium-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.lesson__available {
+    width: fit-content;
+    padding: 3px 5px 5px 5px;
+    text-align: center;
+    border: 1px solid $medium-blue;
+    border-radius: 5px;
+    background-color: white;
+    color: $medium-blue;
+}
+
+.lesson__buy-button:hover {
+    background-color: white;
+    color: $medium-blue;
+    transform: scale(1.1);
+}
+
+
+// ---------------
+// Dynamic classes
+// ---------------
+
+.no-display {
+    display: none;
+}
+
+.hidden {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    pointer-events: none;
+}
+
+.cursus__buy-button--disabled, .lesson__buy-button--disabled {
+    border: 2px solid $brown;
+    background-color: $brown;
+    cursor: unset;
+}
+
+.cursus__buy-button--disabled:hover, .lesson__buy-button--disabled:hover {
+    border: 2px solid $brown;
+    background-color: $brown;
+    transform: scale(1);
+    color: white;
+}

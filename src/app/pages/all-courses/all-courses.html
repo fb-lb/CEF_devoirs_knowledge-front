@@ -1,0 +1,62 @@
+<main>
+    <h1>Nos formations</h1>
+    <ul class="all-courses">
+        @for (theme of allThemes; track $index) {
+            <li class="theme" [class.theme--active]="areThemesOpen.get(theme.id)">
+                <div class="theme__bar" (click)="toggleOpenThemeValue(theme.id)">
+                    <p class="theme__name">{{ theme.name }}</p>
+                    <fa-icon class="theme__icon" [class.no-display]="areThemesOpen.get(theme.id)" [icon]="faSquarePlus"></fa-icon>
+                    <fa-icon class="theme__icon" [class.no-display]="!areThemesOpen.get(theme.id)" [icon]="faSquareMinus"></fa-icon>
+                </div>
+                <ul class="theme__cursus" [class.theme__cursus--active]="areThemesOpen.get(theme.id)">
+                @for (cursus of getCursusByThemeId(theme.id); track $index) {
+                    <li class="cursus" [class.cursus--active]="areCursusOpen.get(cursus.id)">
+                        <div class="cursus__bar">
+                            <div class="cursus__info">
+                                <p class="cursus__name" (click)="toggleOpenCursusValue(cursus.id)">{{ cursus.name }}</p>
+                                
+                                    @if (cursus.price > 0) {
+                                        <div class="cursus__buy-group">
+                                            <p class="cursus__price">{{ cursus.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</p>
+                                            <button class="cursus__buy-button" [class.cursus__buy-button--disabled]="!isAuthenticated" [disabled]="!isAuthenticated" (click)="openStripeModal('cursus', cursus.id)" [title]="isAuthenticated ? '' : 'Vous devez être connecté à votre compte pour acheter un contenu.'" type="button">Acheter</button>
+                                        </div>
+                                    } @else if (cursus.price === 0) {
+                                        <p class="cursus__available">Partiellement disponible</p>
+                                    } @else if (cursus.price === -1) {
+                                        <p class="cursus__available">Entièrement disponible</p>
+                                    }
+                                
+                            </div>
+                            <fa-icon class="cursus__icon" [class.no-display]="areCursusOpen.get(cursus.id)" [icon]="faSquarePlus" (click)="toggleOpenCursusValue(cursus.id)"></fa-icon>
+                            <fa-icon class="cursus__icon" [class.no-display]="!areCursusOpen.get(cursus.id)" [icon]="faSquareMinus" (click)="toggleOpenCursusValue(cursus.id)"></fa-icon>
+                        </div>
+                        <ul class="cursus__lessons">
+                        @for (lesson of getLessonByCursusId(cursus.id); track $index) {
+                            <li class="lesson">
+                                <p class="lesson__name">{{ lesson.name }}</p>
+                                    @if (lesson.price) {
+                                        <div class="lesson__buy-group">
+                                            <p class="lesson__price">{{ lesson.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</p>
+                                            <button class="lesson__buy-button" [class.lesson__buy-button--disabled]="!isAuthenticated" [disabled]="!isAuthenticated" (click)="openStripeModal('lesson', lesson.id)" [title]="isAuthenticated ? '' : 'Vous devez être connecté à votre compte pour acheter un contenu.'" type="button">Acheter</button>
+                                        </div>
+                                    } @else {
+                                        <p class="lesson__available">Disponible dans vos cours</p>
+                                    }
+                            </li>
+                        }
+                        </ul>
+                    </li>
+                }
+                </ul>
+            </li>
+        }
+    </ul>
+</main>
+@if(isStripeModalOpen){
+    <app-stripe-payment
+        (paymentSucceeded)="handlePaymentSuccess()"
+        (noPayment)="closeStripeModal()"
+        [courseType]="courseToPay.type"
+        [courseId]="courseToPay.id"
+    ></app-stripe-payment>
+}

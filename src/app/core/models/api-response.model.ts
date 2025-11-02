@@ -106,3 +106,25 @@ export type ElementData =
     source: string;
     alternative: string;
   });
+
+export interface UserCursusData {
+  id: number;
+  userId: number;
+  cursusId: number;
+  isValidated: boolean;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: number | null;
+  updatedBy: number | null;
+}
+
+export interface UserLessonData {
+  id: number;
+  userId: number;
+  lessonId: number;
+  isValidated: boolean;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: number | null;
+  updatedBy: number | null;
+}
