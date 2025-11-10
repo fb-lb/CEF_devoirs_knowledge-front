@@ -3,7 +3,7 @@
         <a class="header__logo-link" routerLink=""><img class="header__logo-image" src="/assets/images/logo.webp" alt="Logo de l'entreprise Knowledge Learning. Dessin d'un livre gris ouvert avec Knowledge écrit en dessous en bleu foncé."></a>
         <fa-icon [icon]="faBars" class="header__burger-menu-icon" [ngClass]="{'hidden': isIconHidden}" (click)="toggleElement('nav-menu')"></fa-icon>
     </div>
-    <nav id="nav-menu" class="header__nav " [ngClass]="{'hidden smoothHidden': isMenuHidden}">
+    <nav id="nav-menu" class="header__nav " [ngClass]="{'hidden smoothHidden': isMenuHidden}" aria-label="Menu principal">
         <ul class="header__nav-list">
             <li class="header__nav-item"><a class="header__nav-link" routerLink="" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
             <li class="header__nav-item"><a class="header__nav-link" routerLink="/nos-formations" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Nos formations</a></li>

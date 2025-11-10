@@ -1,0 +1,121 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/breakpoints' as *;
+
+.courses {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.all-elements {
+    @include for-m {
+        margin: 0 20px;
+    }
+
+    @include for-l {
+        margin: 0 40px;
+    }
+}
+
+.all-elements__title {
+    text-align: center;
+    color: $medium-blue;
+    font-weight: bold;
+}
+
+.elements {}
+
+.element__title-1 {
+    margin-top: 30px;
+    text-align: center;
+    color: $medium-blue;
+    font-weight: bold;
+    text-decoration: underline;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.element__title-2 {
+    margin-top: 25px;
+    text-align: center;
+    color: $medium-blue;
+    font-style: italic;
+
+    @include for-m {
+        margin: 25px 0 0 10px;
+        text-align: start;
+    }
+
+    @include for-l {
+        margin: 25px 0 0 10px;
+        text-align: start;
+    }
+}
+
+.element__title-3 {
+    margin-top: 20px;
+    text-align: center;
+    color: $brown;
+
+    @include for-m {
+        margin: 20px 0 0 20px;
+        text-align: start;
+    }
+
+    @include for-l {
+        margin: 20px 0 0 20px;
+        text-align: start;
+    }
+}
+
+.element__paragraph {
+    margin-top: 10px;
+    text-align: center;
+    color: $brown;
+    text-indent: 40px;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.element__image {
+    margin: 15px auto 0;
+    width: 90%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.element__source {
+    object-fit: contain;
+}
+
+.element__legend {
+    text-align: center;
+    color: $brown;
+    font-style: italic;
+}
+
+.courses__button {
+    margin: 50px auto 30px;
+    padding: 5px 10px;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    background-color: $medium-blue;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.courses__button:hover {
+    background-color: white;
+    color: $medium-blue;
+    transform: scale(1.02);
+}

@@ -1,0 +1,31 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/breakpoints' as *;
+
+.courses__nav {
+    margin-right: auto;
+}
+
+.courses__nav-list {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.courses__nav-item {}
+
+.courses__nav-text, .courses__nav-link {
+    color: $medium-blue;
+    transition: all 0.3s ease;
+}
+
+.courses__nav-link:hover {
+    text-decoration: underline;
+    font-size: 1.05rem;
+}
+
+.courses__title {
+    margin: 30px 0 50px 0;
+    text-align: center;
+    font-weight: bold;
+    color: $dark-blue;
+}

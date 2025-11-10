@@ -107,6 +107,17 @@ export type ElementData =
     alternative: string;
   });
 
+export interface UserThemeData {
+  id: number;
+  userId: number;
+  themeId: number;
+  isCertified: boolean;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: number | null;
+  updatedBy: number | null;
+}
+
 export interface UserCursusData {
   id: number;
   userId: number;

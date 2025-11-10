@@ -1,0 +1,31 @@
+<nav class="courses__nav" aria-label="Navigation entre les différents niveaux cours">
+    <ul class="courses__nav-list">
+        <li class="courses__nav-item">
+            @if (currentTheme) {
+                <a class="courses__nav-link" routerLink="/mes-cours">Tous les thèmes</a>
+            } @else {
+                <p class="courses__nav-text">Tous les thèmes</p>
+            }
+        </li>
+        <li class="courses__nav-item"> 
+            @if(currentTheme && currentCursus) {
+                > <a class="courses__nav-link" routerLink="/mes-cours/theme/{{currentTheme.id}}">{{ currentTheme.name }}</a>  
+            } @else if (currentTheme) {
+                > <span class="courses__nav-text">{{ currentTheme.name }}</span>
+            }
+        </li>
+        <li class="courses__nav-item">
+            @if(currentTheme && currentCursus && currentLesson) {
+                > <a class="courses__nav-link" routerLink="/mes-cours/theme/{{currentTheme.id}}/cursus/{{currentCursus.id}}">{{ currentCursus.name }}</a>
+            } @else if (currentCursus) {
+                > <span class="courses__nav-text">{{ currentCursus.name }}</span>
+            }
+        </li>
+        <li class="courses__nav-item">
+            @if(currentLesson) {
+                > <span class="courses__nav-text">{{ currentLesson.name }}</span>
+            }
+        </li>
+    </ul>
+</nav>
+<h1 class="courses__title">Mes cours</h1>
