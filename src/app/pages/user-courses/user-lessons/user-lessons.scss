@@ -1,0 +1,67 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/breakpoints' as *;
+
+.courses {
+    padding: 20px;
+}
+
+.all-lessons {
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    align-items: center;
+}
+
+.all-lessons__title {
+    color: $medium-blue;
+    font-weight: bold;
+    
+}
+
+.all-lessons__list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.lesson {
+    cursor: pointer;
+    display: flex;
+    width: 50%;
+    max-width: 550px;
+    padding: 15px;
+    color: $brown;
+    background-color: $light-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.lesson:hover {
+    transform: scale(1.02);
+    background-color: $medium-blue;
+    font-weight: bold;
+}
+
+.lesson__name {
+    width: 100%;
+    
+    @include for-s {
+        text-align: center;
+    }
+}
+
+.lesson:hover .lesson__name {
+    color: white;
+}
+
+.lesson__icon {
+    transform: scale(1.5);
+}
+
+.lesson:hover .lesson__icon {
+    color: white;
+}

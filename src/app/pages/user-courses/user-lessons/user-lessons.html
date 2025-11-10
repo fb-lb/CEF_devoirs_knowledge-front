@@ -1,0 +1,21 @@
+<main class="courses">
+    <app-user-courses-top-main></app-user-courses-top-main>
+    <div class="all-lessons">
+        @if (currentTheme && currentCursus) {
+            <h2 class="all-lessons__title">Mes leçons du cursus "{{currentCursus.name}}"</h2>
+        }
+        <div class="all-lessons__list">
+            @for(lesson of lessonsInCurrentCursus; track $index) {
+                <a class="lesson" routerLink="/mes-cours/theme/{{ currentTheme.id }}/cursus/{{ currentCursus.id }}/lesson/{{ lesson.id }}">
+                    <span class="lesson__name">{{ lesson.name }}</span>
+                    @if (!isLessonValidated(lesson.id)) {
+                        <fa-icon class="lesson__icon" [icon]="faCircle" title="Cette leçon n'est pas encore validée"></fa-icon>
+                    }
+                    @if (isLessonValidated(lesson.id)) {
+                        <fa-icon class="lesson__icon" [icon]="faCircleChecked" title="Cette leçon est validée"></fa-icon>
+                    }
+                </a>
+            }
+        </div>
+    </div>
+</main>

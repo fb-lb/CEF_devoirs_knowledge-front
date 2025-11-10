@@ -1,0 +1,11 @@
+<main class="courses">
+    <app-user-courses-top-main ></app-user-courses-top-main>
+    <div class="themes">
+        <h2 class="themes__title">Mes thèmes</h2>
+        <div class="themes__list">
+            @for(theme of allThemesAvailable; track $index) {
+                <a class="themes__item" routerLink="/mes-cours/theme/{{theme.id}}">{{ theme.name }}</a>
+            }
+        </div>
+    </div>
+</main>

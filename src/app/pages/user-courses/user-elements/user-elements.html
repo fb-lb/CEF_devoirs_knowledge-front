@@ -1,0 +1,39 @@
+<main class="courses">
+    <app-user-courses-top-main></app-user-courses-top-main>
+    <div class="all-elements">
+        @if(currentLesson) {
+            <h1 class="all-elements__title">{{ currentLesson.name }}</h1>
+        }
+        <div class="elements">
+        @for(element of elementsInCurrentLesson; track $index) {
+            @if(element.type === 'text') {
+                @if(element.textType === 'title1') {
+                    <h2 class="element__title-1">{{ element.content }}</h2>
+                }
+                @if(element.textType === 'title2') {
+                    <h3 class="element__title-2">{{ element.content }}</h3>
+                }
+                @if(element.textType === 'title3') {
+                    <h4 class="element__title-3">{{ element.content }}</h4>
+                }
+                @if(element.textType === 'paragraph') {
+                    <p class="element__paragraph">{{ element.content }}</p>
+                }
+            }
+            @if(element.type === 'image') {
+                <div class="element__image">
+                    <img class="element__source" src="{{ environment.backUrl + '/api/content/element/image/private/' + element.source }}" alt="{{ element.alternative }}">
+                    <p class="element__legend">{{ element.legend }}</p>
+                </div>
+            }
+        }
+        </div>
+    </div>
+    <!-- Faire des if .isValidated pour l'affichage des buttons/link (plutôt button avec un router à la fin de la méthode déclenchée au clic) -->
+    @if(currentUserLesson && !currentUserLesson.isValidated) {
+        <button class="courses__button" (click)="validateLesson()">Valider la leçon et revenir à la liste des leçons</button>
+    }
+    @if(currentUserLesson && currentUserLesson.isValidated) {
+        <button class="courses__button" (click)="invalidateLesson()">Invalider cette leçon et revenir à la liste des leçons</button>
+    }
+</main>
