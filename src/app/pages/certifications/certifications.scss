@@ -1,0 +1,72 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/breakpoints' as *;
+
+.certifications {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-items: center;
+
+    @include for-m {
+        padding: 40px 40px;
+    }
+
+    @include for-l {
+        padding: 50px 60px;
+    }
+}
+
+.certifications__title {
+    color: $dark-blue;
+    font-weight: bold;
+    text-align: center;
+}
+
+.certifications__text {
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+        text-indent: 50px;
+    }
+}
+
+.certifications__cards {
+    margin: 0 auto;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+
+.certification {
+    padding: 20px;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    background-color: $light-blue;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.certification__name {
+    text-align: center;
+    font-weight: bold;
+    color: $medium-blue;
+}
+
+.certification__date {
+    text-align: center;
+}
+
+.certification__icon {
+    margin: 30px auto 20px;
+    transform: scale(2.5);
+    color: $medium-blue;
+    transition: all 0.7s ease;
+}
+
+.certification:hover .certification__icon {
+    transform: rotateY(180deg) scale(2.5);
+}

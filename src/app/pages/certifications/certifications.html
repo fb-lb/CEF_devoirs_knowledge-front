@@ -1,0 +1,16 @@
+<main class="certifications">
+    <h1 class="certifications__title">Mes certifications</h1>
+    <p class="certifications__text">
+        Retrouvez ici toutes les certifications qui vous avez acquises au cours de votre apprentissage.
+        Afin d'obtenir une certifcation, vous devez avoir validé toutes les leçons de chacun des cursus d'un thème.
+    </p>
+    <div class="certifications__cards">
+        @for(themeUserTheme of certifiedThemesUserThemesMap; track $index) {
+            <div class="certification">
+                <h2 class="certification__name">{{ themeUserTheme[0].name }}</h2>
+                <p class="certification__date">Certification obtenue le<br>{{ themeUserTheme[1].updatedAt }}</p>
+                <fa-icon class="certification__icon" [icon]="faMedal"></fa-icon>
+            </div>
+        }
+    </div>
+</main>
