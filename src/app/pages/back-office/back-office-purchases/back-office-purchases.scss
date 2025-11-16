@@ -1,0 +1,306 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/breakpoints' as *;
+
+.purchases {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    @include for-m {
+        padding: 40px 30px;
+    }
+
+    @include for-l {
+        padding: 50px 40px;
+    }
+}
+
+.purchases__title {
+    text-align: center;
+    color: $dark-blue;
+    font-weight: bold;
+}
+
+.purchases__management {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    @include for-l {
+        flex-direction: row;
+        gap: 0;
+    }
+}
+
+.management {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    @include for-l {
+        width: 33%;
+        padding: 0 20px;
+    }
+}
+
+.management:nth-child(-n + 2) {
+    padding-bottom: 25px;
+    border-bottom: 2px dotted $medium-blue;
+    
+    @include for-l {
+        padding-bottom: 0;
+        border-bottom: 0;
+        border-right: 2px dotted $medium-blue;
+    }
+}
+
+.management__title {
+    text-align: center;
+    font-weight: bold;
+    color: $medium-blue;
+}
+
+.management__action {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.management__action-title {
+    text-align: center;
+    color: $medium-blue;
+}
+
+.management__action-text {
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.text__caution {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.management__form {
+    margin: 0 auto;
+    padding: 15px;
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: $light-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 10px;
+}
+
+.management__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.management__form-label {
+    color: $medium-blue;
+    text-align: center;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.management__form-label--checkbox {}
+
+.management__form-input {
+    padding: 5px 10px;
+    max-width: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid $brown;
+    border-radius: 5px;
+    text-align: center;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.management__form-input--checkbox {
+    width: auto;
+}
+
+.management__form-message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.management__form-message {
+    width: fit-content;
+    text-align: center;
+}
+
+.management__form-info {
+    color: $brown;
+}
+
+.management__form-button {
+    margin: 0 auto;
+    padding: 10px 15px;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    background-color: $medium-blue;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.management__form-button:hover {
+    background-color: white;
+    color: $medium-blue;
+    transform: scale(1.02);
+}
+
+.purchases__read {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.purchases__read-title {
+    text-align: center;
+    color: $medium-blue;
+    font-weight: bold;
+}
+
+.read {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.read__title {
+    text-align: center;
+    color: $medium-blue;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.read__search {
+    margin: 0 auto;
+    padding: 15px 25px;
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: $light-blue;
+    border: 3px solid $medium-blue;
+    border-radius: 15px;
+
+    @include for-m {
+        margin: 0;
+    }
+
+    @include for-l {
+        margin: 0;
+    }
+}
+
+.read__search-text {
+    font-weight: bold;
+}
+
+.read__search-input {
+    padding: 5px 10px;
+    max-width: 230px;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid $brown;
+    border-radius: 10px;
+}
+
+.read__table {
+    display: block;
+    max-width: fit-content;
+    border: 3.5px solid $medium-blue;
+    border-radius: 15px;
+    background-color: $light-blue;
+    border-collapse: collapse;
+    overflow-x: auto;
+}
+
+.read__table-thead {}
+
+.read__table-tr {}
+
+.read__table-th {
+    padding: 5px 10px;
+    width: fit-content;
+    color: $brown;
+    font-weight: bold;
+    border: 2px solid $medium-blue;
+    border-top: 0;
+}
+
+.read__table-th--left {
+    border-left: 0;
+}
+
+.read__table-th--right {
+    border-right: 0;
+}
+
+.read__table-tbody {}
+
+.read__table-td {
+    padding: 5px 10px;
+    width: fit-content;
+    text-align: center;
+    color: $brown;
+    border: 2px solid $medium-blue;
+    border-bottom: 0;
+}
+
+.read__table-td--left {
+    border-left: 0;
+}
+
+.read__table-td--right {
+    border-right: 0;
+}
+
+// -------------------
+// Dynamic classes
+// -------------------
+
+.error {
+    color: $red;
+}
+
+.success {
+    color: $green;
+}
+
+.disabled {
+    pointer-events: none;
+    background-color: $brown;
+    border-color: $brown;
+    color: white;
+}

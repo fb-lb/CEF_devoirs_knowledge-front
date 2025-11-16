@@ -19,7 +19,7 @@
                                         <fa-icon class="course-section__content-icon course-section__content-icon--down" (click)="changeOrder($event, 'theme', theme.id, 'down')" [icon]="faCaretDown"></fa-icon>
                                     </div>
                                 </div>
-                                <p class="course-section__content-name" [class.little-padding]="activeThemeId !== theme.id" [class.current-course-name]="currentThemeId === theme.id">{{ theme.name }}</p>
+                                <p class="course-section__content-name" [class.little-padding]="activeThemeId !== theme.id" [class.current-course-name]="currentThemeId === theme.id">{{ theme.name }} (id: {{ theme.id }})</p>
                             </div>
                             @if (activeThemeId === theme.id) {
                                 <p class="course-section__content-date"><span>Création :</span><br>le {{ theme.createdAtDate }} à {{ theme.createdAtTime }} par {{ theme.createdByName }}</p>
@@ -69,7 +69,7 @@
                                         <fa-icon class="course-section__content-icon course-section__content-icon--down" (click)="changeOrder($event, 'cursus', cursus.id, 'down')" [icon]="faCaretDown"></fa-icon>
                                     </div>
                                 </div>
-                                <p class="course-section__content-name" [class.little-padding]="activeCursusId !== cursus.id" [class.current-course-name]="currentCursusId === cursus.id">{{ cursus.name }}</p>
+                                <p class="course-section__content-name" [class.little-padding]="activeCursusId !== cursus.id" [class.current-course-name]="currentCursusId === cursus.id">{{ cursus.name }} (id: {{ cursus.id }})</p>
                             </div>
                             @if (activeCursusId === cursus.id) {
                                 <p class="course-section__content-price"><span>Prix :</span> {{ cursus.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</p>
@@ -136,7 +136,7 @@
                                         <fa-icon class="course-section__content-icon course-section__content-icon--down" (click)="changeOrder($event, 'lesson', lesson.id, 'down')" [icon]="faCaretDown"></fa-icon>
                                     </div>
                                 </div>
-                                <p class="course-section__content-name" [class.little-padding]="activeLessonId !== lesson.id" [class.current-course-name]="currentLessonId === lesson.id">{{ lesson.name }}</p>
+                                <p class="course-section__content-name" [class.little-padding]="activeLessonId !== lesson.id" [class.current-course-name]="currentLessonId === lesson.id">{{ lesson.name }} (id: {{ lesson.id }})</p>
                             </div>
                             @if (activeLessonId === lesson.id) {
                                 <p class="course-section__content-price"><span>Prix :</span> {{ lesson.price | currency:'EUR':'symbol':'1.2-2' }}</p>

@@ -1,0 +1,351 @@
+<main class="purchases">
+    <h1 class="purchases__title">Gestion des achats</h1>
+    <div class="purchases__management">
+        <div class="management">
+            <h2 class="management__title">Thèmes</h2>
+            <div class="management__action">
+                <h3 class="management__action-title">Modifier la certification d'un thème pour un utilisateur</h3>
+                <p class="management__action-text text">
+                    <span class="text__caution">Attention :</span> valider/invalider la certification d'un thème pour un utilisateur validera/invalidera
+                    tous les cursus et toutes les leçons dépendants de ce thème, pour cet utilisateur.
+                </p>
+                <form class="management__form" [formGroup]="updateUserThemeForm" (submit)="onSubmitUserThemeUpdateForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="updateUserThemeId">Identifiant de l'association utilisateur / thème</label>
+                        <input class="management__form-input" type="number" formControlName="userThemeId" id="updateUserThemeId" (input)="onChangeUpdateFormUserThemeId($event)">
+                        @if (formService.isInputValid(updateUserThemeForm, 'userThemeId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(updateUserThemeForm, 'userThemeId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserThemeToUpdate}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserThemeToUpdate}}</p>
+                        <p class="management__form-info">Thème : {{themeNameOfUserThemeToUpdate}}</p>
+                    </div>
+                    <label class="management__form-label management__form-label--checkbox" for="updateThemeCertification">
+                        <input class="management__form-input management__form-input--checkbox" type="checkbox" [checked]="isUpdateUserThemeCertified" (input)="onChangeUpdateFormUserCertification($event)" formControlName="updateUserThemeCertification" id="updateThemeCertification"> Certifié
+                    </label>
+                    <button class="management__form-button" [class.disabled]="updateUserThemeForm.invalid" [disabled]="updateUserThemeForm.invalid" type="submit">Modifier</button>
+                    @if(updateUserThemeMessage) {
+                        <p class="management__form-message" [ngClass]="isUpdateUserThemeMessageSuccess ? 'success' : 'error'">{{updateUserThemeMessage}}</p>
+                    }
+                </form>
+            </div>
+            <div class="management__action">
+                <h3 class="management__action-title">Supprimer l'accès à un thème pour un utilisateur</h3>
+                <p class="management__action-text text">
+                    <span class="text__caution">Attention :</span> supprimer l'accès à un thème pour un utilisateur supprimera l'accès à
+                    tous les cursus et toutes les leçons dépendants de ce thème, pour cet utilisateur.
+                </p>
+                <form class="management__form" [formGroup]="deleteUserThemeForm" (submit)="onSubmitUserThemeDeleteForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="deleteUserThemeId">Identifiant de l'association utilisateur / thème</label>
+                        <input class="management__form-input" type="number" formControlName="userThemeId" id="deleteUserThemeId" (input)="onChangeDeleteFormUserThemeId($event)">
+                        @if (formService.isInputValid(deleteUserThemeForm, 'userThemeId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(deleteUserThemeForm, 'userThemeId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserThemeToDelete}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserThemeToDelete}}</p>
+                        <p class="management__form-info">Thème : {{themeNameOfUserThemeToDelete}}</p>
+                    </div>
+                    <button class="management__form-button" [class.disabled]="deleteUserThemeForm.invalid" [disabled]="deleteUserThemeForm.invalid" type="submit">Supprimer</button>
+                    @if(deleteUserThemeMessage) {
+                        <p class="management__form-message" [ngClass]="isDeleteUserThemeMessageSuccess ? 'success' : 'error'">{{deleteUserThemeMessage}}</p>
+                    }
+                </form>
+            </div>
+        </div>
+        <div class="management">
+            <h2 class="management__title">Cursus</h2>
+            <div class="management__action">
+                <h3 class="management__action-title">Ajouter un accès à un cursus pour un utilisateur</h3>
+                <p class="management__action-text text">
+                    <span class="text__caution">Attention :</span> ajouter un accès à un utilisateur à un cursus lui donnera accès à toutes
+                    les leçons contenues dans le cursus.
+                </p>
+                <form class="management__form" [formGroup]="addUserCursusForm" (submit)="onSubmitUserCursusAddForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="addUserCursusUserId">Identifiant de l'utilisateur</label>
+                        <input class="management__form-input" type="number" formControlName="userId" id="addUserCursusUserId" (input)="onChangeAddFormUserCursusUserId($event)">
+                        @if (formService.isInputValid(addUserCursusForm, 'userId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(addUserCursusForm, 'userId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserCursusToAdd}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserCursusToAdd}}</p>
+                    </div>
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="addUserCursusCursusId">Identifiant du cursus</label>
+                        <input class="management__form-input" type="number" formControlName="cursusId" id="addUserCursusCursusId" (input)="onChangeAddFormUserCursusCursusId($event)">
+                        @if (formService.isInputValid(addUserCursusForm, 'cursusId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(addUserCursusForm, 'cursusId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Cursus : {{cursusNameOfUserCursusToAdd}}</p>
+                    </div>
+                    <button class="management__form-button" [class.disabled]="addUserCursusForm.invalid" [disabled]="addUserCursusForm.invalid" type="submit">Ajouter</button>
+                    @if(addUserCursusMessageUser) {
+                        <p class="management__form-message" [ngClass]="isAddUserCursusMessageUserSuccess ? 'success' : 'error'">{{addUserCursusMessageUser}}</p>
+                    }
+                    @if(addUserCursusMessageCursus) {
+                        <p class="management__form-message" [ngClass]="isAddUserCursusMessageCursusSuccess ? 'success' : 'error'">{{addUserCursusMessageCursus}}</p>
+                    }
+                </form>
+            </div>
+            <div class="management__action">
+                <h3 class="management__action-title">Modifier la validation d'un cursus pour un utilisateur</h3>
+                <p class="management__action-text text">
+                    <span class="text__caution">Attention :</span> valider/invalider un cursus pour un utilisateur validera/invalidera
+                    toutes les leçons dépendantes de ce cursus, pour cet utilisateur.
+                </p>
+                <form class="management__form" [formGroup]="updateUserCursusForm" (submit)="onSubmitUserCursusUpdateForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="updateUserCursusId">Identifiant de l'association utilisateur / cursus</label>
+                        <input class="management__form-input" type="number" formControlName="userCursusId" id="updateUserCursusId" (input)="onChangeUpdateFormUserCursusId($event)">
+                        @if (formService.isInputValid(updateUserCursusForm, 'userCursusId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(updateUserCursusForm, 'userCursusId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserCursusToUpdate}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserCursusToUpdate}}</p>
+                        <p class="management__form-info">Cursus : {{cursusNameOfUserCursusToUpdate}}</p>
+                    </div>
+                    <label class="management__form-label management__form-label--checkbox" for="updateCursusValidation">
+                        <input class="management__form-input management__form-input--checkbox" type="checkbox" [checked]="isUpdateUserCursusValidated" (input)="onChangeUpdateFormUserCursusValidation($event)" formControlName="updateUserCursusValidation" id="updateCursusValidation"> Validé
+                    </label>
+                    <button class="management__form-button" [class.disabled]="updateUserCursusForm.invalid" [disabled]="updateUserCursusForm.invalid" type="submit">Modifier</button>
+                    @if(updateUserCursusMessage) {
+                        <p class="management__form-message" [ngClass]="isUpdateUserCursusMessageSuccess ? 'success' : 'error'">{{updateUserCursusMessage}}</p>
+                    }
+                </form>
+            </div>
+            <div class="management__action">
+                <h3 class="management__action-title">Supprimer l'accès à un cursus pour un utilisateur</h3>
+                <p class="management__action-text text">
+                    <span class="text__caution">Attention :</span> supprimer l'accès à un cursus pour un utilisateur supprimera l'accès à
+                    toutes les leçons dépendantes de ce cursus, pour cet utilisateur.
+                </p>
+                <form class="management__form" [formGroup]="deleteUserCursusForm" (submit)="onSubmitUserCursusDeleteForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="deleteUserCursusId">Identifiant de l'association utilisateur / cursus</label>
+                        <input class="management__form-input" type="number" formControlName="userCursusId" id="deleteUserCursusId" (input)="onChangeDeleteFormUserCursusId($event)">
+                        @if (formService.isInputValid(deleteUserCursusForm, 'userCursusId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(deleteUserCursusForm, 'userCursusId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserCursusToDelete}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserCursusToDelete}}</p>
+                        <p class="management__form-info">Cursus : {{cursusNameOfUserCursusToDelete}}</p>
+                    </div>
+                    <button class="management__form-button" [class.disabled]="deleteUserCursusForm.invalid" [disabled]="deleteUserCursusForm.invalid" type="submit">Supprimer</button>
+                    @if(deleteUserCursusMessage) {
+                        <p class="management__form-message" [ngClass]="isDeleteUserCursusMessageSuccess ? 'success' : 'error'">{{deleteUserCursusMessage}}</p>
+                    }
+                </form>
+            </div>
+        </div>
+        <div class="management">
+            <h2 class="management__title">Leçons</h2>
+            <div class="management__action">
+                <h3 class="management__action-title">Ajouter un accès à une leçon pour un utilisateur</h3>
+                <form class="management__form" [formGroup]="addUserLessonForm" (submit)="onSubmitUserLessonAddForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="addUserLessonUserId">Identifiant de l'utilisateur</label>
+                        <input class="management__form-input" type="number" formControlName="userId" id="addUserLessonUserId" (input)="onChangeAddFormUserLessonUserId($event)">
+                        @if (formService.isInputValid(addUserLessonForm, 'userId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(addUserLessonForm, 'userId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserLessonToAdd}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserLessonToAdd}}</p>
+                    </div>
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="addUserLessonLessonId">Identifiant de la leçon</label>
+                        <input class="management__form-input" type="number" formControlName="lessonId" id="addUserLessonLessonId" (input)="onChangeAddFormUserLessonLessonId($event)">
+                        @if (formService.isInputValid(addUserLessonForm, 'lessonId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(addUserLessonForm, 'lessonId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Leçon : {{lessonNameOfUserLessonToAdd}}</p>
+                    </div>
+                    <button class="management__form-button" [class.disabled]="addUserLessonForm.invalid" [disabled]="addUserLessonForm.invalid" type="submit">Ajouter</button>
+                    @if(addUserLessonMessageUser) {
+                        <p class="management__form-message" [ngClass]="isAddUserLessonMessageUserSuccess ? 'success' : 'error'">{{addUserLessonMessageUser}}</p>
+                    }
+                    @if(addUserLessonMessageLesson) {
+                        <p class="management__form-message" [ngClass]="isAddUserLessonMessageLessonSuccess ? 'success' : 'error'">{{addUserLessonMessageLesson}}</p>
+                    }
+                </form>
+            </div>
+            <div class="management__action">
+                <h3 class="management__action-title">Modifier la validation d'une leçon pour un utilisateur</h3>
+                <form class="management__form" [formGroup]="updateUserLessonForm" (submit)="onSubmitUserLessonUpdateForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="updateUserLessonId">Identifiant de l'association utilisateur / leçon</label>
+                        <input class="management__form-input" type="number" formControlName="userLessonId" id="updateUserLessonId" (input)="onChangeUpdateFormUserLessonId($event)">
+                        @if (formService.isInputValid(updateUserLessonForm, 'userLessonId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(updateUserLessonForm, 'userLessonId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserLessonToUpdate}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserLessonToUpdate}}</p>
+                        <p class="management__form-info">Leçon : {{lessonNameOfUserLessonToUpdate}}</p>
+                    </div>
+                    <label class="management__form-label management__form-label--checkbox" for="updateLessonValidation">
+                        <input class="management__form-input management__form-input--checkbox" type="checkbox" [checked]="isUpdateUserLessonValidated" (input)="onChangeUpdateFormUserLessonValidation($event)" formControlName="updateUserLessonValidation" id="updateLessonValidation"> Validée
+                    </label>
+                    <button class="management__form-button" [class.disabled]="updateUserLessonForm.invalid" [disabled]="updateUserLessonForm.invalid" type="submit">Modifier</button>
+                    @if(updateUserLessonMessage) {
+                        <p class="management__form-message" [ngClass]="isUpdateUserLessonMessageSuccess ? 'success' : 'error'">{{updateUserLessonMessage}}</p>
+                    }
+                </form>
+            </div>
+            <div class="management__action">
+                <h3 class="management__action-title">Supprimer l'accès à une leçon pour un utilisateur</h3>
+                <form class="management__form" [formGroup]="deleteUserLessonForm" (submit)="onSubmitUserLessonDeleteForm()">
+                    <div class="management__form-group">
+                        <label class="management__form-label" for="deleteUserLessonId">Identifiant de l'association utilisateur / leçon</label>
+                        <input class="management__form-input" type="number" formControlName="userLessonId" id="deleteUserLessonId" (input)="onChangeDeleteFormUserLessonId($event)">
+                        @if (formService.isInputValid(deleteUserLessonForm, 'userLessonId')) {
+                            <div class="management__form-message-group">
+                                @for (message of formService.getAllErrorMessages(deleteUserLessonForm, 'userLessonId'); track $index) {
+                                <p class="management__form-message error">{{message}}</p>
+                                }
+                            </div>
+                        }
+                        <p class="management__form-info">Utilisateur : {{userNameOfUserLessonToDelete}}</p>
+                        <p class="management__form-info">Email : {{userEmailOfUserLessonToDelete}}</p>
+                        <p class="management__form-info">Leçon : {{lessonNameOfUserLessonToDelete}}</p>
+                    </div>
+                    <button class="management__form-button" [class.disabled]="deleteUserLessonForm.invalid" [disabled]="deleteUserLessonForm.invalid" type="submit">Supprimer</button>
+                    @if(deleteUserLessonMessage) {
+                        <p class="management__form-message" [ngClass]="isDeleteUserLessonMessageSuccess ? 'success' : 'error'">{{deleteUserLessonMessage}}</p>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="purchases__read">
+        <h2 class="purchases__read-title">Rechercher les autorisations d'accès aux contenus pour les utilisateurs</h2>
+        <div class="read">
+            <h3 class="read__title">Accès aux thèmes par les utilisateurs</h3>
+            <div class="read__search">
+                <p class="read__search-text">Rechercher</p>
+                <input class="read__search-input" type="text" (input)="onSearchThemeInputChange($event)">
+            </div>
+            <table class="read__table">
+                <thead class="read__table-thead">
+                    <tr class="read__table-tr">
+                        <th class="read__table-th read__table-th--left">Identifiant de l'association<br>utilisateur / thème</th>
+                        <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
+                        <th class="read__table-th">Nom du thème (identifiant)</th>
+                        <th class="read__table-th">Certifié</th>
+                        <th class="read__table-th">Date de certification</th>
+                        <th class="read__table-th read__table-th--right">Date d'accès au thème</th>
+                    </tr>
+                </thead>
+                <tbody class="read__table-tbody">
+                    @for(userTheme of filteredUserThemes; track $index) {
+                        <tr class="read__table-tr">
+                            <td class="read__table-td read__table-td--left">{{ userTheme.id }}</td>
+                            <td class="read__table-td">{{ getUserName(userTheme.userId) }}</td>
+                            <td class="read__table-td">{{ getThemeName(userTheme.themeId) }}</td>
+                            <td class="read__table-td">{{ userTheme.isCertified ? 'Oui' : 'Non' }}</td>
+                            <td class="read__table-td">{{ userTheme.isCertified ? getFormatedDate(userTheme.updatedAt) : 'Non concerné' }}</td>
+                            <td class="read__table-td read__table-td--right">{{ getFormatedDate(userTheme.createdAt) }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="read">
+            <h3 class="read__title">Accès aux cursus par les utilisateurs</h3>
+            <div class="read__search">
+                <p class="read__search-text">Rechercher</p>
+                <input class="read__search-input" type="text" (input)="onSearchCursusInputChange($event)">
+            </div>
+            <table class="read__table">
+                <thead class="read__table-thead">
+                    <tr class="read__table-tr">
+                        <th class="read__table-th read__table-th--left">Identifiant de l'association<br>utilisateur / cursus</th>
+                        <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
+                        <th class="read__table-th">Nom du cursus (identifiant)</th>
+                        <th class="read__table-th">Validé</th>
+                        <th class="read__table-th">Date de validation</th>
+                        <th class="read__table-th read__table-th--right">Date d'accès au cursus</th>
+                    </tr>
+                </thead>
+                <tbody class="read__table-tbody">
+                    @for(userCursus of filteredUserCursus; track $index) {
+                        <tr class="read__table-tr">
+                            <td class="read__table-td read__table-td--left">{{ userCursus.id }}</td>
+                            <td class="read__table-td">{{ getUserName(userCursus.userId) }}</td>
+                            <td class="read__table-td">{{ getCursusName(userCursus.cursusId) }}</td>
+                            <td class="read__table-td">{{ userCursus.isValidated ? 'Oui' : 'Non' }}</td>
+                            <td class="read__table-td">{{ userCursus.isValidated ? getFormatedDate(userCursus.updatedAt) : 'Non concerné' }}</td>
+                            <td class="read__table-td read__table-td--right">{{ getFormatedDate(userCursus.createdAt) }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="read">
+            <h3 class="read__title">Accès aux leçons par les utilisateurs</h3>
+            <div class="read__search">
+                <p class="read__search-text">Rechercher</p>
+                <input class="read__search-input" type="text" (input)="onSearchLessonInputChange($event)">
+            </div>
+            <table class="read__table">
+                <thead class="read__table-thead">
+                    <tr class="read__table-tr">
+                        <th class="read__table-th read__table-th--left">Identifiant de l'association<br>utilisateur / leçon</th>
+                        <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
+                        <th class="read__table-th">Nom de la leçon (identifiant)</th>
+                        <th class="read__table-th">Validée</th>
+                        <th class="read__table-th">Date de validation</th>
+                        <th class="read__table-th read__table-th--right">Date d'accès à la leçon</th>
+                    </tr>
+                </thead>
+                <tbody class="read__table-tbody">
+                    @for(userLesson of filteredUserLessons; track $index) {
+                        <tr class="read__table-tr">
+                            <td class="read__table-td read__table-td--left">{{ userLesson.id }}</td>
+                            <td class="read__table-td">{{ getUserName(userLesson.userId) }}</td>
+                            <td class="read__table-td">{{ getLessonName(userLesson.lessonId) }}</td>
+                            <td class="read__table-td">{{ userLesson.isValidated ? 'Oui' : 'Non' }}</td>
+                            <td class="read__table-td">{{ userLesson.isValidated ? getFormatedDate(userLesson.updatedAt) : 'Non concernée' }}</td>
+                            <td class="read__table-td read__table-td--right">{{ getFormatedDate(userLesson.createdAt) }}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
