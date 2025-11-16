@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { UserCourses } from '../../../services/user-courses';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserLessonData } from '../../../core/models/api-response.model';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -52,9 +52,12 @@ export class UserElements {
     this.elementsInCurrentLesson = this.userCoursesService.elementsInCurrentLesson;
   }
 
-  async validateLesson() {
+  async updatedUserLessonValidation(isValidated: boolean) {
     try {
-      const validateResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.currentLesson.id}/validate`, {}, { withCredentials: true }));
+      const body = {
+        updateUserLessonValidation: isValidated,
+      };
+      const validateResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.currentUserLesson.id}`, body, { withCredentials: true }));
       
       await this.userCoursesService.syncUserLessonsForThisUser();
       await this.userCoursesService.syncUserCursusForThisUser();
@@ -67,27 +70,6 @@ export class UserElements {
         alert (errorResponse.message);
       } else {
         alert("Nous ne sommes pas en mesure d'accéder à nos serveur pour valider cette leçon.");
-      }
-      console.error(error);
-      // add external service like Sentry to save the error 
-    }
-  }
-
-  async invalidateLesson() {
-    try {
-      const invalidateResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.currentLesson.id}/invalidate`, {}, { withCredentials: true }));
-      
-      await this.userCoursesService.syncUserLessonsForThisUser();
-      await this.userCoursesService.syncUserCursusForThisUser();
-      await this.userCoursesService.syncUserThemesForThisUser();
-
-      this.router.navigate(['mes-cours', 'theme', this.currentTheme.id, 'cursus', this.currentCursus.id]);
-    } catch (error) {
-      if (error instanceof HttpErrorResponse) {
-        const errorResponse = error.error as ApiResponse;
-        alert (errorResponse.message);
-      } else {
-        alert("Nous ne sommes pas en mesure d'accéder à nos serveur pour invalider cette leçon.");
       }
       console.error(error);
       // add external service like Sentry to save the error 

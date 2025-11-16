@@ -14,6 +14,7 @@ import { notAuthGuard } from './guards/not-auth-guard';
 import { BackOfficeContents } from './pages/back-office/back-office-contents/back-office-contents';
 import { AllCourses } from './pages/all-courses/all-courses';
 import { Certifications } from './pages/certifications/certifications';
+import { BackOfficePurchases } from './pages/back-office/back-office-purchases/back-office-purchases';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -28,4 +29,5 @@ export const routes: Routes = [
   { path: 'back-office/contenus', component: BackOfficeContents, canActivate: [adminAuthGuard] },
   { path: 'nos-formations', component: AllCourses },
   { path: 'mes-certifications', component: Certifications },
+  { path: 'back-office/achats', component: BackOfficePurchases },
 ];
