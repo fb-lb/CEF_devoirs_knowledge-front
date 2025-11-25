@@ -2,11 +2,12 @@
   "name": "knowledge-front",
   "version": "0.0.0",
   "scripts": {
+    "build": "ng build --configuration=production",
+    "docs": "typedoc",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration=production",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "watch": "ng build --watch --configuration development"
   },
   "prettier": {
     "printWidth": 100,
@@ -48,6 +49,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "typedoc": "^0.28.14",
+    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "~5.9.2"
   }
 }

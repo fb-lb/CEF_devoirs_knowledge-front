@@ -3,6 +3,24 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
+/**
+ * Guard that checks whether the current user is not connected.
+ *
+ * @function notAuthGuard
+ *
+ * @param {ActivatedRouteSnapshot} route - The route that is being accessed.
+ * @param {RouterStateSnapshot} state - The current router state.
+ *
+ * @returns {boolean | UrlTree}
+ * Returns `true` if the user is not connected,
+ * otherwise returns a `UrlTree` redirecting the user to the home page
+ * with an error message in query parameters.
+ *
+ * @description
+ * - Checks that user has not a cookie named 'isAuth'.
+ * - If true, it validates the access to the page otherwise the user is redirected with a message
+ *   explaining that he needs to be disconnected.
+ */
 export const notAuthGuard: CanActivateFn = (route, state) => {
   const http = inject(HttpClient);
   const router = inject(Router);

@@ -1,0 +1,24 @@
+{
+  "entryPoints": ["src"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "plugin": ["typedoc-plugin-markdown"],
+
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/main.ts",
+    "**/app.ts",
+    "**/app.config.ts",
+    "**/app.routes.ts",
+    "**/components/**",
+    "**/core/**",
+    "**/pages/**",
+    "**/environments/**",
+  ],
+
+  "includeVersion": true,
+  "tsconfig": "tsconfig.json",
+  "excludeExternals": true,
+  "excludePrivate": true
+}

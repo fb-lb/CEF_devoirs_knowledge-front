@@ -113,16 +113,56 @@ export class UserCourses {
     return this.currentLesson.value;
   }
 
+  /**
+   * Fetches all available themes (for the requestor user) from the API and stores them sorted by order.
+   *
+   * @async
+   * @function syncAllThemesAvailable
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncAllThemesAvailable() {
-    const getAllThemesAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/theme/all', { withCredentials: true }));
-    if (getAllThemesAvailableRepsonse.data) this.allThemesAvailable = (getAllThemesAvailableRepsonse.data as ThemeData[]).sort((a, b) => a.order - b.order);
+    try {
+      const getAllThemesAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/theme/all', { withCredentials: true }));
+      if (getAllThemesAvailableRepsonse.data) this.allThemesAvailable = (getAllThemesAvailableRepsonse.data as ThemeData[]).sort((a, b) => a.order - b.order);
+    } catch (error) {
+      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
+      console.error(error);
+      // add external service like Sentry to save the error  
+    }
   }
 
+  /**
+   * Fetches all available cursus (for the requestor user) from the API and stores them sorted by order.
+   *
+   * @async
+   * @function syncAllCursusAvailable
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncAllCursusAvailable() {
-    const getAllCursusAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/cursus/all', { withCredentials: true }));
-    if (getAllCursusAvailableRepsonse.data) this.allCursusAvailable = (getAllCursusAvailableRepsonse.data as CursusData[]).sort((a, b) => a.order - b.order);
+    try {
+      const getAllCursusAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/cursus/all', { withCredentials: true }));
+      if (getAllCursusAvailableRepsonse.data) this.allCursusAvailable = (getAllCursusAvailableRepsonse.data as CursusData[]).sort((a, b) => a.order - b.order);
+    } catch (error) {
+      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
+      console.error(error);
+      // add external service like Sentry to save the error
+    }
+    
   }
 
+  /**
+   * Fetches all available lessons (for the requestor user) from the API and stores them sorted by order.
+   *
+   * @async
+   * @function syncAllLessonsAvailable
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncAllLessonsAvailable() {
     try {
       const getAllLessonsAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/lesson/all', { withCredentials: true }));
@@ -134,6 +174,15 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Fetches all available elements (for the requestor user) from the API and stores them sorted by order.
+   *
+   * @async
+   * @function syncAllElementsAvailable
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncAllElementsAvailable() {
     try {
       const getAllElementsAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/content/element/user/all', { withCredentials: true }));
@@ -145,6 +194,15 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Fetches all available user-theme relations (for the requestor user) from the API.
+   *
+   * @async
+   * @function syncUserThemesForThisUser
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncUserThemesForThisUser() {
     try {
       const getUserThemesForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/some', { withCredentials: true }));
@@ -156,6 +214,15 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Fetches all available user-cursus relations (for the requestor user) from the APIr.
+   *
+   * @async
+   * @function syncUserCursusForThisUser
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncUserCursusForThisUser() {
     try {
       const getUserCursusForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/some', { withCredentials: true }));
@@ -167,6 +234,15 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Fetches all available user-lesson relations (for the requestor user) from the API.
+   *
+   * @async
+   * @function syncUserLessonsForThisUser
+   * @returns {Promise<void>}
+   * 
+   * @throws Will display an alert if the server cannot respond.
+   */
   async syncUserLessonsForThisUser() {
     try {
       const getUserLessonsForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/some', { withCredentials: true }));
@@ -178,6 +254,19 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Retrieves and sets the current theme.
+   * 
+   * @function selectCurrentTheme
+   * 
+   * @param {number | null} newThemeId - The ID of the theme to select.
+   * 
+   * @returns {void}
+   * 
+   * @description
+   * - If newThemeId is null, it sets to null currentTheme, currentUserTheme and cursusInCurrentTheme list.
+   * - Otherwise it retrieves and sets current theme and also the currentUserTheme and find the cursus to push in cursusInCurrentTheme.
+   */
   selectCurrentTheme(newThemeId: number | null) {
     if (!newThemeId) {
       this.setCurrentTheme(null);
@@ -199,6 +288,19 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Retrieves and sets the current cursus.
+   * 
+   * @function selectCurrentCursus
+   * 
+   * @param {number | null} newCursusId - The ID of the cursus to select.
+   * 
+   * @returns {void}
+   * 
+   * @description
+   * - If newCursusId is null, it sets to null currentCursus, currentUserCursus and lessonsInCurrentCursus list.
+   * - Otherwise it retrieves and sets current cursus and also the currentUserCursus and find the lessons to push in lessonsInCurrentCursus.
+   */
   selectCurrentCursus(newCursusId: number | null) {
     if (!newCursusId) {
       this.setCurrentCursus(null);
@@ -220,6 +322,19 @@ export class UserCourses {
     }
   }
 
+  /**
+   * Retrieves and sets the current lesson.
+   * 
+   * @function selectCurrentLesson
+   * 
+   * @param {number | null} newLessonId - The ID of the lesson to select.
+   * 
+   * @returns {void}
+   * 
+   * @description
+   * - If newLessonId is null, it sets to null currentLesson, currentUserLesson and elementsInCurrentLesson list.
+   * - Otherwise it retrieves and sets current lesson and also the currentUserLesson and find the elements to push in elementsInCurrentLesson.
+   */
   selectCurrentLesson(newLessonId: number | null) {
     if (!newLessonId) {
       this.setCurrentLesson(null);
