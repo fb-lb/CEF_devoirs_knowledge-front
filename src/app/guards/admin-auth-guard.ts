@@ -4,6 +4,26 @@ import { CanActivateFn, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+/**
+ * Guard that checks whether the current user has admin privileges.
+ *
+ * @function adminAuthGuard
+ * @async
+ *
+ * @param {ActivatedRouteSnapshot} route - The route that is being accessed.
+ * @param {RouterStateSnapshot} state - The current router state.
+ *
+ * @returns {Promise<boolean | UrlTree>}
+ * Returns `true` if the user is an admin,
+ * otherwise returns a `UrlTree` redirecting the user to the home page
+ * with an error message in query parameters.
+ *
+ * @description
+ * - Sends a request to `/api/authentification/admin` to validate the admin session.
+ * - If the request fails with an `HttpErrorResponse`, the user is redirected with a message
+ *   explaining that admin rights are required.
+ * - If another error occurs, the user is redirected with a more generic message.
+ */
 export const adminAuthGuard: CanActivateFn = async (route, state) => {
   const http = inject(HttpClient);
   const router = inject(Router);

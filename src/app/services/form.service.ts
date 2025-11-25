@@ -5,14 +5,33 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class FormService {
-  // Function used in template to display form errors
+
+  /**
+   * Used to display form errors in templates
+   * @function isInputValid
+   * 
+   * @param {FormGroup} form - The FormGroup containing the control to check
+   * @param {string} inputName - The control name to retrieve in the FormGroup 
+   * 
+   * @returns {boolean} Returns `true` if the control to check is invalid and has been touched by the user
+   * else it returns `false`.
+   */
   isInputValid(form: FormGroup, inputName: string):boolean {
     const inputField = form.get(inputName);
     const result = inputField && inputField.invalid && (!inputField.pristine || inputField.touched);
     return !!result;
   }
 
-  // Used in template to retrieve all field errors in form
+  /**
+   * Used in template to retrieve all field errors in form for a specific field.
+   * 
+   * @function getAllErrorMessages
+   * 
+   * @param {FormGroup} form - The FormGroup containing the control to check
+   * @param {string} inputName - The control name to retrieve in the FormGroup 
+   * 
+   * @returns {string[]} Returns a list of messages related to field errors.
+   */
   getAllErrorMessages(form: FormGroup, inputName: string): string[] {
     const inputField = form.get(inputName);
     const messages: string[] = [];
