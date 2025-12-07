@@ -176,7 +176,7 @@ describe('Register', () => {
 
     req.error(new ProgressEvent('error'), {
       status: 0,
-      statusText: 'Unkonw error',
+      statusText: 'Unknown error',
     });
 
     tick();
