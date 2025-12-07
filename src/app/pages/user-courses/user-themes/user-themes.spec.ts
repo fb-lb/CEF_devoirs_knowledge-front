@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserThemes } from './user-themes';
+import { UserCourses } from '../../../services/user-courses';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('UserThemes', () => {
   let component: UserThemes;
@@ -8,7 +11,12 @@ describe('UserThemes', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserThemes]
+      imports: [UserThemes],
+      providers: [
+        UserCourses,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
     })
     .compileComponents();
 
@@ -16,6 +24,10 @@ describe('UserThemes', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
+  // afterEach(() => {
+  //   fixture.destroy();
+  // });
 
   it('should create', () => {
     expect(component).toBeTruthy();
