@@ -7,6 +7,7 @@ import { ApiResponse } from '../../core/models/api-response.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSquareXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { NgClass } from '@angular/common';
+import { StripeLoaderService } from '../../services/stripe-loader.service';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -33,11 +34,11 @@ export class StripePayment {
 
   faSquareXMark: IconDefinition = faSquareXmark;
 
-  constructor(private http: HttpClient) {};
+  constructor(private http: HttpClient, private stripeLoaderService: StripeLoaderService) {};
 
   async ngAfterViewInit() {
     //this.stripe = await this.paymentService.loadStripe();
-    this.stripe = await loadStripe(environment.stripePublicKey);
+    this.stripe = await this.stripeLoaderService.loadStripe();
     this.elements = this.stripe!.elements();
     this.card = this.elements.create('card');
     this.card.mount(this.cardElementContainer.nativeElement);

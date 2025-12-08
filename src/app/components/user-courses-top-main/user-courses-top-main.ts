@@ -31,8 +31,8 @@ export class UserCoursesTopMain {
   }
 
   ngOnDestroy() {
-    this.currentThemeSubscription.unsubscribe();
-    this.currentCursusSubscription.unsubscribe();
-    this.currentLessonSubscription.unsubscribe();
+    this.currentThemeSubscription?.unsubscribe();
+    this.currentCursusSubscription?.unsubscribe();
+    this.currentLessonSubscription?.unsubscribe();
   }
 }
