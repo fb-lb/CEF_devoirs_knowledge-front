@@ -16,6 +16,7 @@ import { StripePayment } from "../../components/stripe-payment/stripe-payment";
 })
 export class AllCourses {
   isAuthenticated: boolean = false;
+  isVerified: boolean = false;
 
   allThemes: ThemeData[] = [];
   allCursus: CursusData[] = [];
@@ -42,10 +43,14 @@ export class AllCourses {
   constructor (private http: HttpClient) {};
 
   async ngOnInit() {
-    // Check user authentication
+    // Check user authentication and email verification
     try {
       const isAuthenticatedResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/utilisateurs/isAuthenticated', { withCredentials: true }));
       this.isAuthenticated = isAuthenticatedResponse.success;
+      if (this.isAuthenticated) {
+        const isVerifiedResponse = await firstValueFrom(this.http.get<ApiResponse<boolean>>(environment.backUrl + '/api/utilisateurs/isVerified', { withCredentials: true }));
+        isVerifiedResponse.data ? this.isVerified = isVerifiedResponse.data : this.isVerified = false;
+      }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         const isAuthenticatedResponse = error.error as ApiResponse;
