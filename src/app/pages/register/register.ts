@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../../core/models/api-response.model';
 import { RouterLink } from '@angular/router';
 import { FormService } from '../../services/form.service';
+import { PasswordValidators } from '../../validators/password.validators';
 
 @Component({
   selector: 'app-register',
@@ -41,15 +42,19 @@ export class Register {
       Validators.email,
       Validators.maxLength(80),
     ]),
-    password: new FormControl('00000000', [
+    password: new FormControl('PassWord-12345-!', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(100),
+      PasswordValidators.neededCaracters,
+      PasswordValidators.invalidCaracters,
     ]),
-    confirmPassword: new FormControl('00000000', [
+    confirmPassword: new FormControl('PassWord-12345-!', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(100),
+      PasswordValidators.neededCaracters,
+      PasswordValidators.invalidCaracters,
     ]),
   });
 
