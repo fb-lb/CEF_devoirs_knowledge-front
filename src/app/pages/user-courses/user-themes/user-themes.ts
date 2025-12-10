@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { UserCourses } from '../../../services/user-courses';
 import { ThemeData } from '../../../core/models/api-response.model';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 
 @Component({

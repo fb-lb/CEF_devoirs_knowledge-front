@@ -8,6 +8,7 @@ import { BehaviorSubject, filter, firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
+import { UserCourses } from '../../services/user-courses';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +28,8 @@ export class Header {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private userCoursesService: UserCourses,
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +76,7 @@ export class Header {
           withCredentials: true,
         })
       );
+      this.userCoursesService.reset();
       this.isUserAuthenticated$.next(false);
       this.isAdminAuthenticated$.next(false);
       this.router.navigate(['/']);

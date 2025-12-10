@@ -37,6 +37,36 @@ export class UserCourses {
     return this.initPromised;
   }
 
+  // ---------------
+  // Service reset
+  // ---------------
+
+  public reset() {
+    this.initPromised = null;
+    this.isInitialized = false;
+
+    this.allThemesAvailable = [];
+    this.allCursusAvailable = [];
+    this.allLessonsAvailable = [];
+    this.allElementsAvailable = [];
+
+    this.userThemesForThisUser = [];
+    this.userCursusForThisUser = [];
+    this.userLessonsForThisUser = [];
+
+    this.setCurrentTheme(null);
+    this.setCurrentCursus(null);
+    this.setCurrentLesson(null);
+
+    this.currentUserTheme = null;
+    this.currentUserCursus = null;
+    this.currentUserLesson = null;
+
+    this.cursusInCurrentTheme = [];
+    this.lessonsInCurrentCursus = [];
+    this.elementsInCurrentLesson = [];
+  }
+
   // --------------------------------------------------------
   // All Themes / Cursus / Lessons available for this user
   // --------------------------------------------------------

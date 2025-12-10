@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { faSquareMinus, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { StripePayment } from "../../components/stripe-payment/stripe-payment";
+import { UserCourses } from '../../services/user-courses';
 
 @Component({
   selector: 'app-all-courses',
@@ -40,9 +41,11 @@ export class AllCourses {
     price: 0,
   }
 
-  constructor (private http: HttpClient) {};
+  constructor (private http: HttpClient, private userCoursesService: UserCourses) {};
 
   async ngOnInit() {
+    await this.userCoursesService.init();
+
     // Check user authentication and email verification
     try {
       const isAuthenticatedResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/utilisateurs/isAuthenticated', { withCredentials: true }));
@@ -157,8 +160,15 @@ export class AllCourses {
     this.isStripeModalOpen = true;
   }
 
-  handlePaymentSuccess() {
+  async handlePaymentSuccess() {
     this.setCursusAndLessonPrices();
+    this.userCoursesService.syncAllThemesAvailable();
+    this.userCoursesService.syncAllCursusAvailable();
+    this.userCoursesService.syncAllLessonsAvailable();
+    this.userCoursesService.syncAllElementsAvailable();
+    this.userCoursesService.syncUserThemesForThisUser();
+    this.userCoursesService.syncUserCursusForThisUser();
+    this.userCoursesService.syncUserLessonsForThisUser();
   }
 
   closeStripeModal() {
