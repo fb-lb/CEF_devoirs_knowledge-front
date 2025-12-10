@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
@@ -156,6 +156,7 @@ export class BackOfficeUsers {
         this.updateGlobalMessage = response.message;
         this.updateForm.reset();
         this.allUsers = await this.syncAllUsers();
+        this.onSearchReadFormChange();
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
@@ -246,6 +247,7 @@ export class BackOfficeUsers {
         this.deleteUpdatedAt = '';
         this.deleteUpdatedBy = '';
         this.allUsers = await this.syncAllUsers();
+        this.onSearchReadFormChange();
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;

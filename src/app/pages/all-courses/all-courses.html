@@ -1,5 +1,11 @@
 <main>
     <h1>Nos formations</h1>
+    @if(!isAuthenticated) {
+        <p>Vous devez être connecté en tant qu'utilisateur pour pouvoir acheter des cours.</p>
+    }
+    @if(isAuthenticated && !isVerified) {
+        <p>Vous devez avoir validé votre adresse mail pour pouvoir acheter des cours.</p>
+    }
     <ul class="all-courses">
         @for (theme of allThemes; track $index) {
             <li class="theme" [class.theme--active]="areThemesOpen.get(theme.id)">
@@ -18,7 +24,16 @@
                                     @if (cursus.price > 0) {
                                         <div class="cursus__buy-group">
                                             <p class="cursus__price">{{ cursus.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</p>
-                                            <button class="cursus__buy-button" [class.cursus__buy-button--disabled]="!isAuthenticated" [disabled]="!isAuthenticated" (click)="openStripeModal('cursus', cursus.id)" [title]="isAuthenticated ? '' : 'Vous devez être connecté à votre compte pour acheter un contenu.'" type="button">Acheter</button>
+                                            <button 
+                                                class="cursus__buy-button" 
+                                                [class.cursus__buy-button--disabled]="!isAuthenticated || (isAuthenticated && !isVerified)" 
+                                                [disabled]="!isAuthenticated || (isAuthenticated && !isVerified)" 
+                                                (click)="openStripeModal('cursus', cursus.id)" 
+                                                [title]="!isAuthenticated ? 'Vous devez être connecté à votre compte pour acheter un contenu.' : 
+                                                isAuthenticated && !isVerified ? 'Vous devez avoir validé votre adresse mail pour acheter un contenu.' : ''"
+                                                type="button">
+                                                Acheter
+                                            </button>
                                         </div>
                                     } @else if (cursus.price === 0) {
                                         <p class="cursus__available">Partiellement disponible</p>
@@ -37,7 +52,16 @@
                                     @if (lesson.price) {
                                         <div class="lesson__buy-group">
                                             <p class="lesson__price">{{ lesson.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</p>
-                                            <button class="lesson__buy-button" [class.lesson__buy-button--disabled]="!isAuthenticated" [disabled]="!isAuthenticated" (click)="openStripeModal('lesson', lesson.id)" [title]="isAuthenticated ? '' : 'Vous devez être connecté à votre compte pour acheter un contenu.'" type="button">Acheter</button>
+                                            <button 
+                                                class="lesson__buy-button" 
+                                                [class.lesson__buy-button--disabled]="!isAuthenticated || (isAuthenticated && !isVerified)" 
+                                                [disabled]="!isAuthenticated || (isAuthenticated && !isVerified)" 
+                                                (click)="openStripeModal('lesson', lesson.id)" 
+                                                [title]="!isAuthenticated ? 'Vous devez être connecté à votre compte pour acheter un contenu.' : 
+                                                isAuthenticated && !isVerified ? 'Vous devez avoir validé votre adresse mail pour acheter un contenu.' : ''" 
+                                                type="button">
+                                                Acheter
+                                            </button>
                                         </div>
                                     } @else {
                                         <p class="lesson__available">Disponible dans vos cours</p>

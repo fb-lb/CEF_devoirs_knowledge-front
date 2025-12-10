@@ -55,6 +55,21 @@ export class FormService {
       if (inputField?.errors?.['min']) {
         messages.push(`La valeur doit être supérieure ou égale à ${inputField.errors['min'].min}.`)
       }
+      if (inputField?.errors?.['lowercase']) {
+        messages.push('Au moins une lettre minuscule est requise.');
+      }
+      if (inputField?.errors?.['uppercase']) {
+        messages.push('Au moins une lettre majuscule est requise.');
+      }
+      if (inputField?.errors?.['digit']) {
+        messages.push('Au moins un chiffre est requis.');
+      }
+      if (inputField?.errors?.['special']) {
+        messages.push('Au moins un caractère spécial est requis (* $ % ! § - + & #).');
+      }
+      if (inputField?.errors?.['invalid']) {
+        messages.push('Les caractères autorisés sont seulement les lettres (minuscule/majuscule), les chiffres et ces caractères : * $ % ! § - + & #.');
+      }
     }
     return messages;
   }

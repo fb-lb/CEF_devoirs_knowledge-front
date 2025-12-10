@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../../core/models/api-response.model';
+import { PasswordValidators } from '../../validators/password.validators';
 
 @Component({
   selector: 'app-login',
@@ -30,10 +31,11 @@ export class Login {
       Validators.email,
       Validators.maxLength(80),
     ]),
-    password: new FormControl('00000000', [
+    password: new FormControl('PassWord-12345-!', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(100),
+      PasswordValidators.invalidCaracters,
     ]),
   });
 
