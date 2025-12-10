@@ -15,6 +15,7 @@ import { BackOfficeContents } from './pages/back-office/back-office-contents/bac
 import { AllCourses } from './pages/all-courses/all-courses';
 import { Certifications } from './pages/certifications/certifications';
 import { BackOfficePurchases } from './pages/back-office/back-office-purchases/back-office-purchases';
+import { NotFound } from './pages/not-found/not-found';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -30,4 +31,5 @@ export const routes: Routes = [
   { path: 'nos-formations', component: AllCourses },
   { path: 'mes-certifications', component: Certifications },
   { path: 'back-office/achats', component: BackOfficePurchases },
+  { path: '**', component: NotFound },
 ];
