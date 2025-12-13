@@ -29,7 +29,6 @@
         }
         </div>
     </div>
-    <!-- Faire des if .isValidated pour l'affichage des buttons/link (plutôt button avec un router à la fin de la méthode déclenchée au clic) -->
     @if(currentUserLesson && !currentUserLesson.isValidated) {
         <button class="courses__button" (click)="updatedUserLessonValidation(true)">Valider la leçon et revenir à la liste des leçons</button>
     }
