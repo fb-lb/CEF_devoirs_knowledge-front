@@ -68,6 +68,12 @@ export class Header {
     hiddenElement?.classList.toggle('smoothHidden');
   }
 
+  // Add smoothHidden class on element
+  hideElement(elementId: string): void {
+    const elementToHide: HTMLElement | null = document.getElementById(elementId);
+    elementToHide?.classList.contains('smoothHidden') ? null : elementToHide?.classList.add('smoothHidden');
+  }
+
   // Logout request
   async onClickLogout() {
     try {

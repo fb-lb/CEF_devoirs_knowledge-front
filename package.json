@@ -2,7 +2,8 @@
   "name": "knowledge-front",
   "version": "0.0.0",
   "scripts": {
-    "build": "ng build --configuration=production",
+    "build": "ng build --configuration production --base-href /CEF_devoirs_knowledge-front/",
+    "deploy": "angular-cli-ghpages --dir=dist/knowledge-front/browser",
     "docs": "typedoc",
     "ng": "ng",
     "start": "ng serve",
@@ -43,6 +44,7 @@
     "@angular/cli": "^20.2.2",
     "@angular/compiler-cli": "^20.2.0",
     "@types/jasmine": "~5.1.0",
+    "angular-cli-ghpages": "^2.0.3",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

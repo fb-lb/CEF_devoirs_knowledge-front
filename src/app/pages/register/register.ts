@@ -27,29 +27,29 @@ export class Register {
 
   // If you modify one of these validator, make sure that back end User.ts (in models) and registration validators (in form.service.ts) are also modified
   form = new FormGroup({
-    firstName: new FormControl('John', [
+    firstName: new FormControl('', [
       Validators.required,
       Validators.maxLength(60),
       Validators.pattern(/^[a-zA-Zéèêàîùôçïäâëüöœ '\-\.]*$/),
     ]),
-    lastName: new FormControl('Doe', [
+    lastName: new FormControl('', [
       Validators.required,
       Validators.maxLength(60),
       Validators.pattern(/^[a-zA-Zéèêàîùôçïäâëüöœ '\-\.]*$/),
     ]),
-    email: new FormControl('john.doe@test.com', [
+    email: new FormControl('', [
       Validators.required,
       Validators.email,
       Validators.maxLength(80),
     ]),
-    password: new FormControl('PassWord-12345-!', [
+    password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(100),
       PasswordValidators.neededCaracters,
       PasswordValidators.invalidCaracters,
     ]),
-    confirmPassword: new FormControl('PassWord-12345-!', [
+    confirmPassword: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(100),

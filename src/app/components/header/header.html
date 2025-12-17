@@ -1,15 +1,15 @@
 <header class="header">
     <div class="header__icons">
-        <a class="header__logo-link" routerLink=""><img class="header__logo-image" src="/assets/images/logo.webp" alt="Logo de l'entreprise Knowledge Learning. Dessin d'un livre gris ouvert avec Knowledge écrit en dessous en bleu foncé."></a>
+        <a class="header__logo-link" routerLink=""><img class="header__logo-image" src="assets/images/logo.webp" alt="Logo de l'entreprise Knowledge Learning. Dessin d'un livre gris ouvert avec Knowledge écrit en dessous en bleu foncé."></a>
         <fa-icon [icon]="faBars" class="header__burger-menu-icon" [ngClass]="{'hidden': isIconHidden}" (click)="toggleElement('nav-menu')"></fa-icon>
     </div>
     <nav id="nav-menu" class="header__nav " [ngClass]="{'hidden smoothHidden': isMenuHidden}" aria-label="Menu principal">
         <ul class="header__nav-list">
-            <li class="header__nav-item"><a class="header__nav-link" routerLink="" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
-            <li class="header__nav-item"><a class="header__nav-link" routerLink="/nos-formations" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Nos formations</a></li>
+            <li class="header__nav-item"><a class="header__nav-link" routerLink="" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}" (click)="hideElement('back-office-submenu')">Accueil</a></li>
+            <li class="header__nav-item"><a class="header__nav-link" routerLink="/nos-formations" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}" (click)="hideElement('back-office-submenu')">Nos formations</a></li>
             @if(isUserAuthenticated$ | async){
-                <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-cours" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Mes cours</a></li>
-                <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-certifications" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}">Mes certifications</a></li>
+                <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-cours" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}" (click)="hideElement('back-office-submenu')">Mes cours</a></li>
+                <li class="header__nav-item"><a class="header__nav-link" routerLink="/mes-certifications" routerLinkActive="active-menu-link" [routerLinkActiveOptions]="{exact: true}" (click)="hideElement('back-office-submenu')">Mes certifications</a></li>
             }
             @if(isAdminAuthenticated$ | async) {
                 <li class="header__nav-item header__nav-item--with-submenu">
