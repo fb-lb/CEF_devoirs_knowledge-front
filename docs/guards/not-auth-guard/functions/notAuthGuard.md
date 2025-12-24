@@ -8,7 +8,7 @@
 
 > **notAuthGuard**(`route`, `state`): `MaybeAsync`\<`GuardResult`\>
 
-Defined in: [src/app/guards/not-auth-guard.ts:24](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/1eda2ccc1e07a7ecab9604ca759bb89f2e164e03/src/app/guards/not-auth-guard.ts#L24)
+Defined in: [src/app/guards/not-auth-guard.ts:23](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/guards/not-auth-guard.ts#L23)
 
 Guard that checks whether the current user is not connected.
 
@@ -38,6 +38,6 @@ with an error message in query parameters.
 
 ## Description
 
-- Checks that user has not a cookie named 'isAuth'.
+- Checks that user has not a a token in local storage.
 - If true, it validates the access to the page otherwise the user is redirected with a message
   explaining that he needs to be disconnected.

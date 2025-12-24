@@ -1,55 +1,44 @@
 import { Component, HostListener } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { BehaviorSubject, filter, firstValueFrom, Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { CookieService } from 'ngx-cookie-service';
+import { NgClass } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { UserCourses } from '../../services/user-courses';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, NgClass, AsyncPipe],
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, NgClass],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
+  constructor(
+    private router: Router,
+    private userCoursesService: UserCourses,
+    private authService: AuthenticationService,
+  ) {}
+
   faBars: IconDefinition = faBars;
   isIconHidden: boolean = true;
   isMenuHidden: boolean = true;
-  isUserAuthenticated$ = new BehaviorSubject<boolean>(false);
-  isAdminAuthenticated$ = new BehaviorSubject<boolean>(false);
-  private routerSub!: Subscription;
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private cookieService: CookieService,
-    private userCoursesService: UserCourses,
-  ) {}
+  isUserAuthenticated: boolean = false;
+  isAdminAuthenticated: boolean = false;
+  userAuthSub!: Subscription;
+  adminAuthSub!: Subscription;
 
   ngOnInit(): void {
     this.onResize();
-    this.checkIsAuthCookie();
-    this.routerSub = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => this.checkIsAuthCookie());
+    this.userAuthSub = this.authService.isAuthenticated$.subscribe(value => this.isUserAuthenticated = value);
+    this.adminAuthSub = this.authService.isAdmin$.subscribe(value => this.isAdminAuthenticated = value);
   }
 
   ngOnDestroy(): void {
-    this.routerSub.unsubscribe();
-  }
-
-  // Check presence of isAuth cookie and update related BehaviorSubject
-  checkIsAuthCookie() {
-    const isUserAuth = this.cookieService.check('isAuth');
-    const isAdminAuth = this.cookieService.check('isAdmin');
-    this.isUserAuthenticated$.next(isUserAuth);
-    this.isAdminAuthenticated$.next(isAdminAuth);
+    this.userAuthSub.unsubscribe();
+    this.adminAuthSub.unsubscribe();
   }
 
   // Add event listener on window's size to hide/show menu and burger menu icon
@@ -74,28 +63,10 @@ export class Header {
     elementToHide?.classList.contains('smoothHidden') ? null : elementToHide?.classList.add('smoothHidden');
   }
 
-  // Logout request
+  // Logout
   async onClickLogout() {
-    try {
-      await firstValueFrom(
-        this.http.get(environment.backUrl + '/api/authentification/deconnexion', {
-          withCredentials: true,
-        })
-      );
-      this.userCoursesService.reset();
-      this.isUserAuthenticated$.next(false);
-      this.isAdminAuthenticated$.next(false);
-      this.router.navigate(['/']);
-    } catch (error) {
-      console.error(error);
-      // add external service like Sentry to save the error
-      this.router.navigate(['/'], {
-        queryParams: {
-          success: false,
-          message:
-            'Nous ne sommes pas parvenus à vous déconnecter pour le moment, veuillez ré-essayer ultérieurement. Nous sommes désolé pour la gène occasionnée. Nous mettons tout en oeuvre pour solutionner le problème.',
-        },
-      });
-    }
+    this.userCoursesService.reset();
+    this.authService.disconnected();
+    this.router.navigate(['/']);
   }
 }

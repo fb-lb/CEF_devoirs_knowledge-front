@@ -22,7 +22,7 @@
             }
             @if(element.type === 'image') {
                 <div class="element__image">
-                    <img class="element__source" src="{{ environment.backUrl + '/api/content/element/image/private/' + element.source }}" alt="{{ element.alternative }}">
+                    <img class="element__source" src="{{ environment.backUrl + '/api/content/element/image/private/' + element.source + '/' + element.token }}" alt="{{ element.alternative }}">
                     <p class="element__legend">{{ element.legend }}</p>
                 </div>
             }

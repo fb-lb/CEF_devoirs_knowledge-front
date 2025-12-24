@@ -1,7 +1,14 @@
+import { JwtPayload } from 'jwt-decode';
+
 export interface ApiResponse<T = any> {
   success: boolean;
   message: string;
   data?: T;
+}
+
+export interface TokenPayload extends JwtPayload {
+  id: number;
+  roles: ('user' | 'admin')[];
 }
 
 export interface UserData {
@@ -105,6 +112,7 @@ export type ElementData =
     legend: string | null;
     source: string;
     alternative: string;
+    token: string;
   });
 
 export interface UserThemeData {

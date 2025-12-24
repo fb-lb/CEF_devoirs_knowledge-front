@@ -42,11 +42,7 @@ export class BackOfficeUsers {
   // Get all users from database and store it in allUsers
   async syncAllUsers(): Promise<UserData[]> {
     try {
-      const response = await firstValueFrom(
-        this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous', {
-          withCredentials: true,
-        })
-      );
+      const response = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
       let allUsers: UserData[] = [];
       if (response.data) allUsers = response.data;
       allUsers.forEach((user) => {
@@ -147,11 +143,7 @@ export class BackOfficeUsers {
       try {
         const response = await firstValueFrom(
           this.http.patch<ApiResponse>(
-            environment.backUrl + `/api/utilisateurs/${this.updateForm.get('id')?.value}`,
-            this.updateForm.value,
-            { withCredentials: true }
-          )
-        );
+            environment.backUrl + `/api/utilisateurs/${this.updateForm.get('id')?.value}`, this.updateForm.value));
         this.isUpdateGlobalMessageSuccess = response.success;
         this.updateGlobalMessage = response.message;
         this.updateForm.reset();
@@ -229,11 +221,7 @@ export class BackOfficeUsers {
     if (this.deleteForm.valid) {
       try {
         const response = await firstValueFrom(
-          this.http.delete<ApiResponse>(
-            environment.backUrl + `/api/utilisateurs/${this.deleteForm.get('id')?.value}`,
-            { withCredentials: true }
-          )
-        );
+          this.http.delete<ApiResponse>(environment.backUrl + `/api/utilisateurs/${this.deleteForm.get('id')?.value}`));
         this.isDeleteGlobalMessageSuccess = response.success;
         this.deleteGlobalMessage = response.message;
         this.deleteForm.reset();

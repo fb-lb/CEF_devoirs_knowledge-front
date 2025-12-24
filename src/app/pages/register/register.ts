@@ -71,11 +71,7 @@ export class Register {
           this.formError = 'Les deux mots de passe doivent être identiques.';
           return;
         }
-        const response = await firstValueFrom(
-          this.http.post<ApiResponse>(environment.backUrl + '/api/inscription', this.form.value, {
-            withCredentials: true,
-          })
-        );
+        const response = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/inscription', this.form.value));
         this.formSuccess = response.message;
         this.form.reset();
       } catch (error) {

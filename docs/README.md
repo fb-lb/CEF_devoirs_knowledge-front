@@ -2,62 +2,81 @@
 
 ***
 
-# KnowledgeFront
+# Knowledge-front - Angular application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
+The aim of this project is to develop the front-end website for the Knowledge company. Knowledge sells training learning in various disciplines. Now they want to develop e-learning, so students have to be able to create their own account on the website, buy new courses and access to the lessons. They can also validate each lesson, if all lessons in cursus are validated then the cursus is validated too. If all cursus in a theme are validated, the user receives a certification for this theme. He can access to all certfications he has in certification page.
+
+There is also a back-office part for the administrator. There are three interfaces for the administrator :
+- a CRUD (Create / Read / Update / Delete) for courses' content
+- a CRUD for users
+- a CRUD for purchases
+
+Technologies used in this project :
+- Angular,
+- FontAwesome for icons,
+- EmailJS to send mails to new registered user with a link to validate user email,
+- Stripe to pay courses.
+
+Website URL :   
+Project repository : https://github.com/fb-lb/CEF_devoirs_knowledge-front/
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
+
+To really use the app, you need a back-end and a database to connect to an account and access to courses so be sure you install this project in this repository too :  
+https://github.com/fb-lb/CEF_devoirs_knowledge-back
+
+## Technologies
+
+- IDE : [VSCode](https://code.visualstudio.com/)
+- [NodeJs](https://nodejs.org/en/download)
+
+- Angular : 20.2.0
+- SCSS for the style
+- FontAwesome for icons : [create an account](https://fontawesome.com/start)
+- Stripe : [create an account](https://dashboard.stripe.com/register)
+
+## Project initialization
+
+Run `npm install` to install dependencies.
+
+## Environment variables
+
+In src/environments, create a file environment.ts with :
+```environment.ts
+export const environment = {
+  backUrl: "http://localhost:3000", // your back-end url
+  stripePublicKey: 'pk_test_your_public_key',
+}
+```
 
 ## Development server
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Run `ng serve` or `npm run start` for a dev server.  
+Navigate to `http://localhost:4200/`.  
+The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```bash
-ng generate component component-name
-```
+## Build
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Run `ng test` or `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-```bash
-ng test
-```
+## Further help
 
-## Running end-to-end tests
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-For end-to-end (e2e) testing, run:
+### Users password to login
 
-```bash
-ng e2e
-```
+> Here is the different user name to connect, John and Jane are admin and the other are users :  
+john.doe@test.com  
+jane.doe@test.com  
+jack.doe@test.com  
+james.doe@test.com  
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> This is the same password for all users : PassWord-12345-!

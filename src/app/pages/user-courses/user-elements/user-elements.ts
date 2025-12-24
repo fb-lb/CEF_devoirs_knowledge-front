@@ -57,7 +57,7 @@ export class UserElements {
       const body = {
         updateUserLessonValidation: isValidated,
       };
-      const validateResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.currentUserLesson.id}`, body, { withCredentials: true }));
+      const validateResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.currentUserLesson.id}`, body));
       
       await this.userCoursesService.syncUserLessonsForThisUser();
       await this.userCoursesService.syncUserCursusForThisUser();

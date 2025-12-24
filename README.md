@@ -1,6 +1,6 @@
 # Knowledge-front - Angular application
 
-The aim of this project is to develop the front-end website for the Knowledge company. Knowledge sells training learning in various disciplines. Now they want to develop e-learning, so students have to be able to create their own account on the website, buy new courses and access to the lessons. They can also validate each lesson, if all lessons in cursus are validated then the cursus is validated too. If all cursus in a theme are validated, the user receives a certification for this theme. He can access to all certfications he has in certification page.
+The aim of this project is to develop the front-end website for the Knowledge company. Knowledge sells training learning in various disciplines. Now they want to develop e-learning. So students have to be able to create their own account on the website, buy new courses and access to the lessons. They can also validate each lesson, if all lessons in cursus are validated then the cursus is validated too. If all cursus in a theme are validated, the user receives a certification for this theme. He can access to all certfications he has in certification page.
 
 There is also a back-office part for the administrator. There are three interfaces for the administrator :
 - a CRUD (Create / Read / Update / Delete) for courses' content
@@ -18,7 +18,7 @@ Project repository : https://github.com/fb-lb/CEF_devoirs_knowledge-front/
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
 
-To really use the app, you need a back-end and a database to connect to an account and access to courses so be sure you install this project in this repository too :  
+To really use the app, you need a back-end and a database to connect to an account and access to courses so be sure you install this project from this repository too :  
 https://github.com/fb-lb/CEF_devoirs_knowledge-back
 
 ## Technologies
@@ -57,7 +57,8 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build` or `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.  
+Be aware that `ng build` doesn't use base href but `npm run build` does (see the difference in package.json).
 
 ## Running unit tests
 
@@ -69,7 +70,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ### Users password to login
 
-> Here is the different user name to connect, John and Jane are admin and the other are users :  
+> Here is the different user name to connect, John and Jane are admin and the other are only users :  
 john.doe@test.com  
 jane.doe@test.com  
 jack.doe@test.com  

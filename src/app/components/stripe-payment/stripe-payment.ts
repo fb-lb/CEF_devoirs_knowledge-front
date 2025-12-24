@@ -53,7 +53,7 @@ export class StripePayment {
       const response = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/stripe/create-payment-intent', { 
         type: this.courseType,
         courseId: this.courseId,
-      }, { withCredentials: true }));
+      }));
 
       if (!response.data) throw new Error('No data property in response in pay function in stripe-payment.ts');
       const clientSecret: string = response.data;
@@ -70,8 +70,8 @@ export class StripePayment {
       this.isMessageSuccess = true;
       this.message = 'Merci pour votre achat, vous pouvez maintenant accéder à ce cours.\nNous vous souhaitons un bon apprentissage.';
 
-      if (this.courseType === 'cursus') await firstValueFrom(this.http.post(environment.backUrl + '/api/user-cursus/add', { courseId: this.courseId }, { withCredentials: true }));
-      if (this.courseType === 'lesson') await firstValueFrom(this.http.post(environment.backUrl + '/api/user-lesson/add', { courseId: this.courseId }, { withCredentials: true }));
+      if (this.courseType === 'cursus') await firstValueFrom(this.http.post(environment.backUrl + '/api/user-cursus/add', { courseId: this.courseId }));
+      if (this.courseType === 'lesson') await firstValueFrom(this.http.post(environment.backUrl + '/api/user-lesson/add', { courseId: this.courseId }));
 
       this.isPayed = true;
       this.paymentSucceeded.emit();

@@ -8,7 +8,7 @@
 
 > **adminAuthGuard**(`route`, `state`): `MaybeAsync`\<`GuardResult`\>
 
-Defined in: [src/app/guards/admin-auth-guard.ts:27](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/1eda2ccc1e07a7ecab9604ca759bb89f2e164e03/src/app/guards/admin-auth-guard.ts#L27)
+Defined in: [src/app/guards/admin-auth-guard.ts:27](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/guards/admin-auth-guard.ts#L27)
 
 Guard that checks whether the current user has admin privileges.
 
