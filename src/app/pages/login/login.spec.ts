@@ -4,17 +4,20 @@ import { Login } from './login';
 import { FormService } from '../../services/form.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { of, throwError } from 'rxjs';
+import { AuthenticationService } from '../../services/authentication.service';
 
 describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   let formService: FormService;
+  let authService: AuthenticationService;
   let httpMock: HttpTestingController;
   let router: jasmine.SpyObj<Router>;
   let consoleSpy: jasmine.Spy;
+  let bearerToken: string;
 
   beforeEach(async () => {
     //const routerSpy = jasmine.createSpyObj('Router', ['navigate', 'createUrlTree', 'serializeUrl']);
@@ -51,8 +54,10 @@ describe('Login', () => {
 
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     formService = TestBed.inject(FormService);
+    authService = TestBed.inject(AuthenticationService);
     httpMock = TestBed.inject(HttpTestingController);
     consoleSpy = spyOn(console, 'error');
+    bearerToken = "Bearer eygtrgtgrg.56151nyth16ty1.ty6j16yt1jty1j";
 
     fixture.detectChanges();
   });
@@ -64,6 +69,7 @@ describe('Login', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
     expect(formService).toBeTruthy();
+    expect(authService).toBeTruthy();
   });
 
   it('should submit a valid form and redirect to home page', fakeAsync(() => {
@@ -77,14 +83,20 @@ describe('Login', () => {
     const req = httpMock.expectOne(environment.backUrl + '/api/authentification/connexion');
     expect(req.request.method).toBe('POST');
 
-    req.flush({
+    req.flush(
+      {
       success: true,
       message: "",
-    });
+      },
+      {
+        headers: { Authorization: bearerToken },
+      }
+    );
 
     tick();
     fixture.detectChanges();
 
+    expect(authService.connected).toHaveBeenCalledOnceWith(bearerToken);
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   }));
 
@@ -99,6 +111,7 @@ describe('Login', () => {
     httpMock.expectNone(environment.backUrl + '/api/authentification/connexion');
     expect(component.form.touched).toBe(true);
     expect(component.formError).toBe('');
+    expect(authService.connected).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
@@ -126,6 +139,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(component.formError).toBe("Cet email ne correspond à aucun compte enregistré.");
+    expect(authService.connected).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
   }));
@@ -148,6 +162,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(component.formError).toBe("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+    expect(authService.connected).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
   }));
@@ -168,6 +183,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(component.formError).toBe("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+    expect(authService.connected).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   }));

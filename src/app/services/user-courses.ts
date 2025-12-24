@@ -3,13 +3,14 @@ import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserCursusData, UserLessonData, UserThemeData } from '../core/models/api-response.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserCourses {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthenticationService) {}
 
   // -------------------------
   // Service initialisation
@@ -24,13 +25,18 @@ export class UserCourses {
     if (this.initPromised) return this.initPromised;
 
     this.initPromised = (async () => {
-      await this.syncAllThemesAvailable();
-      await this.syncAllCursusAvailable();
-      await this.syncAllLessonsAvailable();
-      await this.syncAllElementsAvailable();
-      await this.syncUserThemesForThisUser();
-      await this.syncUserCursusForThisUser();
-      await this.syncUserLessonsForThisUser();
+      if (this.authService.getIsAuthenticated()) {
+        await Promise.all([
+          this.syncAllThemesAvailable(),
+          this.syncAllCursusAvailable(),
+          this.syncAllLessonsAvailable(),
+          this.syncAllElementsAvailable(),
+          this.syncUserThemesForThisUser(),
+          this.syncUserCursusForThisUser(),
+          this.syncUserLessonsForThisUser(),
+        ]);
+      }
+
       this.isInitialized = true;
     })();
     
@@ -150,14 +156,13 @@ export class UserCourses {
    * @function syncAllThemesAvailable
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncAllThemesAvailable() {
     try {
-      const getAllThemesAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/theme/all', { withCredentials: true }));
+      const getAllThemesAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/theme/all'));
       if (getAllThemesAvailableRepsonse.data) this.allThemesAvailable = (getAllThemesAvailableRepsonse.data as ThemeData[]).sort((a, b) => a.order - b.order);
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error  
     }
@@ -170,14 +175,13 @@ export class UserCourses {
    * @function syncAllCursusAvailable
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncAllCursusAvailable() {
     try {
-      const getAllCursusAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/cursus/all', { withCredentials: true }));
+      const getAllCursusAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/cursus/all'));
       if (getAllCursusAvailableRepsonse.data) this.allCursusAvailable = (getAllCursusAvailableRepsonse.data as CursusData[]).sort((a, b) => a.order - b.order);
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error
     }
@@ -191,14 +195,13 @@ export class UserCourses {
    * @function syncAllLessonsAvailable
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncAllLessonsAvailable() {
     try {
-      const getAllLessonsAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/lesson/all', { withCredentials: true }));
+      const getAllLessonsAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/lesson/all'));
       if (getAllLessonsAvailableRepsonse.data) this.allLessonsAvailable = (getAllLessonsAvailableRepsonse.data as LessonData[]).sort((a, b) => a.order - b.order);
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error   
     }
@@ -211,14 +214,13 @@ export class UserCourses {
    * @function syncAllElementsAvailable
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncAllElementsAvailable() {
     try {
-      const getAllElementsAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/content/element/user/all', { withCredentials: true }));
+      const getAllElementsAvailableRepsonse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/content/element/user/all'));
       if (getAllElementsAvailableRepsonse.data) this.allElementsAvailable = (getAllElementsAvailableRepsonse.data as ElementData[]).sort((a, b) => a.order - b.order);
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error   
     }
@@ -231,14 +233,13 @@ export class UserCourses {
    * @function syncUserThemesForThisUser
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncUserThemesForThisUser() {
     try {
-      const getUserThemesForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/some', { withCredentials: true }));
+      const getUserThemesForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-theme/some'));
       if (getUserThemesForThisUserResponse.data) this.userThemesForThisUser = getUserThemesForThisUserResponse.data;
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error   
     }
@@ -251,14 +252,13 @@ export class UserCourses {
    * @function syncUserCursusForThisUser
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncUserCursusForThisUser() {
     try {
-      const getUserCursusForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/some', { withCredentials: true }));
+      const getUserCursusForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/some'));
       if (getUserCursusForThisUserResponse.data) this.userCursusForThisUser = getUserCursusForThisUserResponse.data;
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error   
     }
@@ -271,14 +271,13 @@ export class UserCourses {
    * @function syncUserLessonsForThisUser
    * @returns {Promise<void>}
    * 
-   * @throws Will display an alert if the server cannot respond.
+   * @throws {Error} If an unexpected error occurs
    */
   async syncUserLessonsForThisUser() {
     try {
-      const getUserLessonsForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/some', { withCredentials: true }));
+      const getUserLessonsForThisUserResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/some'));
       if (getUserLessonsForThisUserResponse.data) this.userLessonsForThisUser = getUserLessonsForThisUserResponse.data;
     } catch (error) {
-      alert('Nous ne sommes pas en mesure de récupérer les données sur notre serveur pour le moment, veuillez ré-essayer utlérieurement.');
       console.error(error);
       // add external service like Sentry to save the error   
     }

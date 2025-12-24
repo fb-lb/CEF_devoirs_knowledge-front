@@ -205,7 +205,7 @@
 
                                 @if(element.type === 'image') {
                                     <p class="course-elements__image-legend"><span>Légende :</span> {{ element.legend ?? 'Absence de légende' }}</p>
-                                    <img class="course-elements__image" [class.course-elements__image--active]="activeElementId === element.id" [src]="environment.backUrl +'/api/content/element/image/private/'+ element.source" [alt]="element.alternative">
+                                    <img class="course-elements__image" [class.course-elements__image--active]="activeElementId === element.id" [src]="environment.backUrl +'/api/content/element/image/private/'+ element.source + '/' + element.token" [alt]="element.alternative">
                                 }
 
                                 @if (activeElementId === element.id) {

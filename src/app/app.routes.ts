@@ -29,7 +29,7 @@ export const routes: Routes = [
   { path: 'back-office/utilisateurs', component: BackOfficeUsers, canActivate: [adminAuthGuard] },
   { path: 'back-office/contenus', component: BackOfficeContents, canActivate: [adminAuthGuard] },
   { path: 'nos-formations', component: AllCourses },
-  { path: 'mes-certifications', component: Certifications },
-  { path: 'back-office/achats', component: BackOfficePurchases },
+  { path: 'mes-certifications', component: Certifications, canActivate: [userAuthGuard] },
+  { path: 'back-office/achats', component: BackOfficePurchases, canActivate: [adminAuthGuard] },
   { path: '**', component: NotFound },
 ];

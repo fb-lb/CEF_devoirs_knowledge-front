@@ -25,11 +25,7 @@ export class EmailCheck {
     try {
       const response = await firstValueFrom(
         this.http.post<ApiResponse>(
-          environment.backUrl + '/api/inscription/check-email',
-          { token: this.token },
-          { withCredentials: true }
-        )
-      );
+          environment.backUrl + '/api/inscription/check-email', { token: this.token }));
       this.router.navigate(['/'], {
         queryParams: {
           success: response.success,

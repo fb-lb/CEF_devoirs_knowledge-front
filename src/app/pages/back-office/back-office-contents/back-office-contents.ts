@@ -116,26 +116,26 @@ export class BackOfficeContents {
 
     try {
       // Users retrieval
-      const responseUser = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous', { withCredentials: true }));
+      const responseUser = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
       if (responseUser.data) this.allUsers = responseUser.data;
 
       // Themes retrieval, in order
-      const responseTheme = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all', { withCredentials: true }));
+      const responseTheme = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
       if (responseTheme.data) {
         this.allThemes = responseTheme.data.sort((a,b) => a.order - b.order);
         this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
       }
 
       // Cursus retrieval
-      const responseCursus = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all', { withCredentials: true }));
+      const responseCursus = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all'));
       if (responseCursus.data) this.allCursus = this.addProperties(responseCursus.data, this.allUsers) as CursusData[];
 
       // Lessons retrieval
-      const responseLesson = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all', { withCredentials: true }));
+      const responseLesson = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
       if (responseLesson.data) this.allLessons = this.addProperties(responseLesson.data, this.allUsers) as LessonData[];
 
       // Elements retrieval
-      const responseElement = await firstValueFrom(this.http.get<ApiResponse<ElementData[]>>(environment.backUrl + '/api/content/element/all', { withCredentials: true }));
+      const responseElement = await firstValueFrom(this.http.get<ApiResponse<ElementData[]>>(environment.backUrl + '/api/content/element/all'));
       if (responseElement.data) this.allElements = this.addProperties(responseElement.data, this.allUsers) as ElementData[];
     } catch (error) {
       alert('Nous ne parvenons pas à nous connecter au serveur. Veuillez nous excuser pour la gène occasionnée.');
@@ -207,7 +207,7 @@ export class BackOfficeContents {
 
       if (element.type === 'image') {
         try {
-          const fileBlob = await firstValueFrom(this.http.get(environment.backUrl +'/api/content/element/image/private/'+ element.source, { withCredentials: true, responseType: 'blob' }));
+          const fileBlob = await firstValueFrom(this.http.get(environment.backUrl +'/api/content/element/image/private/'+ element.source + '/' + element.token, { responseType: 'blob' }));
           const file = new File([fileBlob], element.source, { type: fileBlob.type });
 
           this.updateImagePreviewUrls.set(element.id, URL.createObjectURL(fileBlob));
@@ -369,7 +369,7 @@ export class BackOfficeContents {
     event.stopPropagation();
 
     try {
-      const response = await firstValueFrom(this.http.get<ApiResponse<any>>(environment.backUrl + `/api/content/${type}/${id}/${move}`, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.get<ApiResponse<any>>(environment.backUrl + `/api/content/${type}/${id}/${move}`));
       const newList = response.data ?? [];
       if(type === 'theme') {
         this.allThemes = newList.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
@@ -427,7 +427,7 @@ export class BackOfficeContents {
       }
 
       try {
-        const response = await firstValueFrom(this.http.post<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/add', this.addThemeForm.value, {withCredentials: true}));
+        const response = await firstValueFrom(this.http.post<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/add', this.addThemeForm.value));
         this.addThemeGlobalErrorMessage = response.message;
         this.isAddThemeGlobalErrorMessageSuccess = true;
         if (response.data) {
@@ -496,7 +496,7 @@ export class BackOfficeContents {
       }
 
       try {
-        const response = await firstValueFrom(this.http.post<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/add', this.addCursusForm.value, {withCredentials: true}));
+        const response = await firstValueFrom(this.http.post<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/add', this.addCursusForm.value));
         this.addCursusGlobalErrorMessage = response.message;
         this.isAddCursusGlobalErrorMessageSuccess = true;
         if (response.data) {
@@ -570,7 +570,7 @@ export class BackOfficeContents {
       }
 
       try {
-        const response = await firstValueFrom(this.http.post<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/add', this.addLessonForm.value, {withCredentials: true}));
+        const response = await firstValueFrom(this.http.post<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/add', this.addLessonForm.value));
         this.addLessonGlobalErrorMessage = response.message;
         this.isAddLessonGlobalErrorMessageSuccess = true;
         if (response.data) {
@@ -675,7 +675,7 @@ export class BackOfficeContents {
           if (file) formData.append('file', file);
         }
 
-        const response = await firstValueFrom(this.http.post<ApiResponse<ElementData[]>>(environment.backUrl + `/api/content/element/${this.addElementForm.get('type')?.value}/add`, formData, {withCredentials: true}));
+        const response = await firstValueFrom(this.http.post<ApiResponse<ElementData[]>>(environment.backUrl + `/api/content/element/${this.addElementForm.get('type')?.value}/add`, formData));
         
         this.addElementGlobalErrorMessage = response.message;
         this.isAddElementGlobalErrorMessageSuccess = true;
@@ -702,7 +702,7 @@ export class BackOfficeContents {
 
       if (newElement.type === 'image') {
         try {
-          const fileBlob = await firstValueFrom(this.http.get(environment.backUrl +'/api/content/element/image/private/'+ newElement.source, { withCredentials: true, responseType: 'blob' }));
+          const fileBlob = await firstValueFrom(this.http.get(environment.backUrl +'/api/content/element/image/private/'+ newElement.source + '/' + newElement.token, { responseType: 'blob' }));
           const file = new File([fileBlob], newElement.source, { type: fileBlob.type });
 
           this.updateImagePreviewUrls.set(newElement.id, URL.createObjectURL(fileBlob));
@@ -750,7 +750,7 @@ export class BackOfficeContents {
 
   async onDelete(type: 'theme' | 'cursus' | 'lesson' | 'element', id: number) {
     try {
-      const response = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/content/${type}/${id}`, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/content/${type}/${id}`));
       const newList = response.data ?? [];
       if(type === 'theme') {
         this.allThemes = newList.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
@@ -801,7 +801,7 @@ export class BackOfficeContents {
       this.updateThemeGlobalMessage = "";
       if (updateForm.invalid) return;
 
-      const response = await firstValueFrom(this.http.patch<ApiResponse<ThemeData[]>>(environment.backUrl + `/api/content/theme/${themeId}`, updateForm.value, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.patch<ApiResponse<ThemeData[]>>(environment.backUrl + `/api/content/theme/${themeId}`, updateForm.value));
       if (response.data) {
         this.allThemes = response.data.sort((a: ThemeData,b: ThemeData) => a.order - b.order);
         this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
@@ -834,7 +834,7 @@ export class BackOfficeContents {
       this.updateCursusGlobalMessage = "";
       if (updateForm.invalid) return;
 
-      const response = await firstValueFrom(this.http.patch<ApiResponse<CursusData[]>>(environment.backUrl + `/api/content/cursus/${cursusId}`, updateForm.value, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.patch<ApiResponse<CursusData[]>>(environment.backUrl + `/api/content/cursus/${cursusId}`, updateForm.value));
       if (response.data) {
         this.allCursus = this.addProperties(response.data, this.allUsers) as CursusData[];
         if (this.currentThemeId) this.selectCursusToDisplay(this.currentThemeId);
@@ -867,7 +867,7 @@ export class BackOfficeContents {
       this.updateLessonGlobalMessage = "";
       if (updateForm.invalid) return;
 
-      const response = await firstValueFrom(this.http.patch<ApiResponse<LessonData[]>>(environment.backUrl + `/api/content/lesson/${lessonId}`, updateForm.value, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.patch<ApiResponse<LessonData[]>>(environment.backUrl + `/api/content/lesson/${lessonId}`, updateForm.value));
       if (response.data) {
         this.allLessons = this.addProperties(response.data, this.allUsers) as LessonData[];
         if (this.currentCursusId) this.selectLessonsToDisplay(this.currentCursusId);
@@ -945,7 +945,7 @@ export class BackOfficeContents {
         if (file) formData.append('file', file);
       }
 
-      const response = await firstValueFrom(this.http.patch<ApiResponse<ElementData[]>>(environment.backUrl + `/api/content/element/${type}/${elementId}`, formData, { withCredentials: true }));
+      const response = await firstValueFrom(this.http.patch<ApiResponse<ElementData[]>>(environment.backUrl + `/api/content/element/${type}/${elementId}`, formData));
       if (response.data) {
         this.allElements = this.addProperties(response.data, this.allUsers) as ElementData[];
         if (this.currentLessonId) this.selectElementsToDisplay(this.currentLessonId);

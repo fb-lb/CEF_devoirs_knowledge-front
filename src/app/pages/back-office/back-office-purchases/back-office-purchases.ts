@@ -88,16 +88,16 @@ export class BackOfficePurchases {
 
   async ngOnInit() {
     try {
-      const getAllUsersReponse = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous', { withCredentials: true }));
+      const getAllUsersReponse = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
       if (getAllUsersReponse.data) this.allUsers = getAllUsersReponse.data;
 
-      const getAllThemesResponse = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all', { withCredentials: true }));
+      const getAllThemesResponse = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
       if (getAllThemesResponse.data) this.allThemes = getAllThemesResponse.data;
 
-      const getAllCursusResponse = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all', { withCredentials: true }));
+      const getAllCursusResponse = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all'));
       if (getAllCursusResponse.data) this.allCursus = getAllCursusResponse.data;
 
-      const getAllLessonsResponse = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all', { withCredentials: true }));
+      const getAllLessonsResponse = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
       if (getAllLessonsResponse.data) this.allLessons = getAllLessonsResponse.data;
 
       await this.syncAllUserCoursesData();
@@ -114,19 +114,19 @@ export class BackOfficePurchases {
   }
 
   async syncAllUserCoursesData() {
-    const getAllUserThemeResponse = await firstValueFrom(this.http.get<ApiResponse<UserThemeData[]>>(environment.backUrl + '/api/user-theme/all', { withCredentials: true }));
+    const getAllUserThemeResponse = await firstValueFrom(this.http.get<ApiResponse<UserThemeData[]>>(environment.backUrl + '/api/user-theme/all'));
     if (getAllUserThemeResponse.data) {
       this.allUserThemes = getAllUserThemeResponse.data;
       this.filteredUserThemes = getAllUserThemeResponse.data;
     }
 
-    const getAllUserCursusResponse = await firstValueFrom(this.http.get<ApiResponse<UserCursusData[]>>(environment.backUrl + '/api/user-cursus/all', { withCredentials: true }));
+    const getAllUserCursusResponse = await firstValueFrom(this.http.get<ApiResponse<UserCursusData[]>>(environment.backUrl + '/api/user-cursus/all'));
     if (getAllUserCursusResponse.data) {
       this.allUserCursus = getAllUserCursusResponse.data;
       this.filteredUserCursus = getAllUserCursusResponse.data;
     }
 
-    const getAllUserLessonResponse = await firstValueFrom(this.http.get<ApiResponse<UserLessonData[]>>(environment.backUrl + '/api/user-lesson/all', { withCredentials: true }));
+    const getAllUserLessonResponse = await firstValueFrom(this.http.get<ApiResponse<UserLessonData[]>>(environment.backUrl + '/api/user-lesson/all'));
     if (getAllUserLessonResponse.data) {
       this.allUserLessons = getAllUserLessonResponse.data;
       this.filteredUserLessons = getAllUserLessonResponse.data;
@@ -232,7 +232,7 @@ export class BackOfficePurchases {
         courseId: this.addUserCursusForm.controls.cursusId.value,
         userId: this.addUserCursusForm.controls.userId.value,
       }
-      const addUserCursusResponse = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/user-cursus/add', body, {withCredentials: true}));
+      const addUserCursusResponse = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/user-cursus/add', body));
       this.isAddUserCursusMessageUserSuccess = addUserCursusResponse.success;
       this.addUserCursusMessageUser = addUserCursusResponse.message;
       if (addUserCursusResponse.success) {
@@ -340,7 +340,7 @@ export class BackOfficePurchases {
         courseId: this.addUserLessonForm.controls.lessonId.value,
         userId: this.addUserLessonForm.controls.userId.value,
       }
-      const addUserLessonResponse = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/user-lesson/add', body, {withCredentials: true}));
+      const addUserLessonResponse = await firstValueFrom(this.http.post<ApiResponse>(environment.backUrl + '/api/user-lesson/add', body));
       this.isAddUserLessonMessageUserSuccess = addUserLessonResponse.success;
       this.addUserLessonMessageUser = addUserLessonResponse.message;
       if (addUserLessonResponse.success) {
@@ -431,7 +431,7 @@ export class BackOfficePurchases {
 
     try {
       const userThemeId = this.updateUserThemeForm.value.userThemeId;
-      const updateUserThemeResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-theme/${userThemeId}`, this.updateUserThemeForm.value, {withCredentials: true}));
+      const updateUserThemeResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-theme/${userThemeId}`, this.updateUserThemeForm.value));
       this.isUpdateUserThemeMessageSuccess = updateUserThemeResponse.success;
       this.updateUserThemeMessage = updateUserThemeResponse.message;
       if (updateUserThemeResponse.success) {
@@ -523,7 +523,7 @@ export class BackOfficePurchases {
 
     try {
       const userCursusId = this.updateUserCursusForm.value.userCursusId;
-      const updateUserCursusResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-cursus/${userCursusId}`, this.updateUserCursusForm.value, {withCredentials: true}));
+      const updateUserCursusResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-cursus/${userCursusId}`, this.updateUserCursusForm.value));
       this.isUpdateUserCursusMessageSuccess = updateUserCursusResponse.success;
       this.updateUserCursusMessage = updateUserCursusResponse.message;
       if (updateUserCursusResponse.success) {
@@ -615,7 +615,7 @@ export class BackOfficePurchases {
 
     try {
       const userLessonId = this.updateUserLessonForm.value.userLessonId;
-      const updateUserLessonResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${userLessonId}`, this.updateUserLessonForm.value, {withCredentials: true}));
+      const updateUserLessonResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${userLessonId}`, this.updateUserLessonForm.value));
       this.isUpdateUserLessonMessageSuccess = updateUserLessonResponse.success;
       this.updateUserLessonMessage = updateUserLessonResponse.message;
       if(updateUserLessonResponse.success) {
@@ -694,7 +694,7 @@ export class BackOfficePurchases {
 
     try {
       const userThemeId = this.deleteUserThemeForm.controls.userThemeId.value;
-      const deleteUserThemeResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-theme/${userThemeId}`, {withCredentials: true}));
+      const deleteUserThemeResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-theme/${userThemeId}`));
       this.isDeleteUserThemeMessageSuccess = deleteUserThemeResponse.success;
       this.deleteUserThemeMessage = deleteUserThemeResponse.message;
       if (deleteUserThemeResponse.success) {
@@ -772,7 +772,7 @@ export class BackOfficePurchases {
 
     try {
       const userCursusId = this.deleteUserCursusForm.controls.userCursusId.value;
-      const deleteUserCursusResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-cursus/${userCursusId}`, {withCredentials: true}));
+      const deleteUserCursusResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-cursus/${userCursusId}`));
       this.isDeleteUserCursusMessageSuccess = deleteUserCursusResponse.success;
       this.deleteUserCursusMessage = deleteUserCursusResponse.message;
       if (deleteUserCursusResponse.success) {
@@ -850,7 +850,7 @@ export class BackOfficePurchases {
 
     try {
       const userLessonId = this.deleteUserLessonForm.controls.userLessonId.value;
-      const deleteUserLessonResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-lesson/${userLessonId}`, {withCredentials: true}));
+      const deleteUserLessonResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-lesson/${userLessonId}`));
       this.isDeleteUserLessonMessageSuccess = deleteUserLessonResponse.success;
       this.deleteUserLessonMessage = deleteUserLessonResponse.message;
       if (deleteUserLessonResponse.success) {

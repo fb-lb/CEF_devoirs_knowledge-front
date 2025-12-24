@@ -30,9 +30,7 @@ export const adminAuthGuard: CanActivateFn = async (route, state) => {
 
   try {
     await firstValueFrom(
-      http.get(environment.backUrl + '/api/authentification/admin', {
-        withCredentials: true,
-      })
+      http.get(environment.backUrl + '/api/authentification/admin')
     );
     return true;
   } catch (error) {
@@ -40,7 +38,7 @@ export const adminAuthGuard: CanActivateFn = async (route, state) => {
       return router.createUrlTree(['/'], {
         queryParams: {
           success: false,
-          message: 'Vous ne possédez pas les droits suffisants pour accéder à cette page.',
+          message: 'Vous êtes actuellement déconnecté ou ne possédez pas les droits suffisants pour accéder à cette page.',
         },
       });
     }

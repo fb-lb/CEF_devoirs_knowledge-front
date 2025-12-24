@@ -8,7 +8,7 @@
 
 > **userAuthGuard**(`route`, `state`): `MaybeAsync`\<`GuardResult`\>
 
-Defined in: [src/app/guards/user-auth-guard.ts:24](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/1eda2ccc1e07a7ecab9604ca759bb89f2e164e03/src/app/guards/user-auth-guard.ts#L24)
+Defined in: [src/app/guards/user-auth-guard.ts:27](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/guards/user-auth-guard.ts#L27)
 
 Guard that checks whether the current user is connected as a user.
 
@@ -36,8 +36,11 @@ Returns `true` if the user is connected as a user,
 otherwise returns a `UrlTree` redirecting the user to the home page
 with an error message in query parameters.
 
+## Async
+
 ## Description
 
-- Checks that user has a cookie named 'isAuth'.
-- If true, it validates user session otherwise the user is redirected with a message
-  explaining that user rights are required.
+- Sends a request to `/api/authentification/user` to validate the user session.
+- If the request fails with an `HttpErrorResponse`, the user is redirected with a message
+  explaining that he has to be connected to access this page.
+- If another error occurs, the user is redirected with a more generic message.

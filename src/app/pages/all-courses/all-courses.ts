@@ -48,17 +48,17 @@ export class AllCourses {
 
     // Check user authentication and email verification
     try {
-      const isAuthenticatedResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/utilisateurs/isAuthenticated', { withCredentials: true }));
+      const isAuthenticatedResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/authentification/user'));
       this.isAuthenticated = isAuthenticatedResponse.success;
       if (this.isAuthenticated) {
-        const isVerifiedResponse = await firstValueFrom(this.http.get<ApiResponse<boolean>>(environment.backUrl + '/api/utilisateurs/isVerified', { withCredentials: true }));
+        const isVerifiedResponse = await firstValueFrom(this.http.get<ApiResponse<boolean>>(environment.backUrl + '/api/utilisateurs/isVerified'));
         isVerifiedResponse.data ? this.isVerified = isVerifiedResponse.data : this.isVerified = false;
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
-        const isAuthenticatedResponse = error.error as ApiResponse;
+        //const isAuthenticatedResponse = error.error as ApiResponse;
         this.isAuthenticated = false;
-        alert(isAuthenticatedResponse.message);
+        //alert(isAuthenticatedResponse.message);
       } else {
         alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée."); 
       }
@@ -97,7 +97,7 @@ export class AllCourses {
   async setCursusAndLessonPrices() {
     // Get all user-cursus and user-lesson
     if (this.isAuthenticated) {
-      const getUserLessonResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/some', { withCredentials: true }));
+      const getUserLessonResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-lesson/some'));
       let userLessons: UserLessonData[] = [];
       if (getUserLessonResponse.data) userLessons = getUserLessonResponse.data as UserLessonData[];
 
@@ -110,7 +110,7 @@ export class AllCourses {
         }
       }
 
-      const getUserCursusResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/some', { withCredentials: true }));
+      const getUserCursusResponse = await firstValueFrom(this.http.get<ApiResponse>(environment.backUrl + '/api/user-cursus/some'));
       let userCursus: UserCursusData[] = [];
       if (getUserCursusResponse.data) userCursus = getUserCursusResponse.data as UserCursusData[];
 

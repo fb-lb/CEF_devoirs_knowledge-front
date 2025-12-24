@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,9 @@ import { Footer } from './components/footer/footer';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('knowledge-front');
+  constructor(private authService: AuthenticationService){};
+
+  ngOnInit() {
+    this.authService.init();
+  }
 }

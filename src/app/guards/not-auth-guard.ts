@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 
 /**
  * Guard that checks whether the current user is not connected.
@@ -17,16 +16,15 @@ import { CookieService } from 'ngx-cookie-service';
  * with an error message in query parameters.
  *
  * @description
- * - Checks that user has not a cookie named 'isAuth'.
+ * - Checks that user has not a a token in local storage.
  * - If true, it validates the access to the page otherwise the user is redirected with a message
  *   explaining that he needs to be disconnected.
  */
 export const notAuthGuard: CanActivateFn = (route, state) => {
   const http = inject(HttpClient);
   const router = inject(Router);
-  const cookieService = inject(CookieService);
 
-  const isAuth = cookieService.get('isAuth');
+  const isAuth = localStorage.getItem('token');
 
   if (!isAuth) return true;
     

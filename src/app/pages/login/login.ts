@@ -8,6 +8,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../../core/models/api-response.model';
 import { PasswordValidators } from '../../validators/password.validators';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ import { PasswordValidators } from '../../validators/password.validators';
   styleUrl: './login.scss',
 })
 export class Login {
-  constructor(public formService: FormService, private http: HttpClient, private router: Router) {}
+  constructor(public formService: FormService, private http: HttpClient, private router: Router, private authService: AuthenticationService) {}
   formError: string = '';
 
   // --------------
@@ -44,11 +45,11 @@ export class Login {
     if (this.form.valid) {
       this.formError = '';
       try {
-        await firstValueFrom(
-          this.http.post(environment.backUrl + '/api/authentification/connexion', this.form.value, {
-            withCredentials: true,
-          })
-        );
+        const response = await firstValueFrom(this.http.post(environment.backUrl + '/api/authentification/connexion', this.form.value, { observe: 'response' }));
+        const authHeader = response.headers.get('Authorization');
+        if (!authHeader) throw new Error('Authorization header response is not provided');
+
+        this.authService.connected(authHeader);
         this.router.navigate(['/']);
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
