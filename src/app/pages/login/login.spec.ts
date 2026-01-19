@@ -14,6 +14,7 @@ describe('Login', () => {
   let fixture: ComponentFixture<Login>;
   let formService: FormService;
   let authService: AuthenticationService;
+  let connectedAuthServiceSpy: jasmine.Spy;
   let httpMock: HttpTestingController;
   let router: jasmine.SpyObj<Router>;
   let consoleSpy: jasmine.Spy;
@@ -55,6 +56,7 @@ describe('Login', () => {
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     formService = TestBed.inject(FormService);
     authService = TestBed.inject(AuthenticationService);
+    connectedAuthServiceSpy = spyOn(authService, 'connected');
     httpMock = TestBed.inject(HttpTestingController);
     consoleSpy = spyOn(console, 'error');
     bearerToken = "Bearer eygtrgtgrg.56151nyth16ty1.ty6j16yt1jty1j";
@@ -96,7 +98,7 @@ describe('Login', () => {
     tick();
     fixture.detectChanges();
 
-    expect(authService.connected).toHaveBeenCalledOnceWith(bearerToken);
+    expect(connectedAuthServiceSpy).toHaveBeenCalledOnceWith(bearerToken);
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   }));
 
@@ -111,7 +113,7 @@ describe('Login', () => {
     httpMock.expectNone(environment.backUrl + '/api/authentification/connexion');
     expect(component.form.touched).toBe(true);
     expect(component.formError).toBe('');
-    expect(authService.connected).toHaveBeenCalledTimes(0);
+    expect(connectedAuthServiceSpy).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
@@ -139,7 +141,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(component.formError).toBe("Cet email ne correspond à aucun compte enregistré.");
-    expect(authService.connected).toHaveBeenCalledTimes(0);
+    expect(connectedAuthServiceSpy).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
   }));
@@ -162,7 +164,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(component.formError).toBe("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
-    expect(authService.connected).toHaveBeenCalledTimes(0);
+    expect(connectedAuthServiceSpy).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
     expect(consoleSpy).toHaveBeenCalledTimes(0);
   }));
@@ -183,7 +185,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(component.formError).toBe("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
-    expect(authService.connected).toHaveBeenCalledTimes(0);
+    expect(connectedAuthServiceSpy).toHaveBeenCalledTimes(0);
     expect(router.navigate).toHaveBeenCalledTimes(0);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   }));
