@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { UserCourses } from '../../../services/user-courses';
 import { ThemeData } from '../../../core/models/api-response.model';
@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-user-themes',
   imports: [UserCoursesTopMain, RouterLink],
   templateUrl: './user-themes.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-themes.scss'
 })
 export class UserThemes {

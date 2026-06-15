@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { UserCourses } from '../../../services/user-courses';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserLessonData } from '../../../core/models/api-response.model';
@@ -11,6 +11,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
   selector: 'app-user-elements',
   imports: [UserCoursesTopMain],
   templateUrl: './user-elements.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-elements.scss'
 })
 export class UserElements {

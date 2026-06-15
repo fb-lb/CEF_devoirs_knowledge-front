@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ApiResponse, CursusData, LessonData, ThemeData, UserCursusData, UserLessonData } from '../../core/models/api-response.model';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -13,6 +13,7 @@ import { UserCourses } from '../../services/user-courses';
   selector: 'app-all-courses',
   imports: [CommonModule, FontAwesomeModule, StripePayment],
   templateUrl: './all-courses.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './all-courses.scss'
 })
 export class AllCourses {

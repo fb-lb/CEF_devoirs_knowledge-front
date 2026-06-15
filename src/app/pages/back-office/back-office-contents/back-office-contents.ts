@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserData } from '../../../core/models/api-response.model';
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-back-office-contents',
   imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule],
   templateUrl: './back-office-contents.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-contents.scss'
 })
 export class BackOfficeContents {

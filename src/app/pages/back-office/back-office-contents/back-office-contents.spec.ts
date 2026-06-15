@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackOfficeContents } from './back-office-contents';
 import { FormService } from '../../../services/form.service';
 import { FormBuilder } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -18,7 +18,7 @@ describe('BackOfficeContents', () => {
         FormService,
         FormBuilder,
         ChangeDetectorRef,
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
       ],
     })

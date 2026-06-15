@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ApiResponse, CursusData, LessonData, ThemeData, UserCursusData, UserData, UserLessonData, UserThemeData } from '../../../core/models/api-response.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -12,6 +12,7 @@ import { UserCourses } from '../../../services/user-courses';
   selector: 'app-back-office-purchases',
   imports: [ɵInternalFormsSharedModule, ReactiveFormsModule, NgClass],
   templateUrl: './back-office-purchases.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-purchases.scss'
 })
 export class BackOfficePurchases {

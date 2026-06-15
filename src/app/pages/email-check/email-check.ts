@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,6 +9,7 @@ import { ApiResponse } from '../../core/models/api-response.model';
   selector: 'app-email-check',
   imports: [RouterLink],
   templateUrl: './email-check.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './email-check.scss',
 })
 export class EmailCheck {

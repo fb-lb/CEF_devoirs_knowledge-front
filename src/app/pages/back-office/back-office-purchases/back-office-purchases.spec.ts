@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackOfficePurchases } from './back-office-purchases';
 import { FormService } from '../../../services/form.service';
 import { UserCourses } from '../../../services/user-courses';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('BackOfficePurchases', () => {
@@ -16,7 +16,7 @@ describe('BackOfficePurchases', () => {
       providers: [
         FormService,
         UserCourses,
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
       ],
     })

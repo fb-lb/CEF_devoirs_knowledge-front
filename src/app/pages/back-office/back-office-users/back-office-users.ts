@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
@@ -12,6 +12,7 @@ import { ApiResponse, UserData } from '../../../core/models/api-response.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './back-office-users.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-users.scss',
 })
 export class BackOfficeUsers {

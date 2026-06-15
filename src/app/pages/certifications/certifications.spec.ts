@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Certifications } from './certifications';
 import { UserCourses } from '../../services/user-courses';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('Certification', () => {
@@ -14,7 +14,7 @@ describe('Certification', () => {
       imports: [Certifications],
       providers: [
         UserCourses,
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
       ],
     })

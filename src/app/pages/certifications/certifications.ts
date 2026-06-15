@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UserCourses } from '../../services/user-courses';
 import { ThemeData, UserThemeData } from '../../core/models/api-response.model';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
@@ -8,6 +8,7 @@ import { faMedal } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-certification',
   imports: [FontAwesomeModule],
   templateUrl: './certifications.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './certifications.scss'
 })
 export class Certifications {

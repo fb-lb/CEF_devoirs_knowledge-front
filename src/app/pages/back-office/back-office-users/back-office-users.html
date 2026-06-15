@@ -63,7 +63,7 @@
             <fieldset class="update__field-group update__field-group--roles">
                 <legend class="update__form-label">Autorisations</legend>
                 <label class="update__form-checkbox-name">
-                    <input class="update__form-input" type="checkbox" (change)="onRoleChange($event, 'admin')" value="admin" [checked]="this.updateForm.get('roles')?.value?.includes('admin')">Admin
+                    <input class="update__form-input" type="checkbox" (change)="onRoleChange($event, 'admin')" value="admin" [checked]="$safeNavigationMigration(this.updateForm.get('roles')?.value?.includes('admin'))">Admin
                 </label>
             </fieldset>
             <div class="update__field-group">
