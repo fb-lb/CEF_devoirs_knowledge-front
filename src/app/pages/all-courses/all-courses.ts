@@ -163,13 +163,7 @@ export class AllCourses {
 
   async handlePaymentSuccess() {
     this.setCursusAndLessonPrices();
-    this.userCoursesService.syncAllThemesAvailable();
-    this.userCoursesService.syncAllCursusAvailable();
-    this.userCoursesService.syncAllLessonsAvailable();
-    this.userCoursesService.syncAllElementsAvailable();
-    this.userCoursesService.syncUserThemesForThisUser();
-    this.userCoursesService.syncUserCursusForThisUser();
-    this.userCoursesService.syncUserLessonsForThisUser();
+    await this.userCoursesService.syncData();
   }
 
   closeStripeModal() {

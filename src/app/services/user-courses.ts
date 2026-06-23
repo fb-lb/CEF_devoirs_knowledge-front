@@ -25,7 +25,16 @@ export class UserCourses {
     if (this.initPromised) return this.initPromised;
 
     this.initPromised = (async () => {
-      if (this.authService.getIsAuthenticated()) {
+      await this.syncData();
+
+      this.isInitialized = true;
+    })();
+    
+    return this.initPromised;
+  }
+
+  public async syncData() {
+    if (this.authService.getIsAuthenticated()) {
         await Promise.all([
           this.syncAllThemesAvailable(),
           this.syncAllCursusAvailable(),
@@ -36,11 +45,6 @@ export class UserCourses {
           this.syncUserLessonsForThisUser(),
         ]);
       }
-
-      this.isInitialized = true;
-    })();
-    
-    return this.initPromised;
   }
 
   // ---------------
