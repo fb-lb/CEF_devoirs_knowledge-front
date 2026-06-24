@@ -52,6 +52,7 @@ export class Login {
         if (!authHeader) throw new Error('Authorization header response is not provided');
 
         this.authService.connected(authHeader);
+        this.authService.checkIsVerified();
         this.userCoursesService.isInitialized ? await this.userCoursesService.syncData() : await this.userCoursesService.init();
         this.router.navigate(['/']);
       } catch (error) {

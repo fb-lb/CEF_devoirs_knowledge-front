@@ -16,7 +16,8 @@ import { CoursesService } from './services/courses.service.ts';
 export class App {
   constructor(private authService: AuthenticationService, private coursesService: CoursesService){};
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.coursesService.init();
     this.authService.init();
   }
 }

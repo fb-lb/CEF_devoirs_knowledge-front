@@ -54,6 +54,15 @@ export class CoursesService {
     ]);
   }
 
+  /**
+   * Fetches all themes from the API and stores them sorted by order.
+   *
+   * @async
+   * @function retrieveAllThemes
+   * @returns {Promise<void>}
+   * 
+   * @throws {Error} If an unexpected error occurs
+   */
   public async retrieveAllThemes(){
     try {
       const response = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
@@ -64,6 +73,15 @@ export class CoursesService {
     }
   }
 
+  /**
+   * Fetches all cursus from the API and stores them sorted by order.
+   *
+   * @async
+   * @function retrieveAllCursus
+   * @returns {Promise<void>}
+   * 
+   * @throws {Error} If an unexpected error occurs
+   */
   public async retrieveAllCursus(){
     try {
       const response = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all'));
@@ -74,6 +92,15 @@ export class CoursesService {
     }
   }
 
+  /**
+   * Fetches all lessons from the API and stores them sorted by order.
+   *
+   * @async
+   * @function retrieveAllLessons
+   * @returns {Promise<void>}
+   * 
+   * @throws {Error} If an unexpected error occurs
+   */
   public async retrieveAllLessons(){
     try {
       const response = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
