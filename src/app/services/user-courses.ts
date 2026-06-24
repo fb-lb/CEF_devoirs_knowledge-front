@@ -13,7 +13,7 @@ export class UserCourses {
   constructor(private http: HttpClient, private authService: AuthenticationService) {}
 
   // -------------------------
-  // Service initialisation
+  // Service initialization
   // -------------------------
 
   public initPromised: Promise<void> | null = null;

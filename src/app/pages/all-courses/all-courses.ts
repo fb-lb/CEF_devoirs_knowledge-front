@@ -8,6 +8,7 @@ import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawes
 import { faSquareMinus, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { StripePayment } from "../../components/stripe-payment/stripe-payment";
 import { UserCourses } from '../../services/user-courses';
+import { CoursesService } from '../../services/courses.service.ts';
 
 @Component({
   selector: 'app-all-courses',
@@ -42,10 +43,14 @@ export class AllCourses {
     price: 0,
   }
 
-  constructor (private http: HttpClient, private userCoursesService: UserCourses) {};
+  constructor (private http: HttpClient, private userCoursesService: UserCourses, private coursesService: CoursesService) {};
 
   async ngOnInit() {
     await this.userCoursesService.init();
+    await this.coursesService.init();
+    this.allThemes = this.coursesService.allThemes;
+    this.allCursus = this.coursesService.allCursus;
+    this.allLessons = this.coursesService.allLessons;
 
     // Check user authentication and email verification
     try {
@@ -65,22 +70,6 @@ export class AllCourses {
       }
       console.error(error);
       // add external service like Sentry to save the error
-    }
-
-    // Get all themes, cursus and lessons
-    try {
-      const allThemesResponse = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
-      if (allThemesResponse.data) this.allThemes = allThemesResponse.data.sort((a, b) => a.order - b.order);
-      
-      const allCursusResponse = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all'));
-      if (allCursusResponse.data) this.allCursus = allCursusResponse.data.sort((a, b) => a.order - b.order);
-
-      const allLessonsResponse = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
-      if (allLessonsResponse.data) this.allLessons = allLessonsResponse.data.sort((a, b) => a.order - b.order);
-    } catch (error) {
-      console.error(error);
-      // add external service like Sentry to save the error
-      alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
     }
 
     // Set maps
