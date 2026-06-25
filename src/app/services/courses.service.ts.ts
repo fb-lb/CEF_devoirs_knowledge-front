@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiResponse, CursusData, LessonData, ThemeData } from '../core/models/api-response.model';
+import { ApiResponse, CursusData, ElementData, LessonData, ThemeData } from '../core/models/api-response.model';
 import { environment } from '../../environments/environment';
 import { firstValueFrom } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient, private authService: AuthenticationService){
     this.init();
+    this.authService.init();
   }
 
   public isInitialized: boolean = false;
@@ -18,6 +20,7 @@ export class CoursesService {
   public allThemes: ThemeData[] = [];
   public allCursus: CursusData[] = [];
   public allLessons: LessonData[] = [];
+  public allElements: ElementData[] = [];
 
   //-------------------
   // Initialization
@@ -47,11 +50,20 @@ export class CoursesService {
   // Data retrieving
   //-------------------
   public async retrieveAllData(){
-    await Promise.all([
-      this.retrieveAllThemes(),
-      this.retrieveAllCursus(),
-      this.retrieveAllLessons(),
-    ]);
+    if (this.authService.getIsAuthenticated() && this.authService.getIsAdmin()) {
+      await Promise.all([
+        this.retrieveAllThemes(),
+        this.retrieveAllCursus(),
+        this.retrieveAllLessons(),
+        this.retrieveAllElements(),
+      ]);
+    } else {
+      await Promise.all([
+        this.retrieveAllThemes(),
+        this.retrieveAllCursus(),
+        this.retrieveAllLessons(),
+      ]);
+    }
   }
 
   /**
@@ -105,6 +117,25 @@ export class CoursesService {
     try {
       const response = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
       if (response.data) this.allLessons = response.data.sort((a,b) => a.order - b.order);
+    } catch (error) {
+      console.error(error);
+      // add external service like Sentry to save the error 
+    }
+  }
+
+  /**
+   * Fetches all elements from the API and stores them sorted by order.
+   *
+   * @async
+   * @function retrieveAllElements
+   * @returns {Promise<void>}
+   * 
+   * @throws {Error} If an unexpected error occurs
+   */
+  public async retrieveAllElements(){
+    try {
+      const response = await firstValueFrom(this.http.get<ApiResponse<ElementData[]>>(environment.backUrl + '/api/content/element/all'));
+      if (response.data) this.allElements = response.data.sort((a,b) => a.order - b.order);
     } catch (error) {
       console.error(error);
       // add external service like Sentry to save the error 

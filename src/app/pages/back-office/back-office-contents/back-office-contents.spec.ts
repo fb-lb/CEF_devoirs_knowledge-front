@@ -6,6 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectorRef } from '@angular/core';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 describe('BackOfficeContents', () => {
   let component: BackOfficeContents;
@@ -16,6 +17,7 @@ describe('BackOfficeContents', () => {
       imports: [BackOfficeContents],
       providers: [
         FormService,
+        AuthenticationService,
         FormBuilder,
         ChangeDetectorRef,
         provideHttpClient(withXhr()),

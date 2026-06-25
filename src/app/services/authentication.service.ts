@@ -84,6 +84,15 @@ export class AuthenticationService {
     }
   }
 
+  /**
+   * Used to set isVerified (= email is verified) state in front end app
+   * @async
+   * @function checkIsVerified
+   * 
+   * @returns {Promise<void>}
+   * 
+   * @throws {Error} If an unexpected error occurs
+   */
   public async checkIsVerified() {
     try {
       const response = await firstValueFrom(this.http.get<ApiResponse<boolean>>(environment.backUrl + '/api/utilisateurs/isVerified'));

@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
 import { AuthenticationService } from './services/authentication.service';
-import { CoursesService } from './services/courses.service.ts';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +13,9 @@ import { CoursesService } from './services/courses.service.ts';
   styleUrl: './app.scss',
 })
 export class App {
-  constructor(private authService: AuthenticationService, private coursesService: CoursesService){};
+  constructor(private authService: AuthenticationService){};
 
   async ngOnInit() {
-    this.coursesService.init();
     this.authService.init();
   }
 }

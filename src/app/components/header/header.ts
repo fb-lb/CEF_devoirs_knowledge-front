@@ -7,6 +7,7 @@ import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { UserCourses } from '../../services/user-courses';
 import { AuthenticationService } from '../../services/authentication.service';
+import { CoursesService } from '../../services/courses.service.ts';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class Header {
     private router: Router,
     private userCoursesService: UserCourses,
     private authService: AuthenticationService,
+    private coursesService: CoursesService,
   ) {}
 
   faBars: IconDefinition = faBars;
@@ -66,6 +68,7 @@ export class Header {
 
   // Logout
   async onClickLogout() {
+    this.coursesService.allElements = [];
     this.userCoursesService.reset();
     this.authService.disconnected();
     this.router.navigate(['/']);
