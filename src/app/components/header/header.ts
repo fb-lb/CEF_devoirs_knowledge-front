@@ -7,7 +7,7 @@ import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { UserCourses } from '../../services/user-courses';
 import { AuthenticationService } from '../../services/authentication.service';
-import { CoursesService } from '../../services/courses.service.ts';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-header',

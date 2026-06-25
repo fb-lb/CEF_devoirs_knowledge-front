@@ -6,7 +6,7 @@ import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawes
 import { faSquareMinus, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { StripePayment } from "../../components/stripe-payment/stripe-payment";
 import { UserCourses } from '../../services/user-courses';
-import { CoursesService } from '../../services/courses.service.ts';
+import { CoursesService } from '../../services/courses.service';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({

@@ -8,7 +8,7 @@ import { faCaretUp, faPen, faTrash, faCaretDown, IconDefinition } from '@fortawe
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
 import { CommonModule } from '@angular/common';
-import { CoursesService } from '../../../services/courses.service.ts';
+import { CoursesService } from '../../../services/courses.service';
 import { UserService } from '../../../services/user.service';
 
 @Component({
