@@ -55,9 +55,9 @@ export class AllCourses {
     // Retrieve data of courses and user courses
     await this.userCoursesService.init();
     await this.coursesService.init();
-    this.allThemes = this.coursesService.allThemes.map(theme => ({...theme}));
-    this.allCursus = this.coursesService.allCursus.map(cursus => ({...cursus}));
-    this.allLessons = this.coursesService.allLessons.map(lesson => ({...lesson}));
+    this.allThemes = this.coursesService.getAllThemes.map(theme => ({...theme}));
+    this.allCursus = this.coursesService.getAllCursus.map(cursus => ({...cursus}));
+    this.allLessons = this.coursesService.getAllLessons.map(lesson => ({...lesson}));
 
     // Set maps
     this.allThemes.forEach(theme => {
@@ -72,7 +72,7 @@ export class AllCourses {
   }
 
   ngOnDestroy(): void {
-    this.userAuthSub.unsubscribe();
+    this.userAuthSub?.unsubscribe();
   }
 
   // Set the cursus and lessons prices according to what the user already purchased

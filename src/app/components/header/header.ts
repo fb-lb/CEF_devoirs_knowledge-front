@@ -40,8 +40,8 @@ export class Header {
   }
 
   ngOnDestroy(): void {
-    this.userAuthSub.unsubscribe();
-    this.adminAuthSub.unsubscribe();
+    this.userAuthSub?.unsubscribe();
+    this.adminAuthSub?.unsubscribe();
   }
 
   // Add event listener on window's size to hide/show menu and burger menu icon
@@ -68,7 +68,7 @@ export class Header {
 
   // Logout
   async onClickLogout() {
-    this.coursesService.allElements = [];
+    this.coursesService.setAllElements = [];
     this.userCoursesService.reset();
     this.authService.disconnected();
     this.router.navigate(['/']);

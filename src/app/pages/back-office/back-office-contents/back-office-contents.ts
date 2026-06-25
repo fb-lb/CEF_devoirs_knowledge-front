@@ -32,6 +32,11 @@ export class BackOfficeContents {
   allElements: ElementData[] = [];
   allUsers: UserData[] = [];
 
+  allThemesSubscription!: Subscription;
+  allCursusSubscription!: Subscription;
+  allLessonsSubscription!: Subscription;
+  allElementsSubscription!: Subscription;
+
   selectedCursus: CursusData[] = [];
   selectedLessons: LessonData[] = [];
   selectedElements: ElementData[] = [];
@@ -125,17 +130,17 @@ export class BackOfficeContents {
       // Data retrieval
       await this.coursesService.init();
 
-      this.allThemes = this.coursesService.allThemes.map(theme => ({...theme}));
+      this.allThemesSubscription = this.coursesService.allThemes$.subscribe(value => this.allThemes = value.map(theme => ({...theme})));
       this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
 
-      this.allCursus = this.coursesService.allCursus.map(cursus => ({...cursus}));
+      this.allCursusSubscription = this.coursesService.allCursus$.subscribe(value => this.allCursus = value.map(cursus => ({...cursus})));
       this.allCursus = this.addProperties(this.allCursus, this.allUsers) as CursusData[];
 
-      this.allLessons = this.coursesService.allLessons.map(lesson => ({...lesson}));
+      this.allLessonsSubscription = this.coursesService.allLessons$.subscribe(value => this.allLessons = value.map(lesson => ({...lesson})));
       this.allLessons = this.addProperties(this.allLessons, this.allUsers) as LessonData[];
 
-      if (this.coursesService.allElements.length === 0) await this.coursesService.retrieveAllElements();
-      this.allElements = this.coursesService.allElements;
+      if (this.coursesService.getAllElements.length === 0) await this.coursesService.retrieveAllElements();
+      this.allElementsSubscription = this.coursesService.allElements$.subscribe(value => this.allElements = value.map(element => ({...element})));
       this.allElements = this.addProperties(this.allElements, this.allUsers) as ElementData[];
     } catch (error) {
       alert('Nous ne parvenons pas à nous connecter au serveur. Veuillez nous excuser pour la gène occasionnée.');
@@ -238,6 +243,10 @@ export class BackOfficeContents {
   ngOnDestroy() {
     this.addElementTypeChangeSub?.unsubscribe();
     this.addElementTextTypeChangeSub?.unsubscribe();
+    this.allThemesSubscription?.unsubscribe();
+    this.allCursusSubscription?.unsubscribe();
+    this.allLessonsSubscription?.unsubscribe();
+    this.allElementsSubscription?.unsubscribe();
     this.updateImagePreviewUrls.forEach(url => {
       if (url) URL.revokeObjectURL(url);
     });
