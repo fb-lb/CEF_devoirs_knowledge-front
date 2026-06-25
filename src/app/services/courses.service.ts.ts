@@ -9,10 +9,7 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root'
 })
 export class CoursesService {
-  constructor(private http: HttpClient, private authService: AuthenticationService){
-    this.init();
-    this.authService.init();
-  }
+  constructor(private http: HttpClient, private authService: AuthenticationService){}
 
   public isInitialized: boolean = false;
   public initPromise: Promise<void> | null = null;

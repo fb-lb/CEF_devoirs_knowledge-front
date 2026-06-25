@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { FormService } from '../../../services/form.service';
 import { CommonModule } from '@angular/common';
 import { CoursesService } from '../../../services/courses.service.ts';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-back-office-contents',
@@ -79,7 +80,7 @@ export class BackOfficeContents {
   updateImageElementGlobalMessage: string = "";
   isUpdateImageElementGlobalMessageSuccess: boolean = true;
 
-  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder, private cdr: ChangeDetectorRef, private coursesService: CoursesService) {}
+  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder, private cdr: ChangeDetectorRef, private coursesService: CoursesService, private userService: UserService) {}
 
   async ngOnInit(): Promise<void> {
     // Subscription to type form control on add element form to add/remove required validator on other form control
@@ -118,8 +119,8 @@ export class BackOfficeContents {
 
     try {
       // Users retrieval
-      const responseUser = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
-      if (responseUser.data) this.allUsers = responseUser.data;
+      await this.userService.init();
+      this.allUsers = this.userService.getAllUsers;
 
       // Data retrieval
       await this.coursesService.init();

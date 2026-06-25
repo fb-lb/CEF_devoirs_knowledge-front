@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators, ɵInternalFormsSharedModule, Reacti
 import { FormService } from '../../../services/form.service';
 import { NgClass } from '@angular/common';
 import { UserCourses } from '../../../services/user-courses';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-back-office-purchases',
@@ -85,12 +86,12 @@ export class BackOfficePurchases {
   deleteUserLessonMessage: string = '';
   isDeleteUserLessonMessageSuccess: boolean = true;
 
-  constructor(private http: HttpClient, public formService: FormService, private userCoursesService: UserCourses) {}
+  constructor(private http: HttpClient, public formService: FormService, private userCoursesService: UserCourses, private userService: UserService) {}
 
   async ngOnInit() {
     try {
-      const getAllUsersReponse = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
-      if (getAllUsersReponse.data) this.allUsers = getAllUsersReponse.data;
+      await this.userService.init();
+      this.allUsers = this.userService.getAllUsers;
 
       const getAllThemesResponse = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
       if (getAllThemesResponse.data) this.allThemes = getAllThemesResponse.data;

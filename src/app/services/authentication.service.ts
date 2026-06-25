@@ -39,7 +39,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient){};
 
-  public async init () {
+  public async init() {
     try {
       this.token = localStorage.getItem('token');
 
