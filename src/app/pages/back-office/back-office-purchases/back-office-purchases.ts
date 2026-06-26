@@ -8,6 +8,7 @@ import { FormService } from '../../../services/form.service';
 import { NgClass } from '@angular/common';
 import { UserCourses } from '../../../services/user-courses';
 import { UserService } from '../../../services/user.service';
+import { CoursesService } from '../../../services/courses.service';
 
 @Component({
   selector: 'app-back-office-purchases',
@@ -86,22 +87,21 @@ export class BackOfficePurchases {
   deleteUserLessonMessage: string = '';
   isDeleteUserLessonMessageSuccess: boolean = true;
 
-  constructor(private http: HttpClient, public formService: FormService, private userCoursesService: UserCourses, private userService: UserService) {}
+  constructor(private http: HttpClient, public formService: FormService, private userCoursesService: UserCourses, private userService: UserService, private coursesService: CoursesService) {}
 
   async ngOnInit() {
     try {
+      // Retrieve all users data
       await this.userService.init();
       this.allUsers = this.userService.getAllUsers;
 
-      const getAllThemesResponse = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
-      if (getAllThemesResponse.data) this.allThemes = getAllThemesResponse.data;
+      // Retrieve all courses data
+      await this.coursesService.init();
+      this.allThemes = this.coursesService.getAllThemes.map(theme => ({...theme}));
+      this.allCursus = this.coursesService.getAllCursus.map(cursus => ({...cursus}));
+      this.allLessons = this.coursesService.getAllLessons.map(lesson => ({...lesson}));
 
-      const getAllCursusResponse = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all'));
-      if (getAllCursusResponse.data) this.allCursus = getAllCursusResponse.data;
-
-      const getAllLessonsResponse = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
-      if (getAllLessonsResponse.data) this.allLessons = getAllLessonsResponse.data;
-
+      // Retrieve all user-courses data
       await this.syncAllUserCoursesData();
     } catch (error) {
       console.error(error);

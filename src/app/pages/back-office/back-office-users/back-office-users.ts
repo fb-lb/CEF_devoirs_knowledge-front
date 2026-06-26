@@ -1,11 +1,12 @@
-import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ApiResponse, UserData } from '../../../core/models/api-response.model';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-back-office-users',
@@ -22,6 +23,7 @@ export class BackOfficeUsers {
   isDeleteGlobalMessageSuccess: boolean = true;
   allUsers: UserData[] = [];
   filteredUsers: UserData[] = [];
+  allUsersSubscription!: Subscription;
 
   deleteId: number | null = null;
   deleteFirstName: string = '';
@@ -33,20 +35,25 @@ export class BackOfficeUsers {
   deleteUpdatedAt: string = '';
   deleteUpdatedBy: string = '';
 
-  constructor(public formService: FormService, private http: HttpClient) {}
+  constructor(public formService: FormService, private http: HttpClient, private userService: UserService) {}
 
   async ngOnInit(): Promise<void> {
-    this.allUsers = await this.syncAllUsers();
+    await this.userService.init();
+    this.allUsersSubscription = this.userService.allUsers$.subscribe(newAllUsers => {
+      this.allUsers = this.formatAllUsers(newAllUsers);
+    });
     this.filteredUsers = this.allUsers;
   }
 
+  ngOnDestroy(){
+    this.allUsersSubscription?.unsubscribe();
+  }
+
   // Get all users from database and store it in allUsers
-  async syncAllUsers(): Promise<UserData[]> {
-    try {
-      const response = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
-      let allUsers: UserData[] = [];
-      if (response.data) allUsers = response.data;
-      allUsers.forEach((user) => {
+  formatAllUsers(allUsers: UserData[]): UserData[] {
+    if (allUsers.length === 0) return [];
+    
+    allUsers.forEach((user) => {
         user.rolesText = '';
         user.roles.forEach((role) => {
           role === 'user'
@@ -65,12 +72,8 @@ export class BackOfficeUsers {
         if (!user.updatedAt) user.updatedAt = 'Non modifié';
       });
       return allUsers;
-    } catch (error) {
-      console.error(error);
-      // add external service like Sentry to save the error
-      return [];
-    }
   }
+
 
   // ----------------
   //  UPDATE FORM PART
@@ -148,7 +151,7 @@ export class BackOfficeUsers {
         this.isUpdateGlobalMessageSuccess = response.success;
         this.updateGlobalMessage = response.message;
         this.updateForm.reset();
-        this.allUsers = await this.syncAllUsers();
+        await this.userService.retrieveAllUsers();
         this.onSearchReadFormChange();
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
@@ -235,7 +238,7 @@ export class BackOfficeUsers {
         this.deleteCreatedAt = '';
         this.deleteUpdatedAt = '';
         this.deleteUpdatedBy = '';
-        this.allUsers = await this.syncAllUsers();
+        await this.userService.retrieveAllUsers();
         this.onSearchReadFormChange();
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
