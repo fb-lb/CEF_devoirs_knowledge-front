@@ -1,29 +1,40 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ApiResponse, UserData } from '../../../core/models/api-response.model';
 import { UserService } from '../../../services/user.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPen, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { UpdateUserForm } from '../../../components/update-forms/update-user-form/update-user-form';
 
 @Component({
   selector: 'app-back-office-users',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule, UpdateUserForm],
   templateUrl: './back-office-users.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-users.scss',
 })
 export class BackOfficeUsers {
-  updateGlobalMessage: string = '';
-  isUpdateGlobalMessageSuccess: boolean = true;
+  faPen: IconDefinition = faPen;
+  faTrash: IconDefinition = faTrash;
+
   deleteGlobalMessage: string = '';
   isDeleteGlobalMessageSuccess: boolean = true;
   allUsers: UserData[] = [];
   filteredUsers: UserData[] = [];
   allUsersSubscription!: Subscription;
+
+  userIdToUpdate: number = 0;
+  firstNameToUpdate: string = "";
+  lastNameToUpdate: string = "";
+  emailToUpdate: string = "";
+  rolesToUpdate: ("user" | "admin")[] = [];
+  isVerifiedToUpdate: boolean = false;
 
   deleteId: number | null = null;
   deleteFirstName: string = '';
@@ -34,6 +45,8 @@ export class BackOfficeUsers {
   deleteCreatedAt: string = '';
   deleteUpdatedAt: string = '';
   deleteUpdatedBy: string = '';
+
+  isUpdateUserFormModalOpen: boolean = false;
 
   constructor(public formService: FormService, private http: HttpClient, private userService: UserService) {}
 
@@ -76,97 +89,21 @@ export class BackOfficeUsers {
 
 
   // ----------------
-  //  UPDATE FORM PART
+  //  PART OF MODAL FOR UPDATE FORM
   // ----------------
 
-  updateForm = new FormGroup({
-    id: new FormControl('', [Validators.required, Validators.min(1), Validators.maxLength(20)]),
-    firstName: new FormControl('', [
-      Validators.required,
-      Validators.maxLength(60),
-      Validators.pattern(/^[a-zA-Zéèêàîùôçïäâëüöœ '\-\.]*$/),
-    ]),
-    lastName: new FormControl('', [
-      Validators.required,
-      Validators.maxLength(60),
-      Validators.pattern(/^[a-zA-Zéèêàîùôçïäâëüöœ '\-\.]*$/),
-    ]),
-    email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(80)]),
-    roles: new FormArray<FormControl<'user' | 'admin'>>([]),
-    isVerified: new FormControl(false),
-  });
-
-  // Modify roles FormArray content (FormControl) according to admin selection
-  onRoleChange(event: Event, role: string): void {
-    const checkbox = event.target as HTMLInputElement;
-    const roles = this.updateForm.get('roles') as FormArray;
-
-    if (checkbox.checked) {
-      roles.push(new FormControl(role));
-    } else {
-      const index = roles.controls.findIndex((x) => x.value === role);
-      roles.removeAt(index);
-    }
+  displayUpdateUserForm(user: UserData) {
+    this.userIdToUpdate = user.id;
+    this.firstNameToUpdate = user.firstName;
+    this.lastNameToUpdate = user.lastName;
+    this.emailToUpdate = user.email;
+    this.rolesToUpdate = user.roles;
+    this.isVerifiedToUpdate = user.isVerified;
+    this.isUpdateUserFormModalOpen = true;
   }
 
-  getIdValue(form: FormGroup): number | null {
-    const id = form.get('id')?.value;
-    return id !== null && id !== undefined ? parseInt(id, 10) : null;
-  }
-
-  onIdUpdateFormChange(id: number | null): void {
-    const user = this.allUsers.find((user) => user.id === id);
-    const rolesFormArray = this.updateForm.get('roles') as FormArray<FormControl<'user' | 'admin'>>;
-    if (user && id) {
-      this.updateForm.patchValue({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        isVerified: user.isVerified,
-      });
-
-      rolesFormArray.clear();
-      user.roles.forEach((role) => {
-        rolesFormArray.push(new FormControl<'user' | 'admin'>(role, { nonNullable: true }));
-      });
-    } else {
-      this.updateForm.patchValue({
-        firstName: '',
-        lastName: '',
-        email: '',
-        isVerified: false,
-      });
-      rolesFormArray.clear();
-    }
-  }
-
-  async onSubmitUpdateForm() {
-    this.updateForm.markAllAsTouched();
-    this.updateGlobalMessage = '';
-    if (this.updateForm.valid) {
-      try {
-        const response = await firstValueFrom(
-          this.http.patch<ApiResponse>(
-            environment.backUrl + `/api/utilisateurs/${this.updateForm.get('id')?.value}`, this.updateForm.value));
-        this.isUpdateGlobalMessageSuccess = response.success;
-        this.updateGlobalMessage = response.message;
-        this.updateForm.reset();
-        await this.userService.retrieveAllUsers();
-        this.onSearchReadFormChange();
-      } catch (error) {
-        if (error instanceof HttpErrorResponse) {
-          const response = error.error as ApiResponse;
-          this.isUpdateGlobalMessageSuccess = response.success;
-          this.updateGlobalMessage = response.message;
-        } else {
-          this.isUpdateGlobalMessageSuccess = false;
-          this.updateGlobalMessage =
-            "Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.";
-          console.error(error);
-          // add external service like Sentry to save the error
-        }
-      }
-    }
+  closeUpdateUserFormModal() {
+    this.isUpdateUserFormModalOpen = false;
   }
 
   // ----------------
@@ -176,6 +113,11 @@ export class BackOfficeUsers {
   deleteForm = new FormGroup({
     id: new FormControl('', [Validators.required, Validators.min(1), Validators.maxLength(20)]),
   });
+
+  getIdValue(form: FormGroup): number | null {
+    const id = form.get('id')?.value;
+    return id !== null && id !== undefined ? parseInt(id, 10) : null;
+  }
 
   onIdDeleteFormChange(id: number | null): void {
     if (id) {

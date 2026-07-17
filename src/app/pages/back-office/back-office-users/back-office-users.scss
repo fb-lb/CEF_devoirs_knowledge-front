@@ -24,7 +24,6 @@ h1 {
     font-weight: bold;
 }
 
-.update,
 .delete,
 .read {
     display: flex;
@@ -42,7 +41,6 @@ h1 {
     }
 }
 
-.update__title,
 .delete__title,
 .read__title {
     text-align: center;
@@ -50,14 +48,12 @@ h1 {
     font-weight: bold;
 }
 
-.update__text-group,
 .delete__text-group {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.update__text,
 .delete__text {
     text-align: center;
 
@@ -66,7 +62,6 @@ h1 {
     }
 }
 
-.update__form,
 .delete__form,
 .read__form {
     max-width: fit-content;
@@ -86,13 +81,12 @@ h1 {
     }
 }
 
-.update__form-part, .delete__form-part {
+.delete__form-part {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.update__field-group,
 .delete__field-group {
     display: flex;
     flex-direction: column;
@@ -108,15 +102,6 @@ h1 {
     }
 }
 
-.update__field-group--roles {
-    border: none;
-}
-
-.update__field-group--roles legend {
-    margin-bottom: 7px;
-}
-
-.update__form-label,
 .delete__form-label,
 .read__form-label {
     color: $medium-blue;
@@ -135,15 +120,6 @@ h1 {
     }
 }
 
-legend.update__form-label {
-    @include for-l {
-        text-align: left;
-    }
-}
-
-.update__form-input[type=number],
-.update__form-input[type=text],
-.update__form-input[type=email],
 .delete__form-input,
 .read__form-input {
     padding: 5px 10px;
@@ -163,17 +139,13 @@ legend.update__form-label {
     }
 }
 
-.update__form-input[type=checkbox] {
-    margin: 0 5px;
-}
-
-.update__message-group, .delete__message-group {
+.delete__message-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.update__message, .delete__message {
+.delete__message {
     text-align: center;
 
     @include for-m {
@@ -187,15 +159,12 @@ legend.update__form-label {
     }
 }
 
-.update__message--global, .delete__message--global {
+.delete__message--global {
     @include for-l {
         margin: 0;
     }
 }
 
-.update__form-checkbox-name {}
-
-.update__form-submit,
 .delete__form-submit {
     background-color: white;
     align-self: center;
@@ -208,14 +177,13 @@ legend.update__form-label {
     transition: all 0.3s ease;
 }
 
-.update__form-submit:hover,
 .delete__form-submit:hover {
     background-color: $medium-blue;
     color: white;
     transform: scale(1.1);
 }
 
-.update__form-submit--disabled, .delete__form-submit--disabled {
+.delete__form-submit--disabled {
     pointer-events: none;
     background-color: $brown;
     color: white;
@@ -282,3 +250,25 @@ legend.update__form-label {
 
 .read__tbody-row {}
 
+.read__tbody-icon {
+    transition: transform 0.15s ease-in;
+}
+
+.read__tbody-icon:hover {
+    cursor: pointer;
+    transform: scale(1.4);
+}
+
+.read__tbody-icon-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.read__tbody-icon--pen {
+    color: $medium-blue;
+    
+}
+
+.read__tbody-icon--trash {
+    color: $red;
+}

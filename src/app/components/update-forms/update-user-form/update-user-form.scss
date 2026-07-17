@@ -1,0 +1,213 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/breakpoints' as *;
+
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.modal__content {
+    z-index: 1;
+    max-width: fit-content;
+    padding: 30px;
+    background-color: $light-blue;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 3px solid $medium-blue;
+    border-radius: 30px;
+    align-items: center;
+
+    @include for-m {
+        gap: 40px;
+    }
+
+    @include for-l {
+        gap: 40px;
+    }
+}
+
+.modal__close {
+    align-self: flex-end;
+    color: $medium-blue;
+    transform: scale(1.8);
+    transition: all 0.15s ease-in;
+
+    &:hover{
+        cursor: pointer;
+        transform: scale(2);
+        color: $dark-blue;
+    }
+}
+
+.modal__title {
+    text-align: center;
+    color: $medium-blue;
+    font-weight: bold;
+}
+
+.modal__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+
+    @include for-l {
+        gap: 25px;
+    }
+
+    @include for-l {
+        gap: 30px;
+    }
+}
+
+.modal__form-part {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal__field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+
+    @include for-m {
+        gap: 10px;
+    }
+
+    @include for-l {
+        flex-direction: row;
+        gap: 15px;
+    }
+}
+
+.modal__field-group--roles {
+    border: none;
+}
+
+.modal__field-group--roles legend {
+    margin-bottom: 7px;
+}
+
+.modal__form-label {
+    color: $medium-blue;
+
+    @include for-m {
+        margin-left: 10px;
+        text-align: left;
+        width: 100%;
+    }
+
+    @include for-l {
+        align-self: center;
+        text-align: right;
+        width: 100px;
+    }
+}
+
+.modal__form-input[type=number],
+.modal__form-input[type=text],
+.modal__form-input[type=email] {
+    padding: 5px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid $medium-blue;
+    border-radius: 20px;
+    text-align: center;
+
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: left;
+    }
+}
+
+.modal__form-input[type=checkbox] {
+    margin: 0 5px;
+
+    @include for-l {
+        margin: 0 15px;
+    }
+}
+
+.modal__message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.modal__message {
+    text-align: center;
+
+    @include for-m {
+        margin-left: 10px;
+        text-align: left;
+    }
+
+    @include for-l {
+        margin-left: 100px;
+        text-align: left;
+    }
+}
+
+.modal__message--global {
+    @include for-l {
+        margin: 0;
+    }
+}
+
+.modal__form-checkbox-name {}
+
+.modal__form-submit {
+    align-self: center;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 30px;
+    padding: 10px 0;
+    width: 100%;
+    max-width: 200px;
+}
+
+.modal__form-submit--valid {
+    background-color: white;
+    border-color: $medium-blue;
+    color: $medium-blue;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: $medium-blue;
+        color: white;
+        transform: scale(1.1);
+    }
+}
+
+.modal__form-submit--invalid {
+    background-color: $brown;
+    align-self: center;
+    border-color: $brown;
+    color: white;
+
+    &:hover {
+        cursor: default;
+    }
+}
