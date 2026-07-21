@@ -1,7 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { FormService } from '../../../services/form.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -10,11 +8,12 @@ import { UserService } from '../../../services/user.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { UpdateUserForm } from '../../../components/update-forms/update-user-form/update-user-form';
+import { WarningModal } from '../../../components/warning-modal/warning-modal';
 
 @Component({
   selector: 'app-back-office-users',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule, UpdateUserForm],
+  imports: [FontAwesomeModule, ReactiveFormsModule, UpdateUserForm, WarningModal],
   templateUrl: './back-office-users.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-users.scss',
@@ -23,8 +22,6 @@ export class BackOfficeUsers {
   faPen: IconDefinition = faPen;
   faTrash: IconDefinition = faTrash;
 
-  deleteGlobalMessage: string = '';
-  isDeleteGlobalMessageSuccess: boolean = true;
   allUsers: UserData[] = [];
   filteredUsers: UserData[] = [];
   allUsersSubscription!: Subscription;
@@ -36,19 +33,15 @@ export class BackOfficeUsers {
   rolesToUpdate: ("user" | "admin")[] = [];
   isVerifiedToUpdate: boolean = false;
 
-  deleteId: number | null = null;
-  deleteFirstName: string = '';
-  deleteLastName: string = '';
-  deleteEmail: string = '';
-  deleteRolesText: string = '';
-  deleteIsVerified: string = '';
-  deleteCreatedAt: string = '';
-  deleteUpdatedAt: string = '';
-  deleteUpdatedBy: string = '';
+  userIdToDelete: number = 0;
+  userFirstNameToDelete: string = "";
+  userLastNameToDelete: string = "";
+  cautionUserDeletionText: string = "";
 
   isUpdateUserFormModalOpen: boolean = false;
+  isDeleteUserWarningModalOpen: boolean = false;
 
-  constructor(public formService: FormService, private http: HttpClient, private userService: UserService) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   async ngOnInit(): Promise<void> {
     await this.userService.init();
@@ -107,95 +100,33 @@ export class BackOfficeUsers {
   }
 
   // ----------------
-  //  DELETE FORM PART
+  //  USER DELETION PART
   // ----------------
 
-  deleteForm = new FormGroup({
-    id: new FormControl('', [Validators.required, Validators.min(1), Validators.maxLength(20)]),
-  });
-
-  getIdValue(form: FormGroup): number | null {
-    const id = form.get('id')?.value;
-    return id !== null && id !== undefined ? parseInt(id, 10) : null;
+  confirmUserDeletion(user: UserData) {
+    this.userIdToDelete = user.id;
+    this.userFirstNameToDelete = user.firstName;
+    this.userLastNameToDelete = user.lastName;
+    this.cautionUserDeletionText = `Etes-vous sûr de vouloir supprimer l'utilisateur ${this.userLastNameToDelete} ${this.userFirstNameToDelete} ? Cette action sera irréversible et entraînera la suppression de l'utilisateur ainsi que tous ses accès aux cours qu'il a acheté et sa progression dans ces derniers.`
+    this.isDeleteUserWarningModalOpen = true;
   }
 
-  onIdDeleteFormChange(id: number | null): void {
-    if (id) {
-      const userToDelete = this.allUsers.find((user) => user.id === id);
-      if (userToDelete) {
-        this.deleteId = id;
-        this.deleteFirstName = userToDelete.firstName;
-        this.deleteLastName = userToDelete.lastName;
-        this.deleteEmail = userToDelete.email;
-        userToDelete.roles.forEach((role) => {
-          this.deleteRolesText = this.deleteRolesText + role + ', ';
-        });
-        this.deleteRolesText = this.deleteRolesText.slice(0, this.deleteRolesText.length - 2);
-        this.deleteIsVerified = userToDelete.isVerified ? 'Oui' : 'Non';
-        this.deleteCreatedAt = userToDelete.createdAt;
-        this.deleteUpdatedAt = userToDelete.updatedAt ?? '';
-        this.deleteUpdatedBy = userToDelete.updatedBy?.toString()
-          ? userToDelete.updatedByName + ` (${userToDelete.updatedBy})`
-          : userToDelete.updatedByName;
-      } else {
-        this.deleteId = null;
-        this.deleteFirstName = '';
-        this.deleteLastName = '';
-        this.deleteEmail = '';
-        this.deleteRolesText = '';
-        this.deleteIsVerified = '';
-        this.deleteCreatedAt = '';
-        this.deleteUpdatedAt = '';
-        this.deleteUpdatedBy = '';
-      }
-    } else {
-      this.deleteId = null;
-      this.deleteFirstName = '';
-      this.deleteLastName = '';
-      this.deleteEmail = '';
-      this.deleteRolesText = '';
-      this.deleteIsVerified = '';
-      this.deleteCreatedAt = '';
-      this.deleteUpdatedAt = '';
-      this.deleteUpdatedBy = '';
-    }
-  }
-
-  async onSubmitDeleteForm() {
-    this.deleteForm.markAllAsTouched();
-    this.deleteGlobalMessage = '';
-    if (this.deleteForm.valid) {
-      try {
+  async deleteUser() {
+    try {
         const response = await firstValueFrom(
-          this.http.delete<ApiResponse>(environment.backUrl + `/api/utilisateurs/${this.deleteForm.get('id')?.value}`));
-        this.isDeleteGlobalMessageSuccess = response.success;
-        this.deleteGlobalMessage = response.message;
-        this.deleteForm.reset();
-        this.deleteId = null;
-        this.deleteFirstName = '';
-        this.deleteLastName = '';
-        this.deleteEmail = '';
-        this.deleteRolesText = '';
-        this.deleteIsVerified = '';
-        this.deleteCreatedAt = '';
-        this.deleteUpdatedAt = '';
-        this.deleteUpdatedBy = '';
+        this.http.delete<ApiResponse>(environment.backUrl + `/api/utilisateurs/${this.userIdToDelete}`));
         await this.userService.retrieveAllUsers();
         this.onSearchReadFormChange();
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           const response = error.error as ApiResponse;
-          this.isDeleteGlobalMessageSuccess = response.success;
-          this.deleteGlobalMessage = response.message;
+          alert(response.message);
         } else {
-          this.isDeleteGlobalMessageSuccess = false;
-          this.deleteGlobalMessage =
-            "Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.";
+          alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
           console.error(error);
           // add external service like Sentry to save the error
         }
       }
-    }
   }
 
   // ----------------

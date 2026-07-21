@@ -1,0 +1,119 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/breakpoints' as *;
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 0;
+}
+
+.modal__content {
+    margin: 0 5px;
+    z-index: 1;
+    padding: 20px 20px 30px 20px;
+    border: 5px solid $medium-blue;
+    border-radius: 15px;
+    background-color: $light-blue;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.modal__close {
+    color: $medium-blue;
+    align-self: flex-end;
+    transform: scale(1.8);
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+        transform: scale(2);
+        cursor: pointer;
+    }
+}
+
+.modal__title {
+    text-align: center;
+    color: $dark-blue;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    @include for-m {
+        font-size: 1.5rem;
+    }
+
+    @include for-l {
+        font-size: 1.5rem;
+    }
+}
+
+.modal__text {
+    color: $medium-blue;
+    text-align: center;
+
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: left;
+    }
+}
+
+.modal__buttons-container {
+    margin-top: 20px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+
+    @include for-m {
+        width: 100%;
+        gap: 20%;
+        flex-direction: row;
+    }
+
+    @include for-l {
+        width: 100%;
+        gap: 20%;
+        flex-direction: row;
+    }
+}
+
+.modal__payment-button {
+    padding: 10px 20px;
+    border: 2px solid $medium-blue;
+    border-radius: 25px;
+    background-color: $light-blue;
+    color: $medium-blue;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: $medium-blue;
+        color: white;
+        transform: scale(1.15);
+    }
+}
+
+.modal__payment-button--confirm {}
+
+.modal__payment-button--cancel {}
+
+.modal__message {}

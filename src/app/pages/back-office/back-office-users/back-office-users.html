@@ -1,58 +1,5 @@
 <main>
     <h1>Gestion des utilisateurs</h1>
-    <section class="delete">
-        <h2 class="delete__title">Suppression d'un utilisateur</h2>
-        <div class="delete__text-group">
-            <p class="delete__text">Dans la liste ci-dessous, recherchez l'identifiant de l'utilisateur que vous souhaitez supprimer de la base de données.</p>
-            <p class="delete__text">Ensuite, renseignez cet identifiant dans le champ correspondant, les données actuelles devraient apparaître.</p>
-            <p class="delete__text">Vous pouvez maintenant cliquer sur 'Supprimer'. Attention, cette action est irréversible.</p>
-        </div>
-        <form class="delete__form" [formGroup]="deleteForm" (submit)="onSubmitDeleteForm()">
-            <div class="delete__form-part">
-                <div class="delete__field-group">
-                    <label class="delete__form-label" for="deleteId">Identifiant</label>
-                    <input class="delete__form-input" type="number" formControlName="id" id="deleteId" (input)="onIdDeleteFormChange(getIdValue(this.deleteForm))">
-                </div>
-                @if (formService.isInputValid(deleteForm, 'id')) {
-                    <div class="update__message-group">
-                        @for (message of formService.getAllErrorMessages(deleteForm, 'id'); track $index) {
-                         <p class="update__message error">{{message}}</p>
-                        }
-                    </div>
-                }
-            </div>
-            <button class="delete__form-submit" [class.delete__form-submit--disabled]="deleteForm.invalid" type="submit">Supprimer</button>
-            @if(deleteGlobalMessage){<p class="delete__message delete__message--global"  [ngClass]="isDeleteGlobalMessageSuccess ? 'success' : 'error'">{{ deleteGlobalMessage }}</p>}
-        </form>
-        <table class="delete__table">
-            <thead class="delete__thead">
-                <tr class="delete__thead-row">
-                    <th class="delete__thead-column delete__thead-column--corner-left">Id</th>
-                    <th class="delete__thead-column">Nom</th>
-                    <th class="delete__thead-column">Prénom</th>
-                    <th class="delete__thead-column">E-mail</th>
-                    <th class="delete__thead-column">Rôles</th>
-                    <th class="delete__thead-column">Vérifié</th>
-                    <th class="delete__thead-column">Date de création</th>
-                    <th class="delete__thead-column">Date de modification</th>
-                    <th class="delete__thead-column delete__thead-column--corner-right">Modifié par</th>
-                </tr>
-            </thead>
-            <tbody class="delete__tbody">
-                <tr class="delete__tbody-row">
-                    <td class="delete__tbody-column delete__tbody-column--corner-left">{{ deleteId }}</td>
-                    <td class="delete__tbody-column">{{ deleteLastName }}</td>
-                    <td class="delete__tbody-column">{{ deleteFirstName }}</td>
-                    <td class="delete__tbody-column">{{ deleteEmail }}</td>
-                    <td class="delete__tbody-column">{{ deleteRolesText }}</td>
-                    <td class="delete__tbody-column">{{ deleteIsVerified }}</td>
-                    <td class="delete__tbody-column">{{ deleteCreatedAt }}</td>
-                    <td class="delete__tbody-column">{{ deleteUpdatedAt }}</td>
-                    <td class="delete__tbody-column delete__tbody-column--corner-right">{{ deleteUpdatedBy }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
     <section class="read">
         <h2 class="read__title">Liste des utilisateurs</h2>
         <form class="read__form" [formGroup]="readForm">
@@ -80,7 +27,7 @@
                         <td class="read__tbody-column read__tbody-column--corner-left">
                             <div class="read__tbody-icon-container">
                                 <fa-icon title="Modifier" class="read__tbody-icon read__tbody-icon--pen" (click)="displayUpdateUserForm(user)" [icon]="faPen"></fa-icon>
-                                <fa-icon title="Supprimer" class="read__tbody-icon read__tbody-icon--trash" [icon]="faTrash"></fa-icon>
+                                <fa-icon title="Supprimer" class="read__tbody-icon read__tbody-icon--trash" (click)="confirmUserDeletion(user)" [icon]="faTrash"></fa-icon>
                             </div>
                         </td>
                         <td class="read__tbody-column">{{ user.id }}</td>
@@ -110,4 +57,12 @@
         [isVerified]="isVerifiedToUpdate"
     >
     </app-update-user-form>
+}
+@if(isDeleteUserWarningModalOpen) {
+    <app-warning-modal
+        (confirmChoice)="deleteUser()"
+        (closeModal)="isDeleteUserWarningModalOpen = false"
+        [text]="cautionUserDeletionText"
+    >
+    </app-warning-modal>
 }
