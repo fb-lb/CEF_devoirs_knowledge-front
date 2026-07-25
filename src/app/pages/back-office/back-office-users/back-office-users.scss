@@ -153,11 +153,11 @@ h1 {
 
 .read__tbody-icon {
     transition: transform 0.15s ease-in;
-}
 
-.read__tbody-icon:hover {
-    cursor: pointer;
-    transform: scale(1.4);
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.4);
+    }
 }
 
 .read__tbody-icon-container {
@@ -167,7 +167,6 @@ h1 {
 
 .read__tbody-icon--pen {
     color: $medium-blue;
-    
 }
 
 .read__tbody-icon--trash {

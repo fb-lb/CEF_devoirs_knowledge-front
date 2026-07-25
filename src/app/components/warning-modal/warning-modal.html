@@ -2,7 +2,7 @@
     <div class="modal__overlay" (click)="closeModal.emit()"></div>
     <div class="modal__content">
         <fa-icon class="modal__close" title="Fermer" [icon]="faSquareXmark" (click)="closeModal.emit()"></fa-icon>
-        <h2 class="modal__title">Message d'avertissement, veuillez confirmer votre choix.</h2>
+        <h2 class="modal__title">Avertissement</h2>
         <p class="modal__text">{{ text }}</p>
         <div class="modal__buttons-container">
             <button 

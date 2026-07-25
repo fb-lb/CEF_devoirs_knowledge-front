@@ -9,10 +9,13 @@ import { NgClass } from '@angular/common';
 import { UserCourses } from '../../../services/user-courses';
 import { UserService } from '../../../services/user.service';
 import { CoursesService } from '../../../services/courses.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPen, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { WarningModal } from '../../../components/warning-modal/warning-modal';
 
 @Component({
   selector: 'app-back-office-purchases',
-  imports: [ɵInternalFormsSharedModule, ReactiveFormsModule, NgClass],
+  imports: [ɵInternalFormsSharedModule, FontAwesomeModule, ReactiveFormsModule, NgClass, WarningModal],
   templateUrl: './back-office-purchases.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-purchases.scss'
@@ -31,6 +34,29 @@ export class BackOfficePurchases {
   allLessons: LessonData[] = [];
   allUserLessons: UserLessonData[] = [];
   filteredUserLessons: UserLessonData[] = [];
+
+  faTrash: IconDefinition = faTrash;
+  faPen: IconDefinition = faPen;
+
+  isWarningModalOpen : boolean = false;
+  warningDeletion: string = "";
+  warningModalConfirmation: () => void = () => {};
+
+  isUserThemesMessageDisplayed: boolean = false;
+  isUserCursusMessageDisplayed: boolean = false;
+  isUserLessonsMessageDisplayed: boolean = false;
+
+  userThemesMessage: string = "";
+  userCursusMessage: string = "";
+  userLessonsMessage: string = "";
+
+  isUserThemesMessageSuccess: boolean = false;
+  isUserCursusMessageSuccess: boolean = false;
+  isUserLessonsMessageSuccess: boolean = false;
+
+  userThemeIdToDelete: number = 0;
+  userCursusIdToDelete: number = 0;
+  userLessonIdToDelete: number = 0;
 
   userNameOfUserCursusToAdd: string = '';
   userEmailOfUserCursusToAdd: string = '';
@@ -68,24 +94,6 @@ export class BackOfficePurchases {
   lessonNameOfUserLessonToUpdate: string = '';
   updateUserLessonMessage: string = '';
   isUpdateUserLessonMessageSuccess: boolean = true;
-
-  userNameOfUserThemeToDelete: string = '';
-  userEmailOfUserThemeToDelete: string = '';
-  themeNameOfUserThemeToDelete: string = '';
-  deleteUserThemeMessage: string = '';
-  isDeleteUserThemeMessageSuccess: boolean = true;
-
-  userNameOfUserCursusToDelete: string = '';
-  userEmailOfUserCursusToDelete: string = '';
-  cursusNameOfUserCursusToDelete: string = '';
-  deleteUserCursusMessage: string = '';
-  isDeleteUserCursusMessageSuccess: boolean = true;
-
-  userNameOfUserLessonToDelete: string = '';
-  userEmailOfUserLessonToDelete: string = '';
-  lessonNameOfUserLessonToDelete: string = '';
-  deleteUserLessonMessage: string = '';
-  isDeleteUserLessonMessageSuccess: boolean = true;
 
   constructor(private http: HttpClient, public formService: FormService, private userCoursesService: UserCourses, private userService: UserService, private coursesService: CoursesService) {}
 
@@ -151,6 +159,55 @@ export class BackOfficePurchases {
     if (time) dateSplited.push(time);
     const formatedDate = dateSplited.join(' ');
     return formatedDate;
+  }
+
+  // ------------------------
+  // DISPLAY MESSAGE METHODS
+  // ------------------------
+
+  hideAllMessages() {
+    this.isUserThemesMessageDisplayed = false;
+    this.isUserCursusMessageDisplayed = false;
+    this.isUserLessonsMessageDisplayed = false;
+  }
+
+  displayUserThemeMessage(success: boolean, message: string) {
+    this.hideAllMessages();
+    this.isUserThemesMessageSuccess = success;
+    this.userThemesMessage = message;
+    this.isUserThemesMessageDisplayed = true;
+    const userThemeTitleElement: HTMLElement | null = document.getElementById("user-themes-title");
+    userThemeTitleElement?.scrollIntoView({behavior: 'smooth'});
+
+    setTimeout(() => {
+      this.isUserThemesMessageDisplayed = false;
+    }, success ? 5000 : 10000);
+  }
+
+  displayUserCursusMessage(success: boolean, message: string) {
+    this.hideAllMessages();
+    this.isUserCursusMessageSuccess = success;
+    this.userCursusMessage = message;
+    this.isUserCursusMessageDisplayed = true;
+    const userCursusTitleElement: HTMLElement | null = document.getElementById("user-cursus-title");
+    userCursusTitleElement?.scrollIntoView({behavior: 'smooth'});
+
+    setTimeout(() => {
+      this.isUserCursusMessageDisplayed = false;
+    }, success ? 5000 : 10000);
+  }
+
+  displayUserLessonMessage(success: boolean, message: string) {
+    this.hideAllMessages();
+    this.isUserLessonsMessageSuccess = success;
+    this.userLessonsMessage = message;
+    this.isUserLessonsMessageDisplayed = true;
+    const userLessonsTitleElement: HTMLElement | null = document.getElementById("user-lessons-title");
+    userLessonsTitleElement?.scrollIntoView({behavior: 'smooth'});
+
+    setTimeout(() => {
+      this.isUserLessonsMessageDisplayed = false;
+    }, success ? 5000 : 10000);
   }
 
   // ----------------------
@@ -649,61 +706,18 @@ export class BackOfficePurchases {
   // DELETE USER THEME
   // ----------------------
 
-  deleteUserThemeForm = new FormGroup({
-    userThemeId: new FormControl(null, [Validators.required, Validators.min(1)]),
-  });
-
-  onChangeDeleteFormUserThemeId(event: Event) {
-    const input = event.currentTarget as HTMLInputElement;
-    const userThemeId = Number(input.value);
-    this.deleteUserThemeForm.setErrors(null);
-    this.deleteUserThemeMessage = "";
-
-    if (userThemeId > 0) {
-      const userTheme = this.allUserThemes.find(userTheme => userTheme.id === userThemeId);
-      
-      if(!userTheme) {
-        this.userNameOfUserThemeToDelete = '';
-        this.userEmailOfUserThemeToDelete = '';
-        this.themeNameOfUserThemeToDelete = '';
-
-        this.deleteUserThemeMessage = "Cet identifiant ne correspond à aucune association utilisateur / thème";
-        this.isDeleteUserThemeMessageSuccess = false;
-        this.deleteUserThemeForm.setErrors({forceError: true});
-        return
-      };
-
-      const user = this.allUsers.find(user => user.id === userTheme.userId);
-      this.userNameOfUserThemeToDelete = user ? this.getUserName(user.id) : '';
-      this.userEmailOfUserThemeToDelete = user ? user.email : '';
-
-      const theme = this.allThemes.find(theme => theme.id === userTheme.themeId);
-      this.themeNameOfUserThemeToDelete = theme ? this.getThemeName(theme.id) : '';
-    } else {
-      this.userNameOfUserThemeToDelete = '';
-      this.userEmailOfUserThemeToDelete = '';
-      this.themeNameOfUserThemeToDelete = '';
-    }
+  confirmUserThemeDeletion(userThemeId: number) {
+    this.userThemeIdToDelete = userThemeId;
+    this.warningModalConfirmation = this.deleteUserTheme;
+    this.warningDeletion = "Supprimer l'accès à un thème pour un utilisateur supprimera l'accès à tous les cursus et toutes les leçons dépendants de ce thème, pour cet utilisateur. Veuillez confirmer votre choix :"
+    this.isWarningModalOpen = true;
   }
 
-  async onSubmitUserThemeDeleteForm() {
-    this.deleteUserThemeForm.markAllAsDirty();
-    if(this.deleteUserThemeForm.invalid) {
-      this.isDeleteUserThemeMessageSuccess = false;
-      this.deleteUserThemeMessage = "Le formulaire n'est pas valide.";
-      return;
-    }
-
+  async deleteUserTheme() {
     try {
-      const userThemeId = this.deleteUserThemeForm.controls.userThemeId.value;
-      const deleteUserThemeResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-theme/${userThemeId}`));
-      this.isDeleteUserThemeMessageSuccess = deleteUserThemeResponse.success;
-      this.deleteUserThemeMessage = deleteUserThemeResponse.message;
+      const deleteUserThemeResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-theme/${this.userThemeIdToDelete}`));
+      this.displayUserThemeMessage(deleteUserThemeResponse.success, deleteUserThemeResponse.message);
       if (deleteUserThemeResponse.success) {
-        this.deleteUserThemeForm.reset();
-        this.userNameOfUserThemeToDelete = '';
-        this.userEmailOfUserThemeToDelete = '';
-        this.themeNameOfUserThemeToDelete = '';
         await this.syncAllUserCoursesData();
         await this.userCoursesService.syncUserThemesForThisUser();
         await this.userCoursesService.syncUserCursusForThisUser();
@@ -712,11 +726,9 @@ export class BackOfficePurchases {
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         const errorResponse = error.error as ApiResponse;
-        this.isDeleteUserThemeMessageSuccess = errorResponse.success;
-        this.deleteUserThemeMessage = errorResponse.message;
+        this.displayUserThemeMessage(errorResponse.success, errorResponse.message);
       } else {
-        this.isDeleteUserThemeMessageSuccess = false;
-        this.deleteUserThemeMessage = "Nous ne parvenons pas à nous connecter aux serveurs. Veuillez nous excuser pour la gêne occasionnée.";
+        this.displayUserThemeMessage(false, "Nous ne parvenons pas à nous connecter aux serveurs. Veuillez nous excuser pour la gêne occasionnée.")
       }
       console.error(error);
       // add external service like Sentry to save the error
@@ -727,61 +739,18 @@ export class BackOfficePurchases {
   // DELETE USER CURSUS
   // ----------------------
 
-  deleteUserCursusForm = new FormGroup({
-    userCursusId: new FormControl(null, [Validators.required, Validators.min(1)]),
-  });
-
-  onChangeDeleteFormUserCursusId(event: Event) {
-    const input = event.currentTarget as HTMLInputElement;
-    const userCursusId = Number(input.value);
-    this.deleteUserCursusForm.setErrors(null);
-    this.deleteUserCursusMessage = "";
-
-    if (userCursusId > 0) {
-      const userCursus = this.allUserCursus.find(userCursus => userCursus.id === userCursusId);
-      
-      if(!userCursus) {
-        this.userNameOfUserCursusToDelete = '';
-        this.userEmailOfUserCursusToDelete = '';
-        this.cursusNameOfUserCursusToDelete = '';
-
-        this.deleteUserCursusMessage = "Cet identifiant ne correspond à aucune association utilisateur / cursus";
-        this.isDeleteUserCursusMessageSuccess = false;
-        this.deleteUserCursusForm.setErrors({forceError: true});
-        return
-      };
-
-      const user = this.allUsers.find(user => user.id === userCursus.userId);
-      this.userNameOfUserCursusToDelete = user ? this.getUserName(user.id) : '';
-      this.userEmailOfUserCursusToDelete = user ? user.email : '';
-
-      const cursus = this.allCursus.find(cursus => cursus.id === userCursus.cursusId);
-      this.cursusNameOfUserCursusToDelete = cursus ? this.getCursusName(cursus.id) : '';
-    } else {
-      this.userNameOfUserCursusToDelete = '';
-      this.userEmailOfUserCursusToDelete = '';
-      this.cursusNameOfUserCursusToDelete = '';
-    }
+  confirmUserCursusDeletion(userCursusId: number) {
+    this.userCursusIdToDelete = userCursusId;
+    this.warningModalConfirmation = this.deleteUserCursus;
+    this.warningDeletion = "Supprimer l'accès à un cursus pour un utilisateur supprimera l'accès à toutes les leçons dépendantes de ce cursus, pour cet utilisateur. Veuillez confirmer votre choix :"
+    this.isWarningModalOpen = true;
   }
 
-  async onSubmitUserCursusDeleteForm() {
-    this.deleteUserCursusForm.markAllAsDirty();
-    if(this.deleteUserCursusForm.invalid) {
-      this.isDeleteUserCursusMessageSuccess = false;
-      this.deleteUserCursusMessage = "Le formulaire n'est pas valide.";
-      return;
-    }
-
+  async deleteUserCursus() {
     try {
-      const userCursusId = this.deleteUserCursusForm.controls.userCursusId.value;
-      const deleteUserCursusResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-cursus/${userCursusId}`));
-      this.isDeleteUserCursusMessageSuccess = deleteUserCursusResponse.success;
-      this.deleteUserCursusMessage = deleteUserCursusResponse.message;
+      const deleteUserCursusResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-cursus/${this.userCursusIdToDelete}`));
+      this.displayUserCursusMessage(deleteUserCursusResponse.success, deleteUserCursusResponse.message);
       if (deleteUserCursusResponse.success) {
-        this.deleteUserCursusForm.reset();
-        this.userNameOfUserCursusToDelete = '';
-        this.userEmailOfUserCursusToDelete = '';
-        this.cursusNameOfUserCursusToDelete = '';
         await this.syncAllUserCoursesData();
         await this.userCoursesService.syncUserThemesForThisUser();
         await this.userCoursesService.syncUserCursusForThisUser();
@@ -790,11 +759,9 @@ export class BackOfficePurchases {
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         const errorResponse = error.error as ApiResponse;
-        this.isDeleteUserCursusMessageSuccess = errorResponse.success;
-        this.deleteUserCursusMessage = errorResponse.message;
+        this.displayUserCursusMessage(errorResponse.success, errorResponse.message);
       } else {
-        this.isDeleteUserCursusMessageSuccess = false;
-        this.deleteUserCursusMessage = "Nous ne parvenons pas à nous connecter aux serveurs. Veuillez nous excuser pour la gêne occasionnée.";
+        this.displayUserLessonMessage(false, "Nous ne parvenons pas à nous connecter aux serveurs. Veuillez nous excuser pour la gêne occasionnée.");
       }
       console.error(error);
       // add external service like Sentry to save the error
@@ -805,61 +772,18 @@ export class BackOfficePurchases {
   // DELETE USER LESSON
   // ----------------------
 
-  deleteUserLessonForm = new FormGroup({
-    userLessonId: new FormControl(null, [Validators.required, Validators.min(1)]),
-  });
-
-  onChangeDeleteFormUserLessonId(event: Event) {
-    const input = event.currentTarget as HTMLInputElement;
-    const userLessonId = Number(input.value);
-    this.deleteUserLessonForm.setErrors(null);
-    this.deleteUserLessonMessage = "";
-
-    if (userLessonId > 0) {
-      const userLesson = this.allUserLessons.find(userLesson => userLesson.id === userLessonId);
-      
-      if(!userLesson) {
-        this.userNameOfUserLessonToDelete = '';
-        this.userEmailOfUserLessonToDelete = '';
-        this.lessonNameOfUserLessonToDelete = '';
-
-        this.deleteUserLessonMessage = "Cet identifiant ne correspond à aucune association utilisateur / leçon";
-        this.isDeleteUserLessonMessageSuccess = false;
-        this.deleteUserLessonForm.setErrors({forceError: true});
-        return
-      };
-
-      const user = this.allUsers.find(user => user.id === userLesson.userId);
-      this.userNameOfUserLessonToDelete = user ? this.getUserName(user.id) : '';
-      this.userEmailOfUserLessonToDelete = user ? user.email : '';
-
-      const lesson = this.allLessons.find(lesson => lesson.id === userLesson.lessonId);
-      this.lessonNameOfUserLessonToDelete = lesson ? this.getLessonName(lesson.id) : '';
-    } else {
-      this.userNameOfUserLessonToDelete = '';
-      this.userEmailOfUserLessonToDelete = '';
-      this.lessonNameOfUserLessonToDelete = '';
-    }
+  confirmUserLessonDeletion(userLessonId: number) {
+    this.userLessonIdToDelete = userLessonId
+    this.warningModalConfirmation = this.deleteUserLesson;
+    this.warningDeletion = "Cette suppression supprimera définitivement l'accès de cette leçon à cet utilisateur. Veuillez confirmer votre choix :"
+    this.isWarningModalOpen = true;
   }
 
-  async onSubmitUserLessonDeleteForm() {
-    this.deleteUserLessonForm.markAllAsDirty();
-    if(this.deleteUserLessonForm.invalid) {
-      this.isDeleteUserLessonMessageSuccess = false;
-      this.deleteUserLessonMessage = "Le formulaire n'est pas valide.";
-      return;
-    }
-
+  async deleteUserLesson() {
     try {
-      const userLessonId = this.deleteUserLessonForm.controls.userLessonId.value;
-      const deleteUserLessonResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-lesson/${userLessonId}`));
-      this.isDeleteUserLessonMessageSuccess = deleteUserLessonResponse.success;
-      this.deleteUserLessonMessage = deleteUserLessonResponse.message;
+      const deleteUserLessonResponse = await firstValueFrom(this.http.delete<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.userLessonIdToDelete}`));
+      this.displayUserLessonMessage(deleteUserLessonResponse.success, deleteUserLessonResponse.message);
       if (deleteUserLessonResponse.success) {
-        this.deleteUserLessonForm.reset();
-        this.userNameOfUserLessonToDelete = '';
-        this.userEmailOfUserLessonToDelete = '';
-        this.lessonNameOfUserLessonToDelete = '';
         await this.syncAllUserCoursesData();
         await this.userCoursesService.syncUserThemesForThisUser();
         await this.userCoursesService.syncUserCursusForThisUser();
@@ -868,11 +792,9 @@ export class BackOfficePurchases {
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         const errorResponse = error.error as ApiResponse;
-        this.isDeleteUserLessonMessageSuccess = errorResponse.success;
-        this.deleteUserLessonMessage = errorResponse.message;
+        this.displayUserLessonMessage(errorResponse.success, errorResponse.message);
       } else {
-        this.isDeleteUserLessonMessageSuccess = false;
-        this.deleteUserLessonMessage = "Nous ne parvenons pas à nous connecter aux serveurs. Veuillez nous excuser pour la gêne occasionnée.";
+        this.displayUserLessonMessage(false, "Nous ne parvenons pas à nous connecter aux serveurs. Veuillez nous excuser pour la gêne occasionnée.");
       }
       console.error(error);
       // add external service like Sentry to save the error

@@ -33,33 +33,6 @@
                     }
                 </form>
             </div>
-            <div class="management__action">
-                <h3 class="management__action-title">Supprimer l'accès à un thème pour un utilisateur</h3>
-                <p class="management__action-text text">
-                    <span class="text__caution">Attention :</span> supprimer l'accès à un thème pour un utilisateur supprimera l'accès à
-                    tous les cursus et toutes les leçons dépendants de ce thème, pour cet utilisateur.
-                </p>
-                <form class="management__form" [formGroup]="deleteUserThemeForm" (submit)="onSubmitUserThemeDeleteForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="deleteUserThemeId">Identifiant de l'association utilisateur / thème</label>
-                        <input class="management__form-input" type="number" formControlName="userThemeId" id="deleteUserThemeId" (input)="onChangeDeleteFormUserThemeId($event)">
-                        @if (formService.isInputValid(deleteUserThemeForm, 'userThemeId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(deleteUserThemeForm, 'userThemeId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserThemeToDelete}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserThemeToDelete}}</p>
-                        <p class="management__form-info">Thème : {{themeNameOfUserThemeToDelete}}</p>
-                    </div>
-                    <button class="management__form-button" [class.disabled]="deleteUserThemeForm.invalid" [disabled]="deleteUserThemeForm.invalid" type="submit">Supprimer</button>
-                    @if(deleteUserThemeMessage) {
-                        <p class="management__form-message" [ngClass]="isDeleteUserThemeMessageSuccess ? 'success' : 'error'">{{deleteUserThemeMessage}}</p>
-                    }
-                </form>
-            </div>
         </div>
         <div class="management">
             <h2 class="management__title">Cursus</h2>
@@ -134,33 +107,6 @@
                     }
                 </form>
             </div>
-            <div class="management__action">
-                <h3 class="management__action-title">Supprimer l'accès à un cursus pour un utilisateur</h3>
-                <p class="management__action-text text">
-                    <span class="text__caution">Attention :</span> supprimer l'accès à un cursus pour un utilisateur supprimera l'accès à
-                    toutes les leçons dépendantes de ce cursus, pour cet utilisateur.
-                </p>
-                <form class="management__form" [formGroup]="deleteUserCursusForm" (submit)="onSubmitUserCursusDeleteForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="deleteUserCursusId">Identifiant de l'association utilisateur / cursus</label>
-                        <input class="management__form-input" type="number" formControlName="userCursusId" id="deleteUserCursusId" (input)="onChangeDeleteFormUserCursusId($event)">
-                        @if (formService.isInputValid(deleteUserCursusForm, 'userCursusId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(deleteUserCursusForm, 'userCursusId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserCursusToDelete}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserCursusToDelete}}</p>
-                        <p class="management__form-info">Cursus : {{cursusNameOfUserCursusToDelete}}</p>
-                    </div>
-                    <button class="management__form-button" [class.disabled]="deleteUserCursusForm.invalid" [disabled]="deleteUserCursusForm.invalid" type="submit">Supprimer</button>
-                    @if(deleteUserCursusMessage) {
-                        <p class="management__form-message" [ngClass]="isDeleteUserCursusMessageSuccess ? 'success' : 'error'">{{deleteUserCursusMessage}}</p>
-                    }
-                </form>
-            </div>
         </div>
         <div class="management">
             <h2 class="management__title">Leçons</h2>
@@ -227,35 +173,15 @@
                     }
                 </form>
             </div>
-            <div class="management__action">
-                <h3 class="management__action-title">Supprimer l'accès à une leçon pour un utilisateur</h3>
-                <form class="management__form" [formGroup]="deleteUserLessonForm" (submit)="onSubmitUserLessonDeleteForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="deleteUserLessonId">Identifiant de l'association utilisateur / leçon</label>
-                        <input class="management__form-input" type="number" formControlName="userLessonId" id="deleteUserLessonId" (input)="onChangeDeleteFormUserLessonId($event)">
-                        @if (formService.isInputValid(deleteUserLessonForm, 'userLessonId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(deleteUserLessonForm, 'userLessonId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserLessonToDelete}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserLessonToDelete}}</p>
-                        <p class="management__form-info">Leçon : {{lessonNameOfUserLessonToDelete}}</p>
-                    </div>
-                    <button class="management__form-button" [class.disabled]="deleteUserLessonForm.invalid" [disabled]="deleteUserLessonForm.invalid" type="submit">Supprimer</button>
-                    @if(deleteUserLessonMessage) {
-                        <p class="management__form-message" [ngClass]="isDeleteUserLessonMessageSuccess ? 'success' : 'error'">{{deleteUserLessonMessage}}</p>
-                    }
-                </form>
-            </div>
         </div>
     </div>
     <div class="purchases__read">
         <h2 class="purchases__read-title">Rechercher les autorisations d'accès aux contenus pour les utilisateurs</h2>
         <div class="read">
-            <h3 class="read__title">Accès aux thèmes par les utilisateurs</h3>
+            <h3 id="user-themes-title" class="read__title">Accès aux thèmes par les utilisateurs</h3>
+            @if(isUserThemesMessageDisplayed) {
+                <p class="read__message" [ngClass]="isUserThemesMessageSuccess ? 'success' : 'error'">{{ userThemesMessage }}</p>
+            }
             <div class="read__search">
                 <p class="read__search-text">Rechercher</p>
                 <input class="read__search-input" type="text" (input)="onSearchThemeInputChange($event)">
@@ -263,7 +189,8 @@
             <table class="read__table">
                 <thead class="read__table-thead">
                     <tr class="read__table-tr">
-                        <th class="read__table-th read__table-th--left">Identifiant de l'association<br>utilisateur / thème</th>
+                        <th class="read__table-th read__table-th--left">Actions</th>
+                        <th class="read__table-th">Identifiant de l'association<br>utilisateur / thème</th>
                         <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
                         <th class="read__table-th">Nom du thème (identifiant)</th>
                         <th class="read__table-th">Certifié</th>
@@ -274,7 +201,13 @@
                 <tbody class="read__table-tbody">
                     @for(userTheme of filteredUserThemes; track $index) {
                         <tr class="read__table-tr">
-                            <td class="read__table-td read__table-td--left">{{ userTheme.id }}</td>
+                            <td class="read__table-td read__table-td--left">
+                                <div class="read__table-icon-container">
+                                    <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserThemeDeletion(userTheme.id)" [icon]="faTrash"></fa-icon>
+                                    <fa-icon class="read__table-icon read__table-icon--pen" [icon]="faPen"></fa-icon>
+                                </div>
+                            </td>
+                            <td class="read__table-td">{{ userTheme.id }}</td>
                             <td class="read__table-td">{{ getUserName(userTheme.userId) }}</td>
                             <td class="read__table-td">{{ getThemeName(userTheme.themeId) }}</td>
                             <td class="read__table-td">{{ userTheme.isCertified ? 'Oui' : 'Non' }}</td>
@@ -286,7 +219,10 @@
             </table>
         </div>
         <div class="read">
-            <h3 class="read__title">Accès aux cursus par les utilisateurs</h3>
+            <h3 id="user-cursus-title" class="read__title">Accès aux cursus par les utilisateurs</h3>
+            @if(isUserCursusMessageDisplayed) {
+                <p class="read__message" [ngClass]="isUserCursusMessageSuccess ? 'success' : 'error'">{{ userCursusMessage }}</p>
+            }
             <div class="read__search">
                 <p class="read__search-text">Rechercher</p>
                 <input class="read__search-input" type="text" (input)="onSearchCursusInputChange($event)">
@@ -294,7 +230,8 @@
             <table class="read__table">
                 <thead class="read__table-thead">
                     <tr class="read__table-tr">
-                        <th class="read__table-th read__table-th--left">Identifiant de l'association<br>utilisateur / cursus</th>
+                        <th class="read__table-th read__table-th--left">Actions</th>
+                        <th class="read__table-th">Identifiant de l'association<br>utilisateur / cursus</th>
                         <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
                         <th class="read__table-th">Nom du cursus (identifiant)</th>
                         <th class="read__table-th">Validé</th>
@@ -305,7 +242,13 @@
                 <tbody class="read__table-tbody">
                     @for(userCursus of filteredUserCursus; track $index) {
                         <tr class="read__table-tr">
-                            <td class="read__table-td read__table-td--left">{{ userCursus.id }}</td>
+                            <td class="read__table-td read__table-td--left">
+                                <div class="read__table-icon-container">
+                                    <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserCursusDeletion(userCursus.id)" [icon]="faTrash"></fa-icon>
+                                    <fa-icon class="read__table-icon read__table-icon--pen" [icon]="faPen"></fa-icon>
+                                </div>
+                            </td>
+                            <td class="read__table-td">{{ userCursus.id }}</td>
                             <td class="read__table-td">{{ getUserName(userCursus.userId) }}</td>
                             <td class="read__table-td">{{ getCursusName(userCursus.cursusId) }}</td>
                             <td class="read__table-td">{{ userCursus.isValidated ? 'Oui' : 'Non' }}</td>
@@ -317,7 +260,10 @@
             </table>
         </div>
         <div class="read">
-            <h3 class="read__title">Accès aux leçons par les utilisateurs</h3>
+            <h3 id="user-lessons-title" class="read__title">Accès aux leçons par les utilisateurs</h3>
+            @if(isUserLessonsMessageDisplayed) {
+                <p class="read__message" [ngClass]="isUserLessonsMessageSuccess ? 'success' : 'error'">{{ userLessonsMessage }}</p>
+            }
             <div class="read__search">
                 <p class="read__search-text">Rechercher</p>
                 <input class="read__search-input" type="text" (input)="onSearchLessonInputChange($event)">
@@ -325,7 +271,8 @@
             <table class="read__table">
                 <thead class="read__table-thead">
                     <tr class="read__table-tr">
-                        <th class="read__table-th read__table-th--left">Identifiant de l'association<br>utilisateur / leçon</th>
+                        <th class="read__table-th read__table-th--left">Actions</th>
+                        <th class="read__table-th">Identifiant de l'association<br>utilisateur / leçon</th>
                         <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
                         <th class="read__table-th">Nom de la leçon (identifiant)</th>
                         <th class="read__table-th">Validée</th>
@@ -336,7 +283,13 @@
                 <tbody class="read__table-tbody">
                     @for(userLesson of filteredUserLessons; track $index) {
                         <tr class="read__table-tr">
-                            <td class="read__table-td read__table-td--left">{{ userLesson.id }}</td>
+                            <td class="read__table-td read__table-td--left">
+                                <div class="read__table-icon-container">
+                                    <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserLessonDeletion(userLesson.id)" [icon]="faTrash"></fa-icon>
+                                    <fa-icon class="read__table-icon read__table-icon--pen" [icon]="faPen"></fa-icon>
+                                </div>
+                            </td>
+                            <td class="read__table-td">{{ userLesson.id }}</td>
                             <td class="read__table-td">{{ getUserName(userLesson.userId) }}</td>
                             <td class="read__table-td">{{ getLessonName(userLesson.lessonId) }}</td>
                             <td class="read__table-td">{{ userLesson.isValidated ? 'Oui' : 'Non' }}</td>
@@ -349,3 +302,12 @@
         </div>
     </div>
 </main>
+
+@if(isWarningModalOpen) {
+    <app-warning-modal
+        (confirmChoice)="warningModalConfirmation()"
+        (closeModal)="isWarningModalOpen = false"
+        [text]="warningDeletion"
+    >
+    </app-warning-modal>
+}

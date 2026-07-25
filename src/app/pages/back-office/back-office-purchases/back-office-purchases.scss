@@ -203,6 +203,18 @@
     }
 }
 
+.read__message {
+    text-align: center;
+
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: left;
+    }
+}
+
 .read__search {
     margin: 0 auto;
     padding: 15px 25px;
@@ -280,6 +292,28 @@
 
 .read__table-td--left {
     border-left: 0;
+}
+
+.read__table-icon-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.read__table-icon {
+    transition: transform 0.15s ease-in;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.4);
+    }
+}
+
+.read__table-icon--trash {
+    color: $red;
+}
+
+.read__table-icon--pen {
+    color: $medium-blue;
 }
 
 .read__table-td--right {
