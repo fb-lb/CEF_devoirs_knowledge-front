@@ -116,8 +116,6 @@
     }
 }
 
-.management__form-label--checkbox {}
-
 .management__form-input {
     padding: 5px 10px;
     max-width: 200px;
@@ -134,10 +132,6 @@
     @include for-l {
         text-align: start;
     }
-}
-
-.management__form-input--checkbox {
-    width: auto;
 }
 
 .management__form-message-group {
@@ -296,7 +290,7 @@
 
 .read__table-icon-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .read__table-icon {
@@ -312,12 +306,108 @@
     color: $red;
 }
 
-.read__table-icon--pen {
-    color: $medium-blue;
+.read__table-checkbox-container {
+    display: flex;
+    gap: 5px;
+}
+
+.read__table-checkbox {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.read__table-checkbox--disabled {
+    opacity: 40%;
+    &:hover {
+        cursor: default;
+    }
+}
+
+.read__table-checkbox-label {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.read__table-checkbox-label--disabled {
+    opacity: 40%;
+    &:hover {
+        cursor: default;
+    }
 }
 
 .read__table-td--right {
     border-right: 0;
+}
+
+// -------------------
+// Message modal
+// -------------------
+
+.modal-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    max-width: 95%;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+
+    @include for-m {
+        max-width: 70%;
+    }
+
+    @include for-l {
+        max-width: 50%;
+    }
+}
+
+.modal-message__close-icon {
+    margin-top: 7px;
+    color: $medium-blue;
+    transform: scale(2);
+    pointer-events: all;
+    transition: all 0.15s ease-in-out;
+    border-radius: 50%;
+
+    &:hover {
+        margin-top: 10px;
+        cursor: pointer;
+        transform: scale(2.4);
+        color: $dark-blue;
+    }
+}
+
+.modal-message__close-background-icon {
+    z-index: -1;
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-message__text {
+    padding: 7px; 
+    background-color: $light-blue;
+    border: 3px solid $medium-blue;
+    border-radius: 25px;
+    pointer-events: all;
+    
+    @include for-m {
+        padding: 15px;
+    }
+
+    @include for-l {
+        padding: 15px;
+    }
 }
 
 // -------------------

@@ -2,39 +2,6 @@
     <h1 class="purchases__title">Gestion des achats</h1>
     <div class="purchases__management">
         <div class="management">
-            <h2 class="management__title">Thèmes</h2>
-            <div class="management__action">
-                <h3 class="management__action-title">Modifier la certification d'un thème pour un utilisateur</h3>
-                <p class="management__action-text text">
-                    <span class="text__caution">Attention :</span> valider/invalider la certification d'un thème pour un utilisateur validera/invalidera
-                    tous les cursus et toutes les leçons dépendants de ce thème, pour cet utilisateur.
-                </p>
-                <form class="management__form" [formGroup]="updateUserThemeForm" (submit)="onSubmitUserThemeUpdateForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="updateUserThemeId">Identifiant de l'association utilisateur / thème</label>
-                        <input class="management__form-input" type="number" formControlName="userThemeId" id="updateUserThemeId" (input)="onChangeUpdateFormUserThemeId($event)">
-                        @if (formService.isInputValid(updateUserThemeForm, 'userThemeId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(updateUserThemeForm, 'userThemeId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserThemeToUpdate}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserThemeToUpdate}}</p>
-                        <p class="management__form-info">Thème : {{themeNameOfUserThemeToUpdate}}</p>
-                    </div>
-                    <label class="management__form-label management__form-label--checkbox" for="updateThemeCertification">
-                        <input class="management__form-input management__form-input--checkbox" type="checkbox" [checked]="isUpdateUserThemeCertified" (input)="onChangeUpdateFormUserCertification($event)" formControlName="updateUserThemeCertification" id="updateThemeCertification"> Certifié
-                    </label>
-                    <button class="management__form-button" [class.disabled]="updateUserThemeForm.invalid" [disabled]="updateUserThemeForm.invalid" type="submit">Modifier</button>
-                    @if(updateUserThemeMessage) {
-                        <p class="management__form-message" [ngClass]="isUpdateUserThemeMessageSuccess ? 'success' : 'error'">{{updateUserThemeMessage}}</p>
-                    }
-                </form>
-            </div>
-        </div>
-        <div class="management">
             <h2 class="management__title">Cursus</h2>
             <div class="management__action">
                 <h3 class="management__action-title">Ajouter un accès à un cursus pour un utilisateur</h3>
@@ -74,36 +41,6 @@
                     }
                     @if(addUserCursusMessageCursus) {
                         <p class="management__form-message" [ngClass]="isAddUserCursusMessageCursusSuccess ? 'success' : 'error'">{{addUserCursusMessageCursus}}</p>
-                    }
-                </form>
-            </div>
-            <div class="management__action">
-                <h3 class="management__action-title">Modifier la validation d'un cursus pour un utilisateur</h3>
-                <p class="management__action-text text">
-                    <span class="text__caution">Attention :</span> valider/invalider un cursus pour un utilisateur validera/invalidera
-                    toutes les leçons dépendantes de ce cursus, pour cet utilisateur.
-                </p>
-                <form class="management__form" [formGroup]="updateUserCursusForm" (submit)="onSubmitUserCursusUpdateForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="updateUserCursusId">Identifiant de l'association utilisateur / cursus</label>
-                        <input class="management__form-input" type="number" formControlName="userCursusId" id="updateUserCursusId" (input)="onChangeUpdateFormUserCursusId($event)">
-                        @if (formService.isInputValid(updateUserCursusForm, 'userCursusId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(updateUserCursusForm, 'userCursusId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserCursusToUpdate}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserCursusToUpdate}}</p>
-                        <p class="management__form-info">Cursus : {{cursusNameOfUserCursusToUpdate}}</p>
-                    </div>
-                    <label class="management__form-label management__form-label--checkbox" for="updateCursusValidation">
-                        <input class="management__form-input management__form-input--checkbox" type="checkbox" [checked]="isUpdateUserCursusValidated" (input)="onChangeUpdateFormUserCursusValidation($event)" formControlName="updateUserCursusValidation" id="updateCursusValidation"> Validé
-                    </label>
-                    <button class="management__form-button" [class.disabled]="updateUserCursusForm.invalid" [disabled]="updateUserCursusForm.invalid" type="submit">Modifier</button>
-                    @if(updateUserCursusMessage) {
-                        <p class="management__form-message" [ngClass]="isUpdateUserCursusMessageSuccess ? 'success' : 'error'">{{updateUserCursusMessage}}</p>
                     }
                 </form>
             </div>
@@ -147,32 +84,6 @@
                     }
                 </form>
             </div>
-            <div class="management__action">
-                <h3 class="management__action-title">Modifier la validation d'une leçon pour un utilisateur</h3>
-                <form class="management__form" [formGroup]="updateUserLessonForm" (submit)="onSubmitUserLessonUpdateForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="updateUserLessonId">Identifiant de l'association utilisateur / leçon</label>
-                        <input class="management__form-input" type="number" formControlName="userLessonId" id="updateUserLessonId" (input)="onChangeUpdateFormUserLessonId($event)">
-                        @if (formService.isInputValid(updateUserLessonForm, 'userLessonId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(updateUserLessonForm, 'userLessonId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserLessonToUpdate}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserLessonToUpdate}}</p>
-                        <p class="management__form-info">Leçon : {{lessonNameOfUserLessonToUpdate}}</p>
-                    </div>
-                    <label class="management__form-label management__form-label--checkbox" for="updateLessonValidation">
-                        <input class="management__form-input management__form-input--checkbox" type="checkbox" [checked]="isUpdateUserLessonValidated" (input)="onChangeUpdateFormUserLessonValidation($event)" formControlName="updateUserLessonValidation" id="updateLessonValidation"> Validée
-                    </label>
-                    <button class="management__form-button" [class.disabled]="updateUserLessonForm.invalid" [disabled]="updateUserLessonForm.invalid" type="submit">Modifier</button>
-                    @if(updateUserLessonMessage) {
-                        <p class="management__form-message" [ngClass]="isUpdateUserLessonMessageSuccess ? 'success' : 'error'">{{updateUserLessonMessage}}</p>
-                    }
-                </form>
-            </div>
         </div>
     </div>
     <div class="purchases__read">
@@ -204,13 +115,32 @@
                             <td class="read__table-td read__table-td--left">
                                 <div class="read__table-icon-container">
                                     <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserThemeDeletion(userTheme.id)" [icon]="faTrash"></fa-icon>
-                                    <fa-icon class="read__table-icon read__table-icon--pen" [icon]="faPen"></fa-icon>
                                 </div>
                             </td>
                             <td class="read__table-td">{{ userTheme.id }}</td>
                             <td class="read__table-td">{{ getUserName(userTheme.userId) }}</td>
                             <td class="read__table-td">{{ getThemeName(userTheme.themeId) }}</td>
-                            <td class="read__table-td">{{ userTheme.isCertified ? 'Oui' : 'Non' }}</td>
+                            <td class="read__table-td">
+                                <div class="read__table-checkbox-container">
+                                    <input
+                                        class="read__table-checkbox"
+                                        [ngClass]="loadingUserThemeIds.has(userTheme.id) ? 'read__table-checkbox--disabled' :''"
+                                        type="checkbox" 
+                                        [name]="'is-user-theme-' + userTheme.id + '-certified'" 
+                                        [id]="'is-user-theme-' + userTheme.id + '-certified'" 
+                                        [checked]="userTheme.isCertified ? true : false"
+                                        [disabled]="loadingUserThemeIds.has(userTheme.id)"
+                                        (click)="confirmUserThemeUpdate($event, userTheme.id)"
+                                    >
+                                    <label 
+                                        class="read__table-checkbox-label" 
+                                        [ngClass]="loadingUserThemeIds.has(userTheme.id) ? 'read__table-checkbox-label--disabled' :''"
+                                        [for]="'is-user-theme-' + userTheme.id + '-certified'"
+                                    >
+                                        {{ userTheme.isCertified ? 'Oui' : 'Non' }}
+                                    </label>
+                                </div>
+                            </td>
                             <td class="read__table-td">{{ userTheme.isCertified ? getFormatedDate(userTheme.updatedAt) : 'Non concerné' }}</td>
                             <td class="read__table-td read__table-td--right">{{ getFormatedDate(userTheme.createdAt) }}</td>
                         </tr>
@@ -245,13 +175,32 @@
                             <td class="read__table-td read__table-td--left">
                                 <div class="read__table-icon-container">
                                     <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserCursusDeletion(userCursus.id)" [icon]="faTrash"></fa-icon>
-                                    <fa-icon class="read__table-icon read__table-icon--pen" [icon]="faPen"></fa-icon>
                                 </div>
                             </td>
                             <td class="read__table-td">{{ userCursus.id }}</td>
                             <td class="read__table-td">{{ getUserName(userCursus.userId) }}</td>
                             <td class="read__table-td">{{ getCursusName(userCursus.cursusId) }}</td>
-                            <td class="read__table-td">{{ userCursus.isValidated ? 'Oui' : 'Non' }}</td>
+                            <td class="read__table-td">
+                                <div class="read__table-checkbox-container">
+                                    <input
+                                        class="read__table-checkbox"
+                                        [ngClass]="loadingUserCursusIds.has(userCursus.id) ? 'read__table-checkbox--disabled' :''"
+                                        type="checkbox"
+                                        [name]="'is-user-cursus-' + userCursus.id + '-validated'" 
+                                        [id]="'is-user-cursus-' + userCursus.id + '-validated'" 
+                                        [checked]="userCursus.isValidated ? true : false"
+                                        [disabled]="loadingUserCursusIds.has(userCursus.id)"
+                                        (click)="confirmUserCursusUpdate($event, userCursus.id)"
+                                    >
+                                    <label 
+                                        class="read__table-checkbox-label" 
+                                        [ngClass]="loadingUserCursusIds.has(userCursus.id) ? 'read__table-checkbox-label--disabled' :''"
+                                        [for]="'is-user-cursus-' + userCursus.id + '-validated'"
+                                    >
+                                        {{ userCursus.isValidated ? 'Oui' : 'Non' }}
+                                    </label>
+                                </div>
+                            </td>
                             <td class="read__table-td">{{ userCursus.isValidated ? getFormatedDate(userCursus.updatedAt) : 'Non concerné' }}</td>
                             <td class="read__table-td read__table-td--right">{{ getFormatedDate(userCursus.createdAt) }}</td>
                         </tr>
@@ -286,13 +235,32 @@
                             <td class="read__table-td read__table-td--left">
                                 <div class="read__table-icon-container">
                                     <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserLessonDeletion(userLesson.id)" [icon]="faTrash"></fa-icon>
-                                    <fa-icon class="read__table-icon read__table-icon--pen" [icon]="faPen"></fa-icon>
                                 </div>
                             </td>
                             <td class="read__table-td">{{ userLesson.id }}</td>
                             <td class="read__table-td">{{ getUserName(userLesson.userId) }}</td>
                             <td class="read__table-td">{{ getLessonName(userLesson.lessonId) }}</td>
-                            <td class="read__table-td">{{ userLesson.isValidated ? 'Oui' : 'Non' }}</td>
+                            <td class="read__table-td">
+                                <div class="read__table-checkbox-container">
+                                    <input
+                                        class="read__table-checkbox"
+                                        [ngClass]="loadingUserLessonIds.has(userLesson.id) ? 'read__table-checkbox--disabled' :''"
+                                        type="checkbox"
+                                        [name]="'is-user-lesson-' + userLesson.id + '-validated'" 
+                                        [id]="'is-user-lesson-' + userLesson.id + '-validated'" 
+                                        [checked]="userLesson.isValidated ? true : false"
+                                        [disabled]="loadingUserLessonIds.has(userLesson.id)"
+                                        (click)="updateUserLesson($event, userLesson.id)"
+                                    >
+                                    <label 
+                                        class="read__table-checkbox-label" 
+                                        [ngClass]="loadingUserLessonIds.has(userLesson.id) ? 'read__table-checkbox-label--disabled' :''"
+                                        [for]="'is-user-lesson-' + userLesson.id + '-validated'"
+                                    >
+                                        {{ userLesson.isValidated ? 'Oui' : 'Non' }}
+                                    </label>
+                                </div>
+                            </td>
                             <td class="read__table-td">{{ userLesson.isValidated ? getFormatedDate(userLesson.updatedAt) : 'Non concernée' }}</td>
                             <td class="read__table-td read__table-td--right">{{ getFormatedDate(userLesson.createdAt) }}</td>
                         </tr>
@@ -307,7 +275,15 @@
     <app-warning-modal
         (confirmChoice)="warningModalConfirmation()"
         (closeModal)="isWarningModalOpen = false"
-        [text]="warningDeletion"
+        [text]="warningMessage"
     >
     </app-warning-modal>
+}
+
+@if (isModalMessageDisplayed) {
+    <div class="modal-message">
+        <p class="modal-message__text" [ngClass]="isModalMessageSuccess ? 'success' : 'error'">{{ modalMessageText }} ({{modalMessageTimer}}sec)</p>
+        <fa-icon class="modal-message__close-icon" [ngClass]="isModalMessageSuccess ? 'success' : 'error'" (click)="hideModalMessage()" [icon]="faCircleXmark"></fa-icon>
+        <div class="modal-message__close-background-icon"></div>
+    </div>
 }
