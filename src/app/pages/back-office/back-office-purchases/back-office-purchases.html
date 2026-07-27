@@ -95,7 +95,7 @@
             }
             <div class="read__search">
                 <p class="read__search-text">Rechercher</p>
-                <input class="read__search-input" type="text" (input)="onSearchThemeInputChange($event)">
+                <input class="read__search-input" type="text" [(ngModel)]="userThemesSearchText" (input)="filterUserThemes()">
             </div>
             <table class="read__table">
                 <thead class="read__table-thead">
@@ -155,7 +155,7 @@
             }
             <div class="read__search">
                 <p class="read__search-text">Rechercher</p>
-                <input class="read__search-input" type="text" (input)="onSearchCursusInputChange($event)">
+                <input class="read__search-input" type="text" [(ngModel)]="userCursusSearchText" (input)="filterUserCursus()">
             </div>
             <table class="read__table">
                 <thead class="read__table-thead">
@@ -215,7 +215,7 @@
             }
             <div class="read__search">
                 <p class="read__search-text">Rechercher</p>
-                <input class="read__search-input" type="text" (input)="onSearchLessonInputChange($event)">
+                <input class="read__search-input" type="text" [(ngModel)]="userLessonsSearchText" (input)="filterUserLessons()">
             </div>
             <table class="read__table">
                 <thead class="read__table-thead">

@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, NgModule } from '@angular/core';
 import { ApiResponse, CursusData, LessonData, ThemeData, UserCursusData, UserData, UserLessonData, UserThemeData } from '../../../core/models/api-response.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { firstValueFrom, timeout } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { FormControl, FormGroup, Validators, ɵInternalFormsSharedModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ɵInternalFormsSharedModule, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
 import { NgClass } from '@angular/common';
 import { UserCourses } from '../../../services/user-courses';
@@ -15,7 +15,7 @@ import { WarningModal } from '../../../components/warning-modal/warning-modal';
 
 @Component({
   selector: 'app-back-office-purchases',
-  imports: [ɵInternalFormsSharedModule, FontAwesomeModule, ReactiveFormsModule, NgClass, WarningModal],
+  imports: [ɵInternalFormsSharedModule, FontAwesomeModule, ReactiveFormsModule, NgClass, FormsModule, WarningModal],
   templateUrl: './back-office-purchases.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-purchases.scss'
@@ -71,6 +71,10 @@ export class BackOfficePurchases {
   loadingUserCursusIds: Set<number> = new Set<number>();
   loadingUserLessonIds: Set<number> = new Set<number>();
 
+  userThemesSearchText: string = '';
+  userCursusSearchText: string = '';
+  userLessonsSearchText: string = '';
+
   userNameOfUserCursusToAdd: string = '';
   userEmailOfUserCursusToAdd: string = '';
   cursusNameOfUserCursusToAdd: string = '';
@@ -124,18 +128,21 @@ export class BackOfficePurchases {
     if (getAllUserThemeResponse.data) {
       this.allUserThemes = getAllUserThemeResponse.data;
       this.filteredUserThemes = getAllUserThemeResponse.data;
+      this.filterUserThemes();
     }
 
     const getAllUserCursusResponse = await firstValueFrom(this.http.get<ApiResponse<UserCursusData[]>>(environment.backUrl + '/api/user-cursus/all'));
     if (getAllUserCursusResponse.data) {
       this.allUserCursus = getAllUserCursusResponse.data;
       this.filteredUserCursus = getAllUserCursusResponse.data;
+      this.filterUserCursus();
     }
 
     const getAllUserLessonResponse = await firstValueFrom(this.http.get<ApiResponse<UserLessonData[]>>(environment.backUrl + '/api/user-lesson/all'));
     if (getAllUserLessonResponse.data) {
       this.allUserLessons = getAllUserLessonResponse.data;
       this.filteredUserLessons = getAllUserLessonResponse.data;
+      this.filterUserLessons();
     }
   }
 
@@ -644,16 +651,13 @@ export class BackOfficePurchases {
     }
   }
 
-  onSearchThemeInputChange(event: Event): void {
-    const input = event.currentTarget as HTMLInputElement;
-    const inputValue = input.value;
-    
-    if (!inputValue) {
+  filterUserThemes() {
+    if (!this.userThemesSearchText) {
       this.filteredUserThemes = this.allUserThemes;
       return;
     }
 
-    const wordsInputValue = inputValue.toLowerCase().split(' ');
+    const wordsInputValue = this.userThemesSearchText.toLowerCase().split(' ');
 
     this.filteredUserThemes = this.allUserThemes.filter(userTheme => {
       const user = this.allUsers.find(user => user.id === userTheme.userId);
@@ -689,16 +693,13 @@ export class BackOfficePurchases {
     }
   }
 
-  onSearchCursusInputChange(event: Event): void {
-    const input = event.currentTarget as HTMLInputElement;
-    const inputValue = input.value;
-    
-    if (!inputValue) {
+  filterUserCursus(): void {    
+    if (!this.userCursusSearchText) {
       this.filteredUserCursus = this.allUserCursus;
       return;
     }
 
-    const wordsInputValue = inputValue.toLowerCase().split(' ');
+    const wordsInputValue = this.userCursusSearchText.toLowerCase().split(' ');
 
     this.filteredUserCursus = this.allUserCursus.filter(userCursus => {
       const user = this.allUsers.find(user => user.id === userCursus.userId);
@@ -734,16 +735,13 @@ export class BackOfficePurchases {
     }
   }
 
-  onSearchLessonInputChange(event: Event): void {
-    const input = event.currentTarget as HTMLInputElement;
-    const inputValue = input.value;
-    
-    if (!inputValue) {
+  filterUserLessons(): void {
+    if (!this.userLessonsSearchText) {
       this.filteredUserLessons = this.allUserLessons;
       return;
     }
 
-    const wordsInputValue = inputValue.toLowerCase().split(' ');
+    const wordsInputValue = this.userLessonsSearchText.toLowerCase().split(' ');
 
     this.filteredUserLessons = this.allUserLessons.filter(userLesson => {
       const user = this.allUsers.find(user => user.id === userLesson.userId);
