@@ -1,272 +1,288 @@
 <main class="purchases">
     <h1 class="purchases__title">Gestion des achats</h1>
-    <div class="purchases__management">
-        <div class="management">
-            <h2 class="management__title">Cursus</h2>
-            <div class="management__action">
-                <h3 class="management__action-title">Ajouter un accès à un cursus pour un utilisateur</h3>
-                <p class="management__action-text text">
-                    <span class="text__caution">Attention :</span> ajouter un accès à un utilisateur à un cursus lui donnera accès à toutes
-                    les leçons contenues dans le cursus.
-                </p>
-                <form class="management__form" [formGroup]="addUserCursusForm" (submit)="onSubmitUserCursusAddForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="addUserCursusUserId">Identifiant de l'utilisateur</label>
-                        <input class="management__form-input" type="number" formControlName="userId" id="addUserCursusUserId" (input)="onChangeAddFormUserCursusUserId($event)">
-                        @if (formService.isInputValid(addUserCursusForm, 'userId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(addUserCursusForm, 'userId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserCursusToAdd}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserCursusToAdd}}</p>
+    <div class="content">
+        <div class="content__container">
+            <h2 class="content__title">Accès aux thèmes</h2>
+            <div class="read">
+                <div class="read__title-container" (click)="toogleReadUserThemesDisplay()">
+                    <h3 class="read__title">Consulter les accès aux thèmes</h3>
+                    <fa-icon class="read__title-icon-chevron" [ngClass]="isReadUserThemesDisplayed ? 'read__title-icon-chevron--open' : ''" [icon]="faChevronDown"></fa-icon>
+                </div>
+                <div class="read__content" [ngClass]="isReadUserThemesDisplayed ? '' : 'smoothHidden'">
+                    <div class="read__search">
+                        <p class="read__search-text">Rechercher</p>
+                        <input class="read__search-input" type="text" [(ngModel)]="userThemesSearchText" (input)="filterUserThemes()">
                     </div>
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="addUserCursusCursusId">Identifiant du cursus</label>
-                        <input class="management__form-input" type="number" formControlName="cursusId" id="addUserCursusCursusId" (input)="onChangeAddFormUserCursusCursusId($event)">
-                        @if (formService.isInputValid(addUserCursusForm, 'cursusId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(addUserCursusForm, 'cursusId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
-                        }
-                        <p class="management__form-info">Cursus : {{cursusNameOfUserCursusToAdd}}</p>
-                    </div>
-                    <button class="management__form-button" [class.disabled]="addUserCursusForm.invalid" [disabled]="addUserCursusForm.invalid" type="submit">Ajouter</button>
-                    @if(addUserCursusMessageUser) {
-                        <p class="management__form-message" [ngClass]="isAddUserCursusMessageUserSuccess ? 'success' : 'error'">{{addUserCursusMessageUser}}</p>
-                    }
-                    @if(addUserCursusMessageCursus) {
-                        <p class="management__form-message" [ngClass]="isAddUserCursusMessageCursusSuccess ? 'success' : 'error'">{{addUserCursusMessageCursus}}</p>
-                    }
-                </form>
+                    <table class="read__table">
+                        <thead class="read__table-thead">
+                            <tr class="read__table-tr">
+                                <th class="read__table-th read__table-th--left">Actions</th>
+                                <th class="read__table-th">Identifiant de l'association<br>utilisateur / thème</th>
+                                <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
+                                <th class="read__table-th">Nom du thème (identifiant)</th>
+                                <th class="read__table-th">Certifié</th>
+                                <th class="read__table-th">Date de certification</th>
+                                <th class="read__table-th read__table-th--right">Date d'accès au thème</th>
+                            </tr>
+                        </thead>
+                        <tbody class="read__table-tbody">
+                            @for(userTheme of filteredUserThemes; track $index) {
+                                <tr class="read__table-tr">
+                                    <td class="read__table-td read__table-td--left">
+                                        <div class="read__table-icon-container">
+                                            <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserThemeDeletion(userTheme.id)" [icon]="faTrash"></fa-icon>
+                                        </div>
+                                    </td>
+                                    <td class="read__table-td">{{ userTheme.id }}</td>
+                                    <td class="read__table-td">{{ getUserName(userTheme.userId) }}</td>
+                                    <td class="read__table-td">{{ getThemeName(userTheme.themeId) }}</td>
+                                    <td class="read__table-td">
+                                        <div class="read__table-checkbox-container">
+                                            <input
+                                                class="read__table-checkbox"
+                                                [ngClass]="loadingUserThemeIds.has(userTheme.id) ? 'read__table-checkbox--disabled' :''"
+                                                type="checkbox" 
+                                                [name]="'is-user-theme-' + userTheme.id + '-certified'" 
+                                                [id]="'is-user-theme-' + userTheme.id + '-certified'" 
+                                                [checked]="userTheme.isCertified ? true : false"
+                                                [disabled]="loadingUserThemeIds.has(userTheme.id)"
+                                                (click)="confirmUserThemeUpdate($event, userTheme.id)"
+                                            >
+                                            <label 
+                                                class="read__table-checkbox-label" 
+                                                [ngClass]="loadingUserThemeIds.has(userTheme.id) ? 'read__table-checkbox-label--disabled' :''"
+                                                [for]="'is-user-theme-' + userTheme.id + '-certified'"
+                                            >
+                                                {{ userTheme.isCertified ? 'Oui' : 'Non' }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="read__table-td">{{ userTheme.isCertified ? getFormatedDate(userTheme.updatedAt) : 'Non concerné' }}</td>
+                                    <td class="read__table-td read__table-td--right">{{ getFormatedDate(userTheme.createdAt) }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="management">
-            <h2 class="management__title">Leçons</h2>
-            <div class="management__action">
-                <h3 class="management__action-title">Ajouter un accès à une leçon pour un utilisateur</h3>
-                <form class="management__form" [formGroup]="addUserLessonForm" (submit)="onSubmitUserLessonAddForm()">
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="addUserLessonUserId">Identifiant de l'utilisateur</label>
-                        <input class="management__form-input" type="number" formControlName="userId" id="addUserLessonUserId" (input)="onChangeAddFormUserLessonUserId($event)">
-                        @if (formService.isInputValid(addUserLessonForm, 'userId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(addUserLessonForm, 'userId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
+        <div class="content__container">
+            <h2 class="content__title">Accès aux cursus</h2>
+            <div class="add">
+                <div class="add__title-container" (click)="toogleAddUserCursusDisplay()">
+                    <h3 class="add__title">Ajouter un accès à un cursus</h3>
+                    <fa-icon class="add__icon-chevron" [ngClass]="isAddUserCursusDisplayed ? 'add__icon-chevron--open' : ''" [icon]="faChevronDown"></fa-icon>
+                </div>
+                <div class="add__content" [ngClass]="isAddUserCursusDisplayed ? '' : 'smoothHidden'">
+                    <p class="add__text text">
+                        <span class="text__caution">Attention :</span> ajouter un accès à un utilisateur à un cursus lui donnera accès à toutes
+                        les leçons contenues dans le cursus.
+                    </p>
+                    <form class="add__form" [formGroup]="addUserCursusForm" (submit)="onSubmitUserCursusAddForm()">
+                        <div class="add__form-group">
+                            <label class="add__form-label" for="addUserCursusUserId">Identifiant de l'utilisateur</label>
+                            <input class="add__form-input" type="number" formControlName="userId" id="addUserCursusUserId" (input)="onChangeAddFormUserCursusUserId($event)">
+                            @if (formService.isInputValid(addUserCursusForm, 'userId')) {
+                                <div class="add__form-message-group">
+                                    @for (message of formService.getAllErrorMessages(addUserCursusForm, 'userId'); track $index) {
+                                    <p class="add__form-message error">{{message}}</p>
+                                    }
+                                </div>
+                            }
+                            <p class="add__form-info">Utilisateur : {{userNameOfUserCursusToAdd}}</p>
+                            <p class="add__form-info">Email : {{userEmailOfUserCursusToAdd}}</p>
+                        </div>
+                        <div class="add__form-group">
+                            <label class="add__form-label" for="addUserCursusCursusId">Identifiant du cursus</label>
+                            <input class="add__form-input" type="number" formControlName="cursusId" id="addUserCursusCursusId" (input)="onChangeAddFormUserCursusCursusId($event)">
+                            @if (formService.isInputValid(addUserCursusForm, 'cursusId')) {
+                                <div class="add__form-message-group">
+                                    @for (message of formService.getAllErrorMessages(addUserCursusForm, 'cursusId'); track $index) {
+                                    <p class="add__form-message error">{{message}}</p>
+                                    }
+                                </div>
+                            }
+                            <p class="add__form-info">Cursus : {{cursusNameOfUserCursusToAdd}}</p>
+                        </div>
+                        <button class="add__form-button" [class.disabled]="addUserCursusForm.invalid" [disabled]="addUserCursusForm.invalid" type="submit">Ajouter</button>
+                        @if(addUserCursusMessageUser) {
+                            <p class="add__form-message" [ngClass]="isAddUserCursusMessageUserSuccess ? 'success' : 'error'">{{addUserCursusMessageUser}}</p>
                         }
-                        <p class="management__form-info">Utilisateur : {{userNameOfUserLessonToAdd}}</p>
-                        <p class="management__form-info">Email : {{userEmailOfUserLessonToAdd}}</p>
-                    </div>
-                    <div class="management__form-group">
-                        <label class="management__form-label" for="addUserLessonLessonId">Identifiant de la leçon</label>
-                        <input class="management__form-input" type="number" formControlName="lessonId" id="addUserLessonLessonId" (input)="onChangeAddFormUserLessonLessonId($event)">
-                        @if (formService.isInputValid(addUserLessonForm, 'lessonId')) {
-                            <div class="management__form-message-group">
-                                @for (message of formService.getAllErrorMessages(addUserLessonForm, 'lessonId'); track $index) {
-                                <p class="management__form-message error">{{message}}</p>
-                                }
-                            </div>
+                        @if(addUserCursusMessageCursus) {
+                            <p class="add__form-message" [ngClass]="isAddUserCursusMessageCursusSuccess ? 'success' : 'error'">{{addUserCursusMessageCursus}}</p>
                         }
-                        <p class="management__form-info">Leçon : {{lessonNameOfUserLessonToAdd}}</p>
+                    </form>
+                </div>
+            </div>
+            <div class="read">
+                <div class="read__title-container" (click)="toogleReadUserCursusDisplay()">
+                    <h3 class="read__title">Consulter les accès aux cursus</h3>
+                    <fa-icon class="read__title-icon-chevron" [ngClass]="isReadUserCursusDisplayed ? 'read__title-icon-chevron--open' : ''" [icon]="faChevronDown"></fa-icon>
+                </div>
+                <div class="read__content" [ngClass]="isReadUserCursusDisplayed ? '' : 'smoothHidden'">
+                    <div class="read__search">
+                        <p class="read__search-text">Rechercher</p>
+                        <input class="read__search-input" type="text" [(ngModel)]="userCursusSearchText" (input)="filterUserCursus()">
                     </div>
-                    <button class="management__form-button" [class.disabled]="addUserLessonForm.invalid" [disabled]="addUserLessonForm.invalid" type="submit">Ajouter</button>
-                    @if(addUserLessonMessageUser) {
-                        <p class="management__form-message" [ngClass]="isAddUserLessonMessageUserSuccess ? 'success' : 'error'">{{addUserLessonMessageUser}}</p>
-                    }
-                    @if(addUserLessonMessageLesson) {
-                        <p class="management__form-message" [ngClass]="isAddUserLessonMessageLessonSuccess ? 'success' : 'error'">{{addUserLessonMessageLesson}}</p>
-                    }
-                </form>
+                    <table class="read__table">
+                        <thead class="read__table-thead">
+                            <tr class="read__table-tr">
+                                <th class="read__table-th read__table-th--left">Actions</th>
+                                <th class="read__table-th">Identifiant de l'association<br>utilisateur / cursus</th>
+                                <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
+                                <th class="read__table-th">Nom du cursus (identifiant)</th>
+                                <th class="read__table-th">Validé</th>
+                                <th class="read__table-th">Date de validation</th>
+                                <th class="read__table-th read__table-th--right">Date d'accès au cursus</th>
+                            </tr>
+                        </thead>
+                        <tbody class="read__table-tbody">
+                            @for(userCursus of filteredUserCursus; track $index) {
+                                <tr class="read__table-tr">
+                                    <td class="read__table-td read__table-td--left">
+                                        <div class="read__table-icon-container">
+                                            <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserCursusDeletion(userCursus.id)" [icon]="faTrash"></fa-icon>
+                                        </div>
+                                    </td>
+                                    <td class="read__table-td">{{ userCursus.id }}</td>
+                                    <td class="read__table-td">{{ getUserName(userCursus.userId) }}</td>
+                                    <td class="read__table-td">{{ getCursusName(userCursus.cursusId) }}</td>
+                                    <td class="read__table-td">
+                                        <div class="read__table-checkbox-container">
+                                            <input
+                                                class="read__table-checkbox"
+                                                [ngClass]="loadingUserCursusIds.has(userCursus.id) ? 'read__table-checkbox--disabled' :''"
+                                                type="checkbox"
+                                                [name]="'is-user-cursus-' + userCursus.id + '-validated'" 
+                                                [id]="'is-user-cursus-' + userCursus.id + '-validated'" 
+                                                [checked]="userCursus.isValidated ? true : false"
+                                                [disabled]="loadingUserCursusIds.has(userCursus.id)"
+                                                (click)="confirmUserCursusUpdate($event, userCursus.id)"
+                                            >
+                                            <label 
+                                                class="read__table-checkbox-label" 
+                                                [ngClass]="loadingUserCursusIds.has(userCursus.id) ? 'read__table-checkbox-label--disabled' :''"
+                                                [for]="'is-user-cursus-' + userCursus.id + '-validated'"
+                                            >
+                                                {{ userCursus.isValidated ? 'Oui' : 'Non' }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="read__table-td">{{ userCursus.isValidated ? getFormatedDate(userCursus.updatedAt) : 'Non concerné' }}</td>
+                                    <td class="read__table-td read__table-td--right">{{ getFormatedDate(userCursus.createdAt) }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="purchases__read">
-        <h2 class="purchases__read-title">Rechercher les autorisations d'accès aux contenus pour les utilisateurs</h2>
-        <div class="read">
-            <h3 id="user-themes-title" class="read__title">Accès aux thèmes par les utilisateurs</h3>
-            @if(isUserThemesMessageDisplayed) {
-                <p class="read__message" [ngClass]="isUserThemesMessageSuccess ? 'success' : 'error'">{{ userThemesMessage }}</p>
-            }
-            <div class="read__search">
-                <p class="read__search-text">Rechercher</p>
-                <input class="read__search-input" type="text" [(ngModel)]="userThemesSearchText" (input)="filterUserThemes()">
+        <div class="content__container">
+            <h2 class="content__title">Accès aux leçons</h2>
+            <div class="add">
+                <div class="add__title-container" (click)="toogleAddUserLessonDisplay()">
+                    <h3 class="add__title">Ajouter un accès à une leçon</h3>
+                    <fa-icon class="add__icon-chevron" [ngClass]="isAddUserLessonDisplayed ? 'add__icon-chevron--open' : ''" [icon]="faChevronDown"></fa-icon>
+                </div>
+                <div class="add__content" [ngClass]="isAddUserLessonDisplayed ? '' : 'smoothHidden'">
+                    <form class="add__form" [formGroup]="addUserLessonForm" (submit)="onSubmitUserLessonAddForm()">
+                        <div class="add__form-group">
+                            <label class="add__form-label" for="addUserLessonUserId">Identifiant de l'utilisateur</label>
+                            <input class="add__form-input" type="number" formControlName="userId" id="addUserLessonUserId" (input)="onChangeAddFormUserLessonUserId($event)">
+                            @if (formService.isInputValid(addUserLessonForm, 'userId')) {
+                                <div class="add__form-message-group">
+                                    @for (message of formService.getAllErrorMessages(addUserLessonForm, 'userId'); track $index) {
+                                    <p class="add__form-message error">{{message}}</p>
+                                    }
+                                </div>
+                            }
+                            <p class="add__form-info">Utilisateur : {{userNameOfUserLessonToAdd}}</p>
+                            <p class="add__form-info">Email : {{userEmailOfUserLessonToAdd}}</p>
+                        </div>
+                        <div class="add__form-group">
+                            <label class="add__form-label" for="addUserLessonLessonId">Identifiant de la leçon</label>
+                            <input class="add__form-input" type="number" formControlName="lessonId" id="addUserLessonLessonId" (input)="onChangeAddFormUserLessonLessonId($event)">
+                            @if (formService.isInputValid(addUserLessonForm, 'lessonId')) {
+                                <div class="add__form-message-group">
+                                    @for (message of formService.getAllErrorMessages(addUserLessonForm, 'lessonId'); track $index) {
+                                    <p class="add__form-message error">{{message}}</p>
+                                    }
+                                </div>
+                            }
+                            <p class="add__form-info">Leçon : {{lessonNameOfUserLessonToAdd}}</p>
+                        </div>
+                        <button class="add__form-button" [class.disabled]="addUserLessonForm.invalid" [disabled]="addUserLessonForm.invalid" type="submit">Ajouter</button>
+                        @if(addUserLessonMessageUser) {
+                            <p class="add__form-message" [ngClass]="isAddUserLessonMessageUserSuccess ? 'success' : 'error'">{{addUserLessonMessageUser}}</p>
+                        }
+                        @if(addUserLessonMessageLesson) {
+                            <p class="add__form-message" [ngClass]="isAddUserLessonMessageLessonSuccess ? 'success' : 'error'">{{addUserLessonMessageLesson}}</p>
+                        }
+                    </form>
+                </div>
             </div>
-            <table class="read__table">
-                <thead class="read__table-thead">
-                    <tr class="read__table-tr">
-                        <th class="read__table-th read__table-th--left">Actions</th>
-                        <th class="read__table-th">Identifiant de l'association<br>utilisateur / thème</th>
-                        <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
-                        <th class="read__table-th">Nom du thème (identifiant)</th>
-                        <th class="read__table-th">Certifié</th>
-                        <th class="read__table-th">Date de certification</th>
-                        <th class="read__table-th read__table-th--right">Date d'accès au thème</th>
-                    </tr>
-                </thead>
-                <tbody class="read__table-tbody">
-                    @for(userTheme of filteredUserThemes; track $index) {
-                        <tr class="read__table-tr">
-                            <td class="read__table-td read__table-td--left">
-                                <div class="read__table-icon-container">
-                                    <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserThemeDeletion(userTheme.id)" [icon]="faTrash"></fa-icon>
-                                </div>
-                            </td>
-                            <td class="read__table-td">{{ userTheme.id }}</td>
-                            <td class="read__table-td">{{ getUserName(userTheme.userId) }}</td>
-                            <td class="read__table-td">{{ getThemeName(userTheme.themeId) }}</td>
-                            <td class="read__table-td">
-                                <div class="read__table-checkbox-container">
-                                    <input
-                                        class="read__table-checkbox"
-                                        [ngClass]="loadingUserThemeIds.has(userTheme.id) ? 'read__table-checkbox--disabled' :''"
-                                        type="checkbox" 
-                                        [name]="'is-user-theme-' + userTheme.id + '-certified'" 
-                                        [id]="'is-user-theme-' + userTheme.id + '-certified'" 
-                                        [checked]="userTheme.isCertified ? true : false"
-                                        [disabled]="loadingUserThemeIds.has(userTheme.id)"
-                                        (click)="confirmUserThemeUpdate($event, userTheme.id)"
-                                    >
-                                    <label 
-                                        class="read__table-checkbox-label" 
-                                        [ngClass]="loadingUserThemeIds.has(userTheme.id) ? 'read__table-checkbox-label--disabled' :''"
-                                        [for]="'is-user-theme-' + userTheme.id + '-certified'"
-                                    >
-                                        {{ userTheme.isCertified ? 'Oui' : 'Non' }}
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="read__table-td">{{ userTheme.isCertified ? getFormatedDate(userTheme.updatedAt) : 'Non concerné' }}</td>
-                            <td class="read__table-td read__table-td--right">{{ getFormatedDate(userTheme.createdAt) }}</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="read">
-            <h3 id="user-cursus-title" class="read__title">Accès aux cursus par les utilisateurs</h3>
-            @if(isUserCursusMessageDisplayed) {
-                <p class="read__message" [ngClass]="isUserCursusMessageSuccess ? 'success' : 'error'">{{ userCursusMessage }}</p>
-            }
-            <div class="read__search">
-                <p class="read__search-text">Rechercher</p>
-                <input class="read__search-input" type="text" [(ngModel)]="userCursusSearchText" (input)="filterUserCursus()">
+            <div class="read">
+                <div class="read__title-container" (click)="toogleReadUserLessonsDisplay()">
+                    <h3 class="read__title">Consulter les accès aux leçons</h3>
+                    <fa-icon class="read__title-icon-chevron" [ngClass]="isReadUserLessonsDisplayed ? 'read__title-icon-chevron--open' : ''" [icon]="faChevronDown"></fa-icon>
+                </div>
+                <div class="read__content" [ngClass]="isReadUserLessonsDisplayed ? '' : 'smoothHidden'">
+                    <div class="read__search">
+                        <p class="read__search-text">Rechercher</p>
+                        <input class="read__search-input" type="text" [(ngModel)]="userLessonsSearchText" (input)="filterUserLessons()">
+                    </div>
+                    <table class="read__table">
+                        <thead class="read__table-thead">
+                            <tr class="read__table-tr">
+                                <th class="read__table-th read__table-th--left">Actions</th>
+                                <th class="read__table-th">Identifiant de l'association<br>utilisateur / leçon</th>
+                                <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
+                                <th class="read__table-th">Nom de la leçon (identifiant)</th>
+                                <th class="read__table-th">Validée</th>
+                                <th class="read__table-th">Date de validation</th>
+                                <th class="read__table-th read__table-th--right">Date d'accès à la leçon</th>
+                            </tr>
+                        </thead>
+                        <tbody class="read__table-tbody">
+                            @for(userLesson of filteredUserLessons; track $index) {
+                                <tr class="read__table-tr">
+                                    <td class="read__table-td read__table-td--left">
+                                        <div class="read__table-icon-container">
+                                            <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserLessonDeletion(userLesson.id)" [icon]="faTrash"></fa-icon>
+                                        </div>
+                                    </td>
+                                    <td class="read__table-td">{{ userLesson.id }}</td>
+                                    <td class="read__table-td">{{ getUserName(userLesson.userId) }}</td>
+                                    <td class="read__table-td">{{ getLessonName(userLesson.lessonId) }}</td>
+                                    <td class="read__table-td">
+                                        <div class="read__table-checkbox-container">
+                                            <input
+                                                class="read__table-checkbox"
+                                                [ngClass]="loadingUserLessonIds.has(userLesson.id) ? 'read__table-checkbox--disabled' :''"
+                                                type="checkbox"
+                                                [name]="'is-user-lesson-' + userLesson.id + '-validated'" 
+                                                [id]="'is-user-lesson-' + userLesson.id + '-validated'" 
+                                                [checked]="userLesson.isValidated ? true : false"
+                                                [disabled]="loadingUserLessonIds.has(userLesson.id)"
+                                                (click)="updateUserLesson($event, userLesson.id)"
+                                            >
+                                            <label 
+                                                class="read__table-checkbox-label" 
+                                                [ngClass]="loadingUserLessonIds.has(userLesson.id) ? 'read__table-checkbox-label--disabled' :''"
+                                                [for]="'is-user-lesson-' + userLesson.id + '-validated'"
+                                            >
+                                                {{ userLesson.isValidated ? 'Oui' : 'Non' }}
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="read__table-td">{{ userLesson.isValidated ? getFormatedDate(userLesson.updatedAt) : 'Non concernée' }}</td>
+                                    <td class="read__table-td read__table-td--right">{{ getFormatedDate(userLesson.createdAt) }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <table class="read__table">
-                <thead class="read__table-thead">
-                    <tr class="read__table-tr">
-                        <th class="read__table-th read__table-th--left">Actions</th>
-                        <th class="read__table-th">Identifiant de l'association<br>utilisateur / cursus</th>
-                        <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
-                        <th class="read__table-th">Nom du cursus (identifiant)</th>
-                        <th class="read__table-th">Validé</th>
-                        <th class="read__table-th">Date de validation</th>
-                        <th class="read__table-th read__table-th--right">Date d'accès au cursus</th>
-                    </tr>
-                </thead>
-                <tbody class="read__table-tbody">
-                    @for(userCursus of filteredUserCursus; track $index) {
-                        <tr class="read__table-tr">
-                            <td class="read__table-td read__table-td--left">
-                                <div class="read__table-icon-container">
-                                    <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserCursusDeletion(userCursus.id)" [icon]="faTrash"></fa-icon>
-                                </div>
-                            </td>
-                            <td class="read__table-td">{{ userCursus.id }}</td>
-                            <td class="read__table-td">{{ getUserName(userCursus.userId) }}</td>
-                            <td class="read__table-td">{{ getCursusName(userCursus.cursusId) }}</td>
-                            <td class="read__table-td">
-                                <div class="read__table-checkbox-container">
-                                    <input
-                                        class="read__table-checkbox"
-                                        [ngClass]="loadingUserCursusIds.has(userCursus.id) ? 'read__table-checkbox--disabled' :''"
-                                        type="checkbox"
-                                        [name]="'is-user-cursus-' + userCursus.id + '-validated'" 
-                                        [id]="'is-user-cursus-' + userCursus.id + '-validated'" 
-                                        [checked]="userCursus.isValidated ? true : false"
-                                        [disabled]="loadingUserCursusIds.has(userCursus.id)"
-                                        (click)="confirmUserCursusUpdate($event, userCursus.id)"
-                                    >
-                                    <label 
-                                        class="read__table-checkbox-label" 
-                                        [ngClass]="loadingUserCursusIds.has(userCursus.id) ? 'read__table-checkbox-label--disabled' :''"
-                                        [for]="'is-user-cursus-' + userCursus.id + '-validated'"
-                                    >
-                                        {{ userCursus.isValidated ? 'Oui' : 'Non' }}
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="read__table-td">{{ userCursus.isValidated ? getFormatedDate(userCursus.updatedAt) : 'Non concerné' }}</td>
-                            <td class="read__table-td read__table-td--right">{{ getFormatedDate(userCursus.createdAt) }}</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="read">
-            <h3 id="user-lessons-title" class="read__title">Accès aux leçons par les utilisateurs</h3>
-            @if(isUserLessonsMessageDisplayed) {
-                <p class="read__message" [ngClass]="isUserLessonsMessageSuccess ? 'success' : 'error'">{{ userLessonsMessage }}</p>
-            }
-            <div class="read__search">
-                <p class="read__search-text">Rechercher</p>
-                <input class="read__search-input" type="text" [(ngModel)]="userLessonsSearchText" (input)="filterUserLessons()">
-            </div>
-            <table class="read__table">
-                <thead class="read__table-thead">
-                    <tr class="read__table-tr">
-                        <th class="read__table-th read__table-th--left">Actions</th>
-                        <th class="read__table-th">Identifiant de l'association<br>utilisateur / leçon</th>
-                        <th class="read__table-th">Nom de l'utilisateur (identifiant)</th>
-                        <th class="read__table-th">Nom de la leçon (identifiant)</th>
-                        <th class="read__table-th">Validée</th>
-                        <th class="read__table-th">Date de validation</th>
-                        <th class="read__table-th read__table-th--right">Date d'accès à la leçon</th>
-                    </tr>
-                </thead>
-                <tbody class="read__table-tbody">
-                    @for(userLesson of filteredUserLessons; track $index) {
-                        <tr class="read__table-tr">
-                            <td class="read__table-td read__table-td--left">
-                                <div class="read__table-icon-container">
-                                    <fa-icon class="read__table-icon read__table-icon--trash" (click)="confirmUserLessonDeletion(userLesson.id)" [icon]="faTrash"></fa-icon>
-                                </div>
-                            </td>
-                            <td class="read__table-td">{{ userLesson.id }}</td>
-                            <td class="read__table-td">{{ getUserName(userLesson.userId) }}</td>
-                            <td class="read__table-td">{{ getLessonName(userLesson.lessonId) }}</td>
-                            <td class="read__table-td">
-                                <div class="read__table-checkbox-container">
-                                    <input
-                                        class="read__table-checkbox"
-                                        [ngClass]="loadingUserLessonIds.has(userLesson.id) ? 'read__table-checkbox--disabled' :''"
-                                        type="checkbox"
-                                        [name]="'is-user-lesson-' + userLesson.id + '-validated'" 
-                                        [id]="'is-user-lesson-' + userLesson.id + '-validated'" 
-                                        [checked]="userLesson.isValidated ? true : false"
-                                        [disabled]="loadingUserLessonIds.has(userLesson.id)"
-                                        (click)="updateUserLesson($event, userLesson.id)"
-                                    >
-                                    <label 
-                                        class="read__table-checkbox-label" 
-                                        [ngClass]="loadingUserLessonIds.has(userLesson.id) ? 'read__table-checkbox-label--disabled' :''"
-                                        [for]="'is-user-lesson-' + userLesson.id + '-validated'"
-                                    >
-                                        {{ userLesson.isValidated ? 'Oui' : 'Non' }}
-                                    </label>
-                                </div>
-                            </td>
-                            <td class="read__table-td">{{ userLesson.isValidated ? getFormatedDate(userLesson.updatedAt) : 'Non concernée' }}</td>
-                            <td class="read__table-td read__table-td--right">{{ getFormatedDate(userLesson.createdAt) }}</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
         </div>
     </div>
 </main>

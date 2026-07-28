@@ -22,166 +22,55 @@
     font-weight: bold;
 }
 
-.purchases__management {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-
-    @include for-l {
-        flex-direction: row;
-        gap: 0;
-    }
-}
-
-.management {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-
-    @include for-l {
-        width: 33%;
-        padding: 0 20px;
-    }
-}
-
-.management:nth-child(-n + 2) {
-    padding-bottom: 25px;
-    border-bottom: 2px dotted $medium-blue;
-    
-    @include for-l {
-        padding-bottom: 0;
-        border-bottom: 0;
-        border-right: 2px dotted $medium-blue;
-    }
-}
-
-.management__title {
-    text-align: center;
-    font-weight: bold;
-    color: $medium-blue;
-}
-
-.management__action {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.management__action-title {
-    text-align: center;
-    color: $medium-blue;
-}
-
-.management__action-text {
-    text-align: center;
-
-    @include for-l {
-        text-align: start;
-    }
-}
-
-.text__caution {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-.management__form {
-    margin: 0 auto;
-    padding: 15px;
-    max-width: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background-color: $light-blue;
-    border: 2px solid $medium-blue;
-    border-radius: 10px;
-}
-
-.management__form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.management__form-label {
-    color: $medium-blue;
-    text-align: center;
-
-    @include for-m {
-        text-align: start;
-    }
-
-    @include for-l {
-        text-align: start;
-    }
-}
-
-.management__form-input {
-    padding: 5px 10px;
-    max-width: 200px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 2px solid $brown;
-    border-radius: 5px;
-    text-align: center;
-
-    @include for-m {
-        text-align: start;
-    }
-
-    @include for-l {
-        text-align: start;
-    }
-}
-
-.management__form-message-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.management__form-message {
-    width: fit-content;
-    text-align: center;
-}
-
-.management__form-info {
-    color: $brown;
-}
-
-.management__form-button {
-    margin: 0 auto;
-    padding: 10px 15px;
-    border: 2px solid $medium-blue;
-    border-radius: 5px;
-    background-color: $medium-blue;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.management__form-button:hover {
-    background-color: white;
-    color: $medium-blue;
-    transform: scale(1.02);
-}
-
-.purchases__read {
+.content {
     margin-top: 25px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
-.purchases__read-title {
+.content__container {
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &:nth-child(even) {
+        border-top: 3px dotted $medium-blue;
+        border-bottom: 3px dotted $medium-blue;
+    }
+}
+
+.content__title {
     text-align: center;
     color: $medium-blue;
     font-weight: bold;
+
+    
 }
 
 .read {
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.read__title-container {
+    display: flex;
+    gap: 20px;
+    width: fit-content;
+    align-self: center;
+
+    @include for-m {
+        align-self: start;
+    }
+
+    @include for-l {
+        align-self: start;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .read__title {
@@ -197,16 +86,23 @@
     }
 }
 
-.read__message {
-    text-align: center;
+.read__title-icon-chevron {
+    margin-top: 3px;
+    transform: scale(1.5);
+    color: $medium-blue;
+    transition: all 0.3s ease-in-out;
+}
 
-    @include for-m {
-        text-align: left;
-    }
+.read__title-icon-chevron--open {
+    transform: rotateZ(-0.5turn) scale(1.5);
+}
 
-    @include for-l {
-        text-align: left;
-    }
+.read__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: all 0.5s ease-in-out;
+    max-height: 750px;
 }
 
 .read__search {
@@ -341,6 +237,161 @@
     border-right: 0;
 }
 
+.add {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add__title-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    cursor: pointer;
+
+    @include for-m {
+        justify-content: start;
+    }
+
+    @include for-l {
+        justify-content: start;
+    }
+}
+
+.add__title {
+    text-align: center;
+    color: $medium-blue;
+    width: fit-content;
+    max-width: fit-content;
+    display: inline-block;
+
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: left;
+    }
+}
+
+.add__icon-chevron {
+    height: fit-content;
+    margin-top: 3px;
+    align-self: center;
+    transform: scale(1.5);
+    color: $medium-blue;
+    transition: all 0.3s ease-in-out;
+}
+
+.add__icon-chevron--open {
+    transform: rotateZ(-0.5turn) scale(1.5);
+}
+
+.add__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 700px;
+    transition: all 0.5s ease-in-out;
+}
+
+.add__text {
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.text__caution {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.add__form {
+    margin: 0 auto;
+    padding: 15px;
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: $light-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 10px;
+
+    @include for-l {
+        margin: 0;
+    }
+}
+
+.add__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add__form-label {
+    color: $medium-blue;
+    text-align: center;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.add__form-input {
+    padding: 5px 10px;
+    max-width: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid $brown;
+    border-radius: 5px;
+    text-align: center;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.add__form-message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.add__form-message {
+    width: fit-content;
+    text-align: center;
+}
+
+.add__form-info {
+    color: $brown;
+}
+
+.add__form-button {
+    margin: 0 auto;
+    padding: 10px 15px;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    background-color: $medium-blue;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.add__form-button:hover {
+    background-color: white;
+    color: $medium-blue;
+    transform: scale(1.02);
+}
+
 // -------------------
 // Message modal
 // -------------------
@@ -427,4 +478,13 @@
     background-color: $brown;
     border-color: $brown;
     color: white;
+}
+
+.smoothHidden {
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
 }

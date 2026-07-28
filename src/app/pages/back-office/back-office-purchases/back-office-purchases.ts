@@ -10,7 +10,7 @@ import { UserCourses } from '../../../services/user-courses';
 import { UserService } from '../../../services/user.service';
 import { CoursesService } from '../../../services/courses.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircleXmark, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faCircleXmark, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { WarningModal } from '../../../components/warning-modal/warning-modal';
 
 @Component({
@@ -37,14 +37,11 @@ export class BackOfficePurchases {
 
   faTrash: IconDefinition = faTrash;
   faCircleXmark: IconDefinition = faCircleXmark;
+  faChevronDown: IconDefinition = faChevronDown;
 
   isWarningModalOpen : boolean = false;
   warningMessage: string = "";
   warningModalConfirmation: () => void = () => {};
-
-  isUserThemesMessageDisplayed: boolean = false;
-  isUserCursusMessageDisplayed: boolean = false;
-  isUserLessonsMessageDisplayed: boolean = false;
 
   isModalMessageDisplayed: boolean = false;
   isModalMessageSuccess: boolean = false;
@@ -71,9 +68,16 @@ export class BackOfficePurchases {
   loadingUserCursusIds: Set<number> = new Set<number>();
   loadingUserLessonIds: Set<number> = new Set<number>();
 
+  isReadUserThemesDisplayed: boolean = false;
+  isReadUserCursusDisplayed: boolean = false;
+  isReadUserLessonsDisplayed: boolean = false;
+
   userThemesSearchText: string = '';
   userCursusSearchText: string = '';
   userLessonsSearchText: string = '';
+
+  isAddUserCursusDisplayed: boolean = false;
+  isAddUserLessonDisplayed: boolean = false;
 
   userNameOfUserCursusToAdd: string = '';
   userEmailOfUserCursusToAdd: string = '';
@@ -195,6 +199,10 @@ export class BackOfficePurchases {
   // ADD USER CURSUS
   // ----------------------
 
+  toogleAddUserCursusDisplay() {
+    this.isAddUserCursusDisplayed = this.isAddUserCursusDisplayed ? false : true;
+  }
+
   addUserCursusForm = new FormGroup({
     userId: new FormControl(null, [Validators.required, Validators.min(1)]),
     cursusId: new FormControl(null, [Validators.required, Validators.min(1)]),
@@ -302,6 +310,10 @@ export class BackOfficePurchases {
   // ----------------------
   // ADD USER LESSON
   // ----------------------
+
+  toogleAddUserLessonDisplay() {
+    this.isAddUserLessonDisplayed = this.isAddUserLessonDisplayed ? false : true;
+  }
 
   addUserLessonForm = new FormGroup({
     userId: new FormControl(null, [Validators.required, Validators.min(1)]),
@@ -642,6 +654,10 @@ export class BackOfficePurchases {
   // READ USER THEMES
   // ----------------------
 
+  toogleReadUserThemesDisplay() {
+    this.isReadUserThemesDisplayed = this.isReadUserThemesDisplayed ? false : true;
+  }
+
   getThemeName(themeId: number): string {
     const theme = this.allThemes.find(theme => theme.id === themeId);
     if (theme) {
@@ -684,6 +700,10 @@ export class BackOfficePurchases {
   // READ USER CURSUS
   // ----------------------
 
+  toogleReadUserCursusDisplay() {
+    this.isReadUserCursusDisplayed = this.isReadUserCursusDisplayed ? false : true;
+  }
+
   getCursusName(cursusId: number): string {
     const cursus = this.allCursus.find(cursus => cursus.id === cursusId);
     if (cursus) {
@@ -725,6 +745,10 @@ export class BackOfficePurchases {
   // ----------------------
   // READ USER LESSONS
   // ----------------------
+
+  toogleReadUserLessonsDisplay() {
+    this.isReadUserLessonsDisplayed = this.isReadUserLessonsDisplayed ? false : true;
+  }
 
   getLessonName(lessonId: number): string {
     const lesson = this.allLessons.find(lesson => lesson.id === lessonId);
