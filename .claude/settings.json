@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push *)",
+      "Read(.env)",
+      "Read(secrets/**)"
+    ]
+  },
+  "hooks": {},
+  "env": {
+    "NODE_ENV": "development"  
+  },
+  "mcpServers": {},
+  "model": "sonnet", 
+  "effortLevel": "medium",
+  "alwaysThinkingEnabled": false,
+  "showThinkingSummaries": true,
+  "cleanupPeriodDays": 30, 
+  "includeCoAuthoredBy": true, 
+  "plugins": {}
+}

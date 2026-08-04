@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, NgModule } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ApiResponse, CursusData, LessonData, ThemeData, UserCursusData, UserData, UserLessonData, UserThemeData } from '../../../core/models/api-response.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -12,6 +12,7 @@ import { CoursesService } from '../../../services/courses.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faCircleXmark, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { WarningModal } from '../../../components/warning-modal/warning-modal';
+import { AppError } from '../../../core/errors/AppError';
 
 @Component({
   selector: 'app-back-office-purchases',
