@@ -8,13 +8,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { of, throwError } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
+import { UserCourses } from '../../services/user-courses';
 
 describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   let formService: FormService;
   let authService: AuthenticationService;
+  let userCoursesService: UserCourses;
   let connectedAuthServiceSpy: jasmine.Spy;
+  let verifiedAuthServiceSpy: jasmine.Spy;
   let httpMock: HttpTestingController;
   let router: jasmine.SpyObj<Router>;
   let consoleSpy: jasmine.Spy;
@@ -56,7 +59,9 @@ describe('Login', () => {
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     formService = TestBed.inject(FormService);
     authService = TestBed.inject(AuthenticationService);
+    userCoursesService = TestBed.inject(UserCourses);
     connectedAuthServiceSpy = spyOn(authService, 'connected');
+    verifiedAuthServiceSpy = spyOn(authService, 'checkIsVerified');
     httpMock = TestBed.inject(HttpTestingController);
     consoleSpy = spyOn(console, 'error');
     bearerToken = "Bearer eygtrgtgrg.56151nyth16ty1.ty6j16yt1jty1j";
@@ -72,6 +77,7 @@ describe('Login', () => {
     expect(component).toBeTruthy();
     expect(formService).toBeTruthy();
     expect(authService).toBeTruthy();
+    expect(userCoursesService).toBeTruthy();
   });
 
   it('should submit a valid form and redirect to home page', fakeAsync(() => {
@@ -99,6 +105,7 @@ describe('Login', () => {
     fixture.detectChanges();
 
     expect(connectedAuthServiceSpy).toHaveBeenCalledOnceWith(bearerToken);
+    expect(verifiedAuthServiceSpy).toHaveBeenCalledOnceWith();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   }));
 

@@ -14,6 +14,12 @@ describe('UpdateUserForm', () => {
 
     fixture = TestBed.createComponent(UpdateUserForm);
     component = fixture.componentInstance;
+    component.userId = 1;
+    component.firstName = 'John';
+    component.lastName = 'Doe';
+    component.email = 'john.doe@example.com';
+    component.roles = ['user'];
+    component.isVerified = true;
     fixture.detectChanges();
   });
 

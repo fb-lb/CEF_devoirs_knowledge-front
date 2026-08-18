@@ -4,11 +4,12 @@ import { UserElements } from './user-elements';
 import { provideRouter } from '@angular/router';
 import { UserCourses } from '../../../services/user-courses';
 import { provideHttpClient, withXhr } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('UserElements', () => {
   let component: UserElements;
   let fixture: ComponentFixture<UserElements>;
+  let httpMock: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,8 +25,13 @@ describe('UserElements', () => {
 
     fixture = TestBed.createComponent(UserElements);
     component = fixture.componentInstance;
+    httpMock = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
+
+  afterEach(() => {
+    httpMock.verify();
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
