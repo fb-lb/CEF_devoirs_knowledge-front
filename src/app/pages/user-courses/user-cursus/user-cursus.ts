@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { UserCourses } from '../../../services/user-courses';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -11,6 +11,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-user-cursus',
   imports: [UserCoursesTopMain, FontAwesomeModule, RouterLink],
   templateUrl: './user-cursus.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-cursus.scss'
 })
 export class UserCursus {

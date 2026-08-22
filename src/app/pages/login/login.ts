@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { FormService } from '../../services/form.service';
@@ -9,16 +9,18 @@ import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../../core/models/api-response.model';
 import { PasswordValidators } from '../../validators/password.validators';
 import { AuthenticationService } from '../../services/authentication.service';
+import { UserCourses } from '../../services/user-courses';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './login.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './login.scss',
 })
 export class Login {
-  constructor(public formService: FormService, private http: HttpClient, private router: Router, private authService: AuthenticationService) {}
+  constructor(public formService: FormService, private http: HttpClient, private router: Router, private authService: AuthenticationService, private userCoursesService: UserCourses) {}
   formError: string = '';
 
   // --------------
@@ -50,6 +52,8 @@ export class Login {
         if (!authHeader) throw new Error('Authorization header response is not provided');
 
         this.authService.connected(authHeader);
+        this.authService.checkIsVerified();
+        this.userCoursesService.isInitialized ? await this.userCoursesService.syncData() : await this.userCoursesService.init();
         this.router.navigate(['/']);
       } catch (error) {
         if (error instanceof HttpErrorResponse) {

@@ -1,0 +1,23 @@
+<div class="modal">
+    <div class="modal__overlay" (click)="closeModal.emit()"></div>
+    <div class="modal__content">
+        <fa-icon class="modal__close" title="Fermer" [icon]="faSquareXmark" (click)="closeModal.emit()"></fa-icon>
+        <h2 class="modal__title">Avertissement</h2>
+        <p class="modal__text">{{ text }}</p>
+        <div class="modal__buttons-container">
+            <button 
+                class="modal__payment-button modal__payment-button--confirm"
+                (click)="clickConfirmChoice()"
+            >
+                Confirmer
+            </button>
+            <button
+                class="modal__payment-button modal__payment-button--cancel"
+                (click)="closeModal.emit()"
+            >
+                Annuler
+            </button>
+        </div>
+        @if(message) {<p class="modal__message" [ngClass]="isMessageSuccess ? 'success': 'error'">{{ message }}</p>}
+    </div>
+</div>

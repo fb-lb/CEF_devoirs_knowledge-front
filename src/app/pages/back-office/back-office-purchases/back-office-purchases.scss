@@ -22,172 +22,55 @@
     font-weight: bold;
 }
 
-.purchases__management {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-
-    @include for-l {
-        flex-direction: row;
-        gap: 0;
-    }
-}
-
-.management {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-
-    @include for-l {
-        width: 33%;
-        padding: 0 20px;
-    }
-}
-
-.management:nth-child(-n + 2) {
-    padding-bottom: 25px;
-    border-bottom: 2px dotted $medium-blue;
-    
-    @include for-l {
-        padding-bottom: 0;
-        border-bottom: 0;
-        border-right: 2px dotted $medium-blue;
-    }
-}
-
-.management__title {
-    text-align: center;
-    font-weight: bold;
-    color: $medium-blue;
-}
-
-.management__action {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.management__action-title {
-    text-align: center;
-    color: $medium-blue;
-}
-
-.management__action-text {
-    text-align: center;
-
-    @include for-l {
-        text-align: start;
-    }
-}
-
-.text__caution {
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-.management__form {
-    margin: 0 auto;
-    padding: 15px;
-    max-width: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background-color: $light-blue;
-    border: 2px solid $medium-blue;
-    border-radius: 10px;
-}
-
-.management__form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.management__form-label {
-    color: $medium-blue;
-    text-align: center;
-
-    @include for-m {
-        text-align: start;
-    }
-
-    @include for-l {
-        text-align: start;
-    }
-}
-
-.management__form-label--checkbox {}
-
-.management__form-input {
-    padding: 5px 10px;
-    max-width: 200px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 2px solid $brown;
-    border-radius: 5px;
-    text-align: center;
-
-    @include for-m {
-        text-align: start;
-    }
-
-    @include for-l {
-        text-align: start;
-    }
-}
-
-.management__form-input--checkbox {
-    width: auto;
-}
-
-.management__form-message-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.management__form-message {
-    width: fit-content;
-    text-align: center;
-}
-
-.management__form-info {
-    color: $brown;
-}
-
-.management__form-button {
-    margin: 0 auto;
-    padding: 10px 15px;
-    border: 2px solid $medium-blue;
-    border-radius: 5px;
-    background-color: $medium-blue;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.management__form-button:hover {
-    background-color: white;
-    color: $medium-blue;
-    transform: scale(1.02);
-}
-
-.purchases__read {
+.content {
     margin-top: 25px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
-.purchases__read-title {
+.content__container {
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &:nth-child(even) {
+        border-top: 3px dotted $medium-blue;
+        border-bottom: 3px dotted $medium-blue;
+    }
+}
+
+.content__title {
     text-align: center;
     color: $medium-blue;
     font-weight: bold;
+
+    
 }
 
 .read {
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.read__title-container {
+    display: flex;
+    gap: 20px;
+    width: fit-content;
+    align-self: center;
+
+    @include for-m {
+        align-self: start;
+    }
+
+    @include for-l {
+        align-self: start;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .read__title {
@@ -201,6 +84,25 @@
     @include for-l {
         text-align: start;
     }
+}
+
+.read__title-icon-chevron {
+    margin-top: 3px;
+    transform: scale(1.5);
+    color: $medium-blue;
+    transition: all 0.3s ease-in-out;
+}
+
+.read__title-icon-chevron--open {
+    transform: rotateZ(-0.5turn) scale(1.5);
+}
+
+.read__content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: all 0.5s ease-in-out;
+    max-height: 750px;
 }
 
 .read__search {
@@ -282,8 +184,281 @@
     border-left: 0;
 }
 
+.read__table-icon-container {
+    display: flex;
+    justify-content: center;
+}
+
+.read__table-icon {
+    transition: transform 0.15s ease-in;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.4);
+    }
+}
+
+.read__table-icon--trash {
+    color: $red;
+}
+
+.read__table-checkbox-container {
+    display: flex;
+    gap: 5px;
+}
+
+.read__table-checkbox {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.read__table-checkbox--disabled {
+    opacity: 40%;
+    &:hover {
+        cursor: default;
+    }
+}
+
+.read__table-checkbox-label {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.read__table-checkbox-label--disabled {
+    opacity: 40%;
+    &:hover {
+        cursor: default;
+    }
+}
+
 .read__table-td--right {
     border-right: 0;
+}
+
+.add {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add__title-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    cursor: pointer;
+
+    @include for-m {
+        justify-content: start;
+    }
+
+    @include for-l {
+        justify-content: start;
+    }
+}
+
+.add__title {
+    text-align: center;
+    color: $medium-blue;
+    width: fit-content;
+    max-width: fit-content;
+    display: inline-block;
+
+    @include for-m {
+        text-align: left;
+    }
+
+    @include for-l {
+        text-align: left;
+    }
+}
+
+.add__icon-chevron {
+    height: fit-content;
+    margin-top: 3px;
+    align-self: center;
+    transform: scale(1.5);
+    color: $medium-blue;
+    transition: all 0.3s ease-in-out;
+}
+
+.add__icon-chevron--open {
+    transform: rotateZ(-0.5turn) scale(1.5);
+}
+
+.add__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 700px;
+    transition: all 0.5s ease-in-out;
+}
+
+.add__text {
+    text-align: center;
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.text__caution {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.add__form {
+    margin: 0 auto;
+    padding: 15px;
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: $light-blue;
+    border: 2px solid $medium-blue;
+    border-radius: 10px;
+
+    @include for-l {
+        margin: 0;
+    }
+}
+
+.add__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add__form-label {
+    color: $medium-blue;
+    text-align: center;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.add__form-input {
+    padding: 5px 10px;
+    max-width: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid $brown;
+    border-radius: 5px;
+    text-align: center;
+
+    @include for-m {
+        text-align: start;
+    }
+
+    @include for-l {
+        text-align: start;
+    }
+}
+
+.add__form-message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.add__form-message {
+    width: fit-content;
+    text-align: center;
+}
+
+.add__form-info {
+    color: $brown;
+}
+
+.add__form-button {
+    margin: 0 auto;
+    padding: 10px 15px;
+    border: 2px solid $medium-blue;
+    border-radius: 5px;
+    background-color: $medium-blue;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.add__form-button:hover {
+    background-color: white;
+    color: $medium-blue;
+    transform: scale(1.02);
+}
+
+// -------------------
+// Message modal
+// -------------------
+
+.modal-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    max-width: 95%;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+
+    @include for-m {
+        max-width: 70%;
+    }
+
+    @include for-l {
+        max-width: 50%;
+    }
+}
+
+.modal-message__close-icon {
+    margin-top: 7px;
+    color: $medium-blue;
+    transform: scale(2);
+    pointer-events: all;
+    transition: all 0.15s ease-in-out;
+    border-radius: 50%;
+
+    &:hover {
+        margin-top: 10px;
+        cursor: pointer;
+        transform: scale(2.4);
+        color: $dark-blue;
+    }
+}
+
+.modal-message__close-background-icon {
+    z-index: -1;
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-message__text {
+    padding: 7px; 
+    background-color: $light-blue;
+    border: 3px solid $medium-blue;
+    border-radius: 25px;
+    pointer-events: all;
+    
+    @include for-m {
+        padding: 15px;
+    }
+
+    @include for-l {
+        padding: 15px;
+    }
 }
 
 // -------------------
@@ -303,4 +478,13 @@
     background-color: $brown;
     border-color: $brown;
     color: white;
+}
+
+.smoothHidden {
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
 }

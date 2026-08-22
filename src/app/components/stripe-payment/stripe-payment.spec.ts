@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { StripePayment } from './stripe-payment';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
 import { StripeLoaderService } from '../../services/stripe-loader.service';
@@ -38,7 +38,7 @@ describe('StripePayment', () => {
     await TestBed.configureTestingModule({
       imports: [StripePayment],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
         { provide: StripeLoaderService, useValue: stripeLoaderSpy }
       ]

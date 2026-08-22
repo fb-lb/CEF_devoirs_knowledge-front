@@ -1,0 +1,61 @@
+<div class="modal">
+    <div class="modal__overlay" (click)="closeModal()"></div>
+    <div class="modal__content">
+        <fa-icon class="modal__close" (click)="closeModal()" title="Fermer" [icon]="faSquareXmark"></fa-icon>
+        <h2 class="modal__title">Modifier un utilisateur</h2>
+        <form class="modal__form" [formGroup]="form" (submit)="onSubmitForm()">
+            <div class="modal__form-part">
+                <div class="modal__field-group">
+                    <label class="modal__form-label" for="updateLastName">Nom</label>
+                    <input class="modal__form-input" type="text" formControlName="lastName" id="updateLastName">
+                </div>
+                @if (formService.isInputValid(form, 'lastName')) {
+                    <div class="modal__message-group">
+                        @for (message of formService.getAllErrorMessages(form, 'lastName'); track $index) {
+                         <p class="modal__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="modal__form-part">
+                <div class="modal__field-group">
+                    <label class="modal__form-label" for="updateFirstName">Prénom</label>
+                    <input class="modal__form-input" type="text" formControlName="firstName" id="updateFirstName">
+                </div>
+                @if (formService.isInputValid(form, 'firstName')) {
+                    <div class="modal__message-group">
+                        @for (message of formService.getAllErrorMessages(form, 'firstName'); track $index) {
+                         <p class="modal__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="modal__form-part">
+                <div class="modal__field-group">
+                    <label class="modal__form-label" for="updateEmail">E-mail</label>
+                    <input class="modal__form-input" type="email" formControlName="email" id="updateEmail">
+                </div>
+                @if (formService.isInputValid(form, 'email')) {
+                    <div class="modal__message-group">
+                        @for (message of formService.getAllErrorMessages(form, 'email'); track $index) {
+                         <p class="modal__message error">{{message}}</p>
+                        }
+                    </div>
+                }
+            </div>
+            <fieldset class="modal__field-group modal__field-group--roles">
+                <legend class="modal__form-label">Autorisations</legend>
+                <label class="modal__form-checkbox-name">
+                    <input class="modal__form-input" type="checkbox" (change)="onRoleChange($event, 'admin')" value="admin" [checked]="form.controls.roles.value.includes('admin')">Admin
+                </label>
+            </fieldset>
+            <div class="modal__field-group">
+                <label class="modal__form-label" for="updateIsVerified">
+                    Vérifié<input class="modal__form-input" type="checkbox" formControlName="isVerified" id="updateIsVerified" value="true">
+                </label>
+            </div>
+            <button class="modal__form-submit" [ngClass]="form.valid ? 'modal__form-submit--valid':'modal__form-submit--invalid'" [class.modal__form-submit--disabled]="form.invalid" [disabled]="form.invalid" type="submit">Modifier</button>
+            @if(updateGlobalMessage){<p class="modal__message modal__message--global"  [ngClass]="isUpdateGlobalMessageSuccess ? 'success' : 'error'">{{ updateGlobalMessage }}</p>}
+        </form>
+    </div>
+</div>

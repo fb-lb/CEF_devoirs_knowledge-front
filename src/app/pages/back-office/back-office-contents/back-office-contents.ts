@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserData } from '../../../core/models/api-response.model';
@@ -8,11 +8,14 @@ import { faCaretUp, faPen, faTrash, faCaretDown, IconDefinition } from '@fortawe
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
 import { CommonModule } from '@angular/common';
+import { CoursesService } from '../../../services/courses.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-back-office-contents',
   imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule],
   templateUrl: './back-office-contents.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './back-office-contents.scss'
 })
 export class BackOfficeContents {
@@ -28,6 +31,11 @@ export class BackOfficeContents {
   allLessons: LessonData[] = [];
   allElements: ElementData[] = [];
   allUsers: UserData[] = [];
+
+  allThemesSubscription!: Subscription;
+  allCursusSubscription!: Subscription;
+  allLessonsSubscription!: Subscription;
+  allElementsSubscription!: Subscription;
 
   selectedCursus: CursusData[] = [];
   selectedLessons: LessonData[] = [];
@@ -77,7 +85,7 @@ export class BackOfficeContents {
   updateImageElementGlobalMessage: string = "";
   isUpdateImageElementGlobalMessageSuccess: boolean = true;
 
-  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, public formService: FormService, private formBuilder: FormBuilder, private cdr: ChangeDetectorRef, private coursesService: CoursesService, private userService: UserService) {}
 
   async ngOnInit(): Promise<void> {
     // Subscription to type form control on add element form to add/remove required validator on other form control
@@ -116,27 +124,24 @@ export class BackOfficeContents {
 
     try {
       // Users retrieval
-      const responseUser = await firstValueFrom(this.http.get<ApiResponse<UserData[]>>(environment.backUrl + '/api/utilisateurs/tous'));
-      if (responseUser.data) this.allUsers = responseUser.data;
+      await this.userService.init();
+      this.allUsers = this.userService.getAllUsers;
 
-      // Themes retrieval, in order
-      const responseTheme = await firstValueFrom(this.http.get<ApiResponse<ThemeData[]>>(environment.backUrl + '/api/content/theme/all'));
-      if (responseTheme.data) {
-        this.allThemes = responseTheme.data.sort((a,b) => a.order - b.order);
-        this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
-      }
+      // Data retrieval
+      await this.coursesService.init();
 
-      // Cursus retrieval
-      const responseCursus = await firstValueFrom(this.http.get<ApiResponse<CursusData[]>>(environment.backUrl + '/api/content/cursus/all'));
-      if (responseCursus.data) this.allCursus = this.addProperties(responseCursus.data, this.allUsers) as CursusData[];
+      this.allThemesSubscription = this.coursesService.allThemes$.subscribe(value => this.allThemes = value.map(theme => ({...theme})));
+      this.allThemes = this.addProperties(this.allThemes, this.allUsers) as ThemeData[];
 
-      // Lessons retrieval
-      const responseLesson = await firstValueFrom(this.http.get<ApiResponse<LessonData[]>>(environment.backUrl + '/api/content/lesson/all'));
-      if (responseLesson.data) this.allLessons = this.addProperties(responseLesson.data, this.allUsers) as LessonData[];
+      this.allCursusSubscription = this.coursesService.allCursus$.subscribe(value => this.allCursus = value.map(cursus => ({...cursus})));
+      this.allCursus = this.addProperties(this.allCursus, this.allUsers) as CursusData[];
 
-      // Elements retrieval
-      const responseElement = await firstValueFrom(this.http.get<ApiResponse<ElementData[]>>(environment.backUrl + '/api/content/element/all'));
-      if (responseElement.data) this.allElements = this.addProperties(responseElement.data, this.allUsers) as ElementData[];
+      this.allLessonsSubscription = this.coursesService.allLessons$.subscribe(value => this.allLessons = value.map(lesson => ({...lesson})));
+      this.allLessons = this.addProperties(this.allLessons, this.allUsers) as LessonData[];
+
+      if (this.coursesService.getAllElements.length === 0) await this.coursesService.retrieveAllElements();
+      this.allElementsSubscription = this.coursesService.allElements$.subscribe(value => this.allElements = value.map(element => ({...element})));
+      this.allElements = this.addProperties(this.allElements, this.allUsers) as ElementData[];
     } catch (error) {
       alert('Nous ne parvenons pas à nous connecter au serveur. Veuillez nous excuser pour la gène occasionnée.');
       console.error(error);
@@ -238,6 +243,10 @@ export class BackOfficeContents {
   ngOnDestroy() {
     this.addElementTypeChangeSub?.unsubscribe();
     this.addElementTextTypeChangeSub?.unsubscribe();
+    this.allThemesSubscription?.unsubscribe();
+    this.allCursusSubscription?.unsubscribe();
+    this.allLessonsSubscription?.unsubscribe();
+    this.allElementsSubscription?.unsubscribe();
     this.updateImagePreviewUrls.forEach(url => {
       if (url) URL.revokeObjectURL(url);
     });
@@ -352,7 +361,6 @@ export class BackOfficeContents {
 
   selectCursusToDisplay(themeId: number) {
     this.selectedCursus = this.allCursus.filter(cursus => cursus.themeId === themeId);
-    this.selectedCursus = this.selectedCursus.sort((a, b) => a.order - b.order);
   }
 
   selectLessonsToDisplay(cursusId: number) {

@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -7,12 +7,14 @@ import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { UserCourses } from '../../services/user-courses';
 import { AuthenticationService } from '../../services/authentication.service';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, FontAwesomeModule, NgClass],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.scss',
 })
 export class Header {
@@ -20,6 +22,7 @@ export class Header {
     private router: Router,
     private userCoursesService: UserCourses,
     private authService: AuthenticationService,
+    private coursesService: CoursesService,
   ) {}
 
   faBars: IconDefinition = faBars;
@@ -37,8 +40,8 @@ export class Header {
   }
 
   ngOnDestroy(): void {
-    this.userAuthSub.unsubscribe();
-    this.adminAuthSub.unsubscribe();
+    this.userAuthSub?.unsubscribe();
+    this.adminAuthSub?.unsubscribe();
   }
 
   // Add event listener on window's size to hide/show menu and burger menu icon
@@ -65,6 +68,7 @@ export class Header {
 
   // Logout
   async onClickLogout() {
+    this.coursesService.setAllElements = [];
     this.userCoursesService.reset();
     this.authService.disconnected();
     this.router.navigate(['/']);

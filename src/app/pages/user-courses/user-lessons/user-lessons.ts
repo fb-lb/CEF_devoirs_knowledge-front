@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { Subscription } from 'rxjs';
 import { CursusData, LessonData, ThemeData, UserLessonData } from '../../../core/models/api-response.model';
@@ -12,6 +12,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   selector: 'app-user-lessons',
   imports: [UserCoursesTopMain, FontAwesomeModule, RouterLink],
   templateUrl: './user-lessons.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-lessons.scss'
 })
 export class UserLessons {

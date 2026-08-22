@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { loadStripe, Stripe, StripeCardElement, StripeElements } from '@stripe/stripe-js';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -13,6 +13,7 @@ import { StripeLoaderService } from '../../services/stripe-loader.service';
   selector: 'app-stripe-payment',
   imports: [FontAwesomeModule, NgClass],
   templateUrl: './stripe-payment.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './stripe-payment.scss'
 })
 export class StripePayment {

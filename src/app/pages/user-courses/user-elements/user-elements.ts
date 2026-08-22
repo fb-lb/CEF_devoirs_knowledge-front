@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UserCoursesTopMain } from "../../../components/user-courses-top-main/user-courses-top-main";
 import { UserCourses } from '../../../services/user-courses';
 import { ApiResponse, CursusData, ElementData, LessonData, ThemeData, UserLessonData } from '../../../core/models/api-response.model';
@@ -11,6 +11,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
   selector: 'app-user-elements',
   imports: [UserCoursesTopMain],
   templateUrl: './user-elements.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-elements.scss'
 })
 export class UserElements {
@@ -59,9 +60,11 @@ export class UserElements {
       };
       const validateResponse = await firstValueFrom(this.http.patch<ApiResponse>(environment.backUrl + `/api/user-lesson/${this.currentUserLesson.id}`, body));
       
-      await this.userCoursesService.syncUserLessonsForThisUser();
-      await this.userCoursesService.syncUserCursusForThisUser();
-      await this.userCoursesService.syncUserThemesForThisUser();
+      await Promise.all([
+        this.userCoursesService.syncUserLessonsForThisUser(),
+        this.userCoursesService.syncUserCursusForThisUser(),
+        this.userCoursesService.syncUserThemesForThisUser(),
+      ]);
 
       this.router.navigate(['mes-cours', 'theme', this.currentTheme.id, 'cursus', this.currentCursus.id]);
     } catch (error) {

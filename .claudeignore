@@ -1,0 +1,171 @@
+# =========================
+# Dépendances
+# =========================
+
+node_modules/
+vendor/
+
+# =========================
+# Fichiers générés
+# =========================
+
+dist/
+build/
+out/
+coverage/
+
+# =========================
+# Projet
+# =========================
+
+# JavaScript
+.angular/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+
+# Python
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# PHP
+.phpunit.result.cache
+var/
+
+# Java / JVM
+target/
+.gradle/
+
+# Go
+bin/
+
+# Rust
+target/
+
+# Ruby
+.bundle/
+vendor/bundle/
+
+# =========================
+# Cache et fichiers temporaires
+# =========================
+
+.cache/
+.tmp/
+temp/
+tmp/
+
+*.log
+*.tmp
+*.cache
+
+# =========================
+# Contrôle de version
+# =========================
+
+.git/
+.git-objects/
+.git/logs/
+
+# enlever .git/ si un accès aux changements récents, aux branches ou aux commits est nécessaire à Claude
+
+# =========================
+# Variables d'environnement et secrets
+# =========================
+
+.env
+.env.*
+!.env.example
+
+*.pem
+*.key
+*.crt
+
+secrets/
+secret/
+credentials/
+
+# =========================
+# Fichiers système
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE et éditeurs
+# =========================
+
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+.idea/
+
+# =========================
+# Tests et rapports générés
+# =========================
+
+coverage/
+.nyc_output/
+
+# =========================
+# Bases de données locales
+# =========================
+
+*.sqlite
+*.sqlite3
+*.db
+
+# =========================
+# Docker volumes locaux
+# =========================
+
+docker-data/
+volumes/
+
+# =========================
+# Fichiers volumineux
+# =========================
+
+*.zip
+*.tar
+*.gz
+*.iso
+
+# =========================
+# Fichiers médias lourds
+# =========================
+
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# =========================
+# Fichiers de build mobile
+# =========================
+
+android/.gradle/
+ios/Pods/
+
+# =========================
+# Fichiers générés par outils
+# =========================
+
+*.generated.*
+*.map
+
+# =========================
+# Archives
+# =========================
+
+archive/
+archives/
+backup/
+backups/

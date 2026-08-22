@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgClass } from "@angular/common";
 
@@ -7,6 +7,7 @@ import { NgClass } from "@angular/common";
   standalone: true,
   imports: [NgClass],
   templateUrl: './home.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.scss'
 })
 export class Home {

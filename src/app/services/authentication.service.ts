@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { TokenPayload, UserData } from '../core/models/api-response.model';
-import { BehaviorSubject } from 'rxjs';
+import { ApiResponse, TokenPayload, UserData } from '../core/models/api-response.model';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,8 @@ export class AuthenticationService {
 
   private readonly isAuthenticated = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticated.asObservable();
+
+  public isVerified: boolean = false;
 
   private readonly isAdmin = new BehaviorSubject<boolean>(false);
   public isAdmin$ = this.isAdmin.asObservable();
@@ -33,7 +37,9 @@ export class AuthenticationService {
     this.isAdmin.next(isAdmin);
   }
 
-  public init () {
+  constructor(private http: HttpClient){};
+
+  public async init() {
     try {
       this.token = localStorage.getItem('token');
 
@@ -43,6 +49,7 @@ export class AuthenticationService {
 
       this.setIsAuthenticated(true);
       this.payload.roles.includes('admin') ? this.setIsAdmin(true) : this.setIsAdmin(false);
+      await this.checkIsVerified();
     } catch (error) {
       console.error(error);
       // add external service like Sentry to save the error
@@ -78,6 +85,28 @@ export class AuthenticationService {
   }
 
   /**
+   * Used to set isVerified (= email is verified) state in front end app
+   * @async
+   * @function checkIsVerified
+   * 
+   * @returns {Promise<void>}
+   * 
+   * @throws {Error} If an unexpected error occurs
+   */
+  public async checkIsVerified() {
+    try {
+      const response = await firstValueFrom(this.http.get<ApiResponse<boolean>>(environment.backUrl + '/api/utilisateurs/isVerified'));
+      response.data ? this.isVerified = response.data : this.isVerified = false;
+    } catch (error) {
+      if (!(error instanceof HttpErrorResponse)) {
+        alert("Notre serveur est actuellement hors service, nous mettons tout en oeuvre pour qu'il soit de nouveau disponible.\nVeuillez nous excuser pour la gène occasionnée.");
+      }
+      console.error(error);
+      // add external service like Sentry to save the error
+    }
+  }
+
+  /**
    * Used to set disconnected state in front end app
    * @function disconnected
    * 
@@ -91,6 +120,7 @@ export class AuthenticationService {
     this.token = null;
     this.setIsAuthenticated(false);
     this.setIsAdmin(false);
+    this.isVerified = false;
   }
 
   /**
