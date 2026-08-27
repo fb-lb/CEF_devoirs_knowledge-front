@@ -133,6 +133,33 @@ Simplicité de mise en œuvre pour la portée actuelle du projet.
 Conséquences :
 - si l'utilisateur ferme l'onglet juste après le paiement Stripe mais avant l'appel d'ajout d'accès, le paiement peut être prélevé sans que l'accès soit créé (risque fonctionnel identifié, à traiter par un webhook si le projet évolue vers plus de robustesse transactionnelle).
 
+### Détection de changement explicite (`ChangeDetectionStrategy.Eager`) sur chaque composant
+
+Date : 2026-08-27
+
+Statut : Acceptée
+
+Contexte :
+
+Depuis Angular 22, un `@Component` sans `changeDetection` explicite est compilé comme s'il utilisait `ChangeDetectionStrategy.OnPush`, alors qu'auparavant l'absence de configuration valait `Default` (vérification complète à chaque cycle de détection de changement). Ce changement de défaut est silencieux : ni erreur de compilation, ni avertissement au runtime. Il casse la mise à jour de la vue pour tout composant qui mute une propriété de façon asynchrone (ex. après un `await`) sans passer par un déclencheur reconnu par `OnPush` (changement de référence d'`@Input`, événement DOM, signal, `async` pipe, `markForCheck()` manuel). C'est ce qui a provoqué un bug sur `back-office-logs` (tableau non rendu malgré des données correctement chargées en mémoire), le composant ayant été créé sans cette ligne.
+
+Décision :
+
+Chaque composant du projet déclare explicitement `changeDetection: ChangeDetectionStrategy.Eager` dans son `@Component`. `Eager` est l'alias moderne de l'ancienne valeur `Default` (même valeur numérique dans l'enum), introduit par Angular pour lever l'ambiguïté maintenant que ce n'est plus le comportement implicite. Cette règle est reprise dans `docs/conventions/frontend.md`.
+
+Alternatives étudiées :
+- migrer les composants vers `OnPush` + Signals (`signal()`/`computed()`), aligné avec la direction long terme d'Angular, mais nécessitant de remplacer les mutations directes de propriétés existantes ;
+- ne rien systématiser et gérer les cas au coup par coup avec `ChangeDetectorRef.markForCheck()`.
+
+Raisons du choix :
+
+Conserver le fonctionnement existant du projet (mutation directe de propriétés dans les composants, pattern déjà utilisé partout) sans réécriture ni risque de régression sur les composants déjà en place. `Eager` reproduit exactement le comportement historique par défaut d'Angular, donc coût d'adoption minimal (une ligne par composant).
+
+Conséquences :
+- tout nouveau composant doit penser à ajouter cette ligne, sinon il reproduira silencieusement le bug rencontré sur `back-office-logs` ;
+- le projet renonce pour l'instant aux gains de performance qu'offre `OnPush`, sans impact notable vu la faible volumétrie de l'application (voir `architecture.md`) ;
+- si le projet migre vers les Signals, cette décision sera à revoir composant par composant.
+
 ### Déploiement GitHub Pages sans pipeline CI/CD automatisé
 
 Statut : Acceptée
