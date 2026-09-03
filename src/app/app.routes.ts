@@ -16,6 +16,7 @@ import { AllCourses } from './pages/all-courses/all-courses';
 import { Certifications } from './pages/certifications/certifications';
 import { BackOfficePurchases } from './pages/back-office/back-office-purchases/back-office-purchases';
 import { NotFound } from './pages/not-found/not-found';
+import { BackOfficeLogs } from './pages/back-office/back-office-logs/back-office-logs';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -31,5 +32,6 @@ export const routes: Routes = [
   { path: 'nos-formations', component: AllCourses },
   { path: 'mes-certifications', component: Certifications, canActivate: [userAuthGuard] },
   { path: 'back-office/achats', component: BackOfficePurchases, canActivate: [adminAuthGuard] },
+  { path: 'back-office/logs', component: BackOfficeLogs, canActivate: [adminAuthGuard] },
   { path: '**', component: NotFound },
 ];

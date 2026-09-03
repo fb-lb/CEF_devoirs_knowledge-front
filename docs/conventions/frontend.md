@@ -6,6 +6,7 @@
 - un composant = un dossier avec `.ts`/`.html`/`.css`/`.spec.ts`
 - composants de `pages/` : orchestration (appel des services, gestion des formulaires) + affichage
 - composants de `components/` : purement réutilisables, pilotés par `@Input()`/`@Output()`, sans appel HTTP direct
+- toujours déclarer `changeDetection: ChangeDetectionStrategy.Eager` sur chaque `@Component` — le défaut Angular 22 est `OnPush` implicite si non précisé, voir `decisions.md`
 
 ## Gestion de l'état
 

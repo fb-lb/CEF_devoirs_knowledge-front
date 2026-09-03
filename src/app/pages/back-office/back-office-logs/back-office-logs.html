@@ -1,0 +1,119 @@
+<main>
+    <h1>Consultation des logs</h1>
+    <div class="content">
+        <div class="search-bar">
+            <label class="search-bar__label" for="searchBar">Rechercher</label>
+            <input class="search-bar__input" type="text" name="searchBar" id="searchBar" [(ngModel)]="searchTextInput" (input)="filterLogs()">
+        </div>
+        <table class="table">
+            <thead class="table__thead">
+                <tr class="table__thead-row">
+                    <th class="table__thead-cell table__thead-cell--corner-left">Date</th>
+                    <th class="table__thead-cell">
+                        <div class="table__thead-container">
+                            <label for="logLevelSelect">Niveau</label>
+                            <select name="logLevelSelect" id="logLevelSelect" [(ngModel)]="logLevelSelected" (change)="filterLogs()">
+                                <option value="all" selected>Tous</option>
+                                @for (level of logLevels; track $index) {
+                                    <option [value]="level">{{ level }}</option>
+                                }
+                            </select>
+                        </div>
+                    </th>
+                    <th class="table__thead-cell">
+                        <div class="table__thead-container">
+                            <label for="logTypeSelect">Type</label>
+                            <select name="logTypeSelect" id="logTypeSelect" [(ngModel)]="logTypeSelected" (change)="filterLogs()">
+                                <option value="all" selected>Tous</option>
+                                @for (type of logTypes; track $index) {
+                                    <option [value]="type">{{ type }}</option>
+                                }
+                            </select>
+                        </div>
+                    </th>
+                    <th class="table__thead-cell">
+                        <div class="table__thead-container">
+                            <label for="logEventSelect">Évènement</label>
+                            <select name="logEventSelect" id="logEventSelect" [(ngModel)]="logEventSelected" (change)="filterLogs()">
+                                <option value="all" selected>Tous</option>
+                                @for (event of logEvents; track $index) {
+                                    <option [value]="event">{{ event }}</option>
+                                }
+                            </select>
+                        </div>
+                    </th>
+                    <th class="table__thead-cell table__thead-cell--corner-right">Utilisateur (ID) à l'origine du log</th>
+                </tr>
+            </thead>
+            <tbody class="table__tbody">
+                <!-- @for (log of filteredLogs; track log._id) { -->
+                @for (log of filterLogs(); track log._id) {
+                    <tr class="table__tbody-row">
+                        <td class="table__tbody-cell table__tbody-cell--left" [class]="'log-level-' + log.level">
+                            <div class="table__cell-date-container">
+                                @if (log.metadata) {
+                                    <fa-icon class="table__cell-date-icon" [class]="openedLog.get(log._id) ? '' : 'table__cell-date-icon--closed'" (click)="toogleMetadataDisplaying(log._id)" [icon]="faCaretDown"></fa-icon>
+                                }
+                                <p class="table__cell-date-content">{{ log.createdAt }}</p>
+                            </div>
+                        </td>
+                        <td class="table__tbody-cell" [class]="'log-level-' + log.level">{{ log.level }}</td>
+                        <td class="table__tbody-cell" [class]="'log-level-' + log.level">{{ log.type }}</td>
+                        <td class="table__tbody-cell" [class]="'log-level-' + log.level">{{ log.event }}</td>
+                        <td class="table__tbody-cell table__tbody-cell--right" [class]="'log-level-' + log.level">{{ log.userId ?? notConnectedUserText }}</td>
+                    </tr> 
+                    
+                    <tr class="table__metadata-row" >
+                        <td class="table__metadata-cell" colspan="5">
+                            <div class="table__metadata-group" [class]="openedLog.get(log._id) ? '' : 'smooth-hidden'">
+                                @if (log.event === 'LOGIN_SUCCESS'){
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Adresse IP :</p>
+                                        <p>{{ log.metadata.ip }}</p>
+                                    </div>
+                                }
+                                @if (log.event === 'LOGIN_FAILED'){
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Adresse IP :</p>
+                                        <p>{{ log.metadata.ip }}</p>
+                                    </div>
+                                    <div class="table__metadata"><p class="table__metadata-label">Mail renseigné :</p>
+                                        <p>{{ log.metadata.email }}</p>
+                                    </div>
+                                }
+                                @if (log.event === 'DATABASE_ERROR'){
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Code d'erreur :</p>
+                                        <p>{{ log.metadata.errorCode }}</p>
+                                    </div>
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Model concerné :</p>
+                                        <p>{{ log.metadata.model }}</p>
+                                    </div>
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Opération tentée :</p>
+                                        <p>{{ log.metadata.operation }}</p>
+                                    </div>
+                                }
+                                @if (log.event === 'USER_ROLE_CHANGED'){
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Utilisateur (ID) concerné :</p>
+                                        <p>{{ log.metadata.targetUserId }}</p>
+                                    </div>
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Ancien rôle :</p>
+                                        <p>{{ log.metadata.oldRole }}</p>
+                                    </div>
+                                    <div class="table__metadata">
+                                        <p class="table__metadata-label">Nouveau rôle :</p> 
+                                        <p>{{ log.metadata.newRole }}</p>
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>
