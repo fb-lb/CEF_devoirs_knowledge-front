@@ -41,7 +41,7 @@ describe('BackOfficeLogs', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const rows = fixture.nativeElement.querySelectorAll('tbody tr');
+    const rows = fixture.nativeElement.querySelectorAll('tbody tr.table__tbody-row');
     expect(rows.length).toBe(2);
   });
 });
