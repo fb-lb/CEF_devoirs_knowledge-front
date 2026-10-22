@@ -1,17 +1,12 @@
 # Knowledge-front - Angular application
 
-The aim of this project is to develop the front-end website for the Knowledge company. Knowledge sells training learning in various disciplines. Now they want to develop e-learning. So students have to be able to create their own account on the website, buy new courses and access to the lessons. They can also validate each lesson, if all lessons in cursus are validated then the cursus is validated too. If all cursus in a theme are validated, the user receives a certification for this theme. He can access to all certfications he has in certification page.
+The aim of this project is to develop the front-end website for the Knowledge company. Knowledge sells training learning in various disciplines. Now they want to develop e-learning. So students have to be able to create their own account on the website, buy new courses and access to the lessons. They can also validate each lesson, if all lessons in cursus are validated then the cursus is validated too. If all cursus in a theme are validated, the user receives a certification for this theme. He can access to all certifications he has in certification page.
 
-There is also a back-office part for the administrator. There are three interfaces for the administrator :
+There is also a back-office part for the administrator. There are four interfaces for the administrator :
 - a CRUD (Create / Read / Update / Delete) for courses' content
-- a CRUD for users
+- a RUD for users
 - a CRUD for purchases
-
-Technologies used in this project :
-- Angular,
-- FontAwesome for icons,
-- EmailJS to send mails to new registered user with a link to validate user email,
-- Stripe to pay courses.
+- a R for logs
 
 Website URL :   
 Project repository : https://github.com/fb-lb/CEF_devoirs_knowledge-front/
@@ -27,9 +22,10 @@ https://github.com/fb-lb/CEF_devoirs_knowledge-back
 - [NodeJs](https://nodejs.org/en/download)
 
 - Angular : 20.2.0
-- SCSS for the style
-- FontAwesome for icons : [create an account](https://fontawesome.com/start)
-- Stripe : [create an account](https://dashboard.stripe.com/register)
+- SCSS : for the style
+- FontAwesome : for icons [create an account](https://fontawesome.com/start)
+- Stripe : to pay courses [create an account](https://dashboard.stripe.com/register)
+- EmailJS : to send mails to new registered user with a link to validate user email [create an account](https://dashboard.emailjs.com/sign-up)
 
 ## Project initialization
 

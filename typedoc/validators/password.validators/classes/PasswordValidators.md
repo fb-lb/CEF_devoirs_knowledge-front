@@ -6,7 +6,7 @@
 
 # Class: PasswordValidators
 
-Defined in: [src/app/validators/password.validators.ts:3](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/validators/password.validators.ts#L3)
+Defined in: [src/app/validators/password.validators.ts:3](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/validators/password.validators.ts#L3)
 
 ## Constructors
 
@@ -24,7 +24,7 @@ Defined in: [src/app/validators/password.validators.ts:3](https://github.com/fb-
 
 > `static` **invalidCaracters**(`control`): `ValidationErrors` \| `null`
 
-Defined in: [src/app/validators/password.validators.ts:27](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/validators/password.validators.ts#L27)
+Defined in: [src/app/validators/password.validators.ts:27](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/validators/password.validators.ts#L27)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [src/app/validators/password.validators.ts:27](https://github.com/fb
 
 > `static` **neededCaracters**(`control`): `ValidationErrors` \| `null`
 
-Defined in: [src/app/validators/password.validators.ts:4](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/validators/password.validators.ts#L4)
+Defined in: [src/app/validators/password.validators.ts:4](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/validators/password.validators.ts#L4)
 
 #### Parameters
 

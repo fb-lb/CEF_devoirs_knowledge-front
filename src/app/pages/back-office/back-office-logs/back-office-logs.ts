@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { ApiResponse, LOG_EVENTS, LOG_LEVELS, LOG_TYPES, LogEvent, LogLevel, LogType, StoredLog } from '../../../core/models/api-response.model';
+import { ApiResponse, LOG_EVENTS, LOG_LEVELS, LOG_TYPES, LogEvent, LogLevel, LogType, StoredLog, UserData } from '../../../core/models/api-response.model';
 import { environment } from '../../../../environments/environment';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { faCaretDown, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FormsModule } from "@angular/forms";
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-back-office-logs',
@@ -15,6 +16,8 @@ import { FormsModule } from "@angular/forms";
   styleUrl: './back-office-logs.scss',
 })
 export class BackOfficeLogs {
+
+  allUsersMap = new Map<number, UserData>();
 
   allLogs: StoredLog[] = [];
   allLogsContent: string[] = [];
@@ -35,10 +38,17 @@ export class BackOfficeLogs {
   logTypeSelected: 'all'|LogType = 'all';
   logEventSelected: 'all'|LogEvent = 'all';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   async ngOnInit() {
     try {
+      // Retrieve all users data
+      await this.userService.init();
+      this.userService.getAllUsers.forEach(user => {
+        this.allUsersMap.set(user.id, user);
+      });
+
+      // Retrieve all logs
       const response = await firstValueFrom(this.http.get<ApiResponse<StoredLog[]>>(environment.backUrl + '/api/logs/getAll'));
 
       if (response.data) this.allLogs = structuredClone(response.data);
@@ -57,8 +67,9 @@ export class BackOfficeLogs {
 
       // Recover all logs content in an string array where each string have all the values. This will be used to filter logs by search text
       this.allLogsContent = this.stringifyArrayOfObjectsContent(this.allLogs.map(l => {
-          if (!l.userId) l.userId = this.notConnectedUserText;
-          const { _id, ...logWithNoId } = l as any;
+          const { _id, ...logWithNoId } = structuredClone(l) as any;
+          logWithNoId.userId ? logWithNoId.userId = this.getUserNameWithId(+logWithNoId.userId) : logWithNoId.userId = this.notConnectedUserText;
+          if (logWithNoId.event === 'USER_ROLE_CHANGED') logWithNoId.metadata.targetUserId = this.getUserNameWithId(+logWithNoId.metadata.targetUserId);
           return logWithNoId; 
         }));
     } catch (error) {
@@ -122,4 +133,14 @@ export class BackOfficeLogs {
   
     return filteredLogs;
   } 
+
+  getUserNameWithId(userId: number): string {
+    const user = this.allUsersMap.get(userId);
+
+    if (!user) return this.notConnectedUserText;
+
+    const text = `${user.firstName} ${user.lastName} (${userId})`;
+
+    return text;
+  }
 }
