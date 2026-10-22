@@ -4,11 +4,14 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { environment } from '../../../../environments/environment';
 
 import { BackOfficeLogs } from './back-office-logs';
+import { UserService } from '../../../services/user.service';
 
 describe('BackOfficeLogs', () => {
   let component: BackOfficeLogs;
   let fixture: ComponentFixture<BackOfficeLogs>;
   let httpMock: HttpTestingController;
+  let userService: UserService; 
+  let initCoursesServiceSpy: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,6 +23,8 @@ describe('BackOfficeLogs', () => {
     fixture = TestBed.createComponent(BackOfficeLogs);
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
+    userService = TestBed.inject(UserService);
+    initCoursesServiceSpy = spyOn(userService, 'init');
     fixture.detectChanges();
   });
 

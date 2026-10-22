@@ -6,13 +6,21 @@
 
 # Class: AuthenticationService
 
-Defined in: src/app/services/authentication.service.ts:9
+Defined in: [src/app/services/authentication.service.ts:11](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L11)
 
 ## Constructors
 
 ### Constructor
 
-> **new AuthenticationService**(): `AuthenticationService`
+> **new AuthenticationService**(`http`): `AuthenticationService`
+
+Defined in: [src/app/services/authentication.service.ts:40](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L40)
+
+#### Parameters
+
+##### http
+
+`HttpClient`
 
 #### Returns
 
@@ -24,7 +32,7 @@ Defined in: src/app/services/authentication.service.ts:9
 
 > **isAdmin$**: `Observable`\<`boolean`\>
 
-Defined in: src/app/services/authentication.service.ts:18
+Defined in: [src/app/services/authentication.service.ts:22](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L22)
 
 ***
 
@@ -32,7 +40,7 @@ Defined in: src/app/services/authentication.service.ts:18
 
 > **isAuthenticated$**: `Observable`\<`boolean`\>
 
-Defined in: src/app/services/authentication.service.ts:15
+Defined in: [src/app/services/authentication.service.ts:17](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L17)
 
 ***
 
@@ -40,15 +48,47 @@ Defined in: src/app/services/authentication.service.ts:15
 
 > **isTokenRefreshAllowed**: `boolean` = `true`
 
-Defined in: src/app/services/authentication.service.ts:20
+Defined in: [src/app/services/authentication.service.ts:24](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L24)
+
+***
+
+### isVerified
+
+> **isVerified**: `boolean` = `false`
+
+Defined in: [src/app/services/authentication.service.ts:19](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L19)
 
 ## Methods
+
+### checkIsVerified()
+
+> **checkIsVerified**(): `Promise`\<`void`\>
+
+Defined in: [src/app/services/authentication.service.ts:96](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L96)
+
+**`Function`**
+
+Used to set isVerified (= email is verified) state in front end app
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Async
+
+checkIsVerified
+
+#### Throws
+
+If an unexpected error occurs
+
+***
 
 ### connected()
 
 > **connected**(`authHeader`): `void`
 
-Defined in: src/app/services/authentication.service.ts:65
+Defined in: [src/app/services/authentication.service.ts:72](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L72)
 
 **`Function`**
 
@@ -79,7 +119,7 @@ The value of Authorization header in response
 
 > **disconnected**(): `void`
 
-Defined in: src/app/services/authentication.service.ts:89
+Defined in: [src/app/services/authentication.service.ts:118](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L118)
 
 **`Function`**
 
@@ -100,7 +140,7 @@ Used to set disconnected state in front end app
 
 > **freezeTokenRefresh**(): `void`
 
-Defined in: src/app/services/authentication.service.ts:102
+Defined in: [src/app/services/authentication.service.ts:132](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L132)
 
 **`Function`**
 
@@ -117,7 +157,7 @@ Used to block token refresh 2 secondes to not spam the connected function for ea
 
 > **getIsAdmin**(): `boolean`
 
-Defined in: src/app/services/authentication.service.ts:29
+Defined in: [src/app/services/authentication.service.ts:33](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L33)
 
 #### Returns
 
@@ -129,7 +169,7 @@ Defined in: src/app/services/authentication.service.ts:29
 
 > **getIsAuthenticated**(): `boolean`
 
-Defined in: src/app/services/authentication.service.ts:22
+Defined in: [src/app/services/authentication.service.ts:26](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L26)
 
 #### Returns
 
@@ -139,13 +179,13 @@ Defined in: src/app/services/authentication.service.ts:22
 
 ### init()
 
-> **init**(): `void`
+> **init**(): `Promise`\<`void`\>
 
-Defined in: src/app/services/authentication.service.ts:36
+Defined in: [src/app/services/authentication.service.ts:42](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L42)
 
 #### Returns
 
-`void`
+`Promise`\<`void`\>
 
 ***
 
@@ -153,7 +193,7 @@ Defined in: src/app/services/authentication.service.ts:36
 
 > **setIsAdmin**(`isAdmin`): `void`
 
-Defined in: src/app/services/authentication.service.ts:32
+Defined in: [src/app/services/authentication.service.ts:36](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L36)
 
 #### Parameters
 
@@ -171,7 +211,7 @@ Defined in: src/app/services/authentication.service.ts:32
 
 > **setIsAuthenticated**(`isAuthenticated`): `void`
 
-Defined in: src/app/services/authentication.service.ts:25
+Defined in: [src/app/services/authentication.service.ts:29](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/authentication.service.ts#L29)
 
 #### Parameters
 

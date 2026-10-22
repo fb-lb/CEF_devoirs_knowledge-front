@@ -8,7 +8,7 @@
 
 > **notAuthGuard**(`route`, `state`): `MaybeAsync`\<`GuardResult`\>
 
-Defined in: [src/app/guards/not-auth-guard.ts:23](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/guards/not-auth-guard.ts#L23)
+Defined in: [src/app/guards/not-auth-guard.ts:23](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/guards/not-auth-guard.ts#L23)
 
 Guard that checks whether the current user is not connected.
 

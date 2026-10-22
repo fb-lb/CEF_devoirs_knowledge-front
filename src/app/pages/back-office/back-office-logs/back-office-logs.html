@@ -11,7 +11,7 @@
                     <th class="table__thead-cell table__thead-cell--corner-left">Date</th>
                     <th class="table__thead-cell">
                         <div class="table__thead-container">
-                            <label for="logLevelSelect">Niveau</label>
+                            <label class="table__thead-label" for="logLevelSelect">Niveau</label>
                             <select name="logLevelSelect" id="logLevelSelect" [(ngModel)]="logLevelSelected" (change)="filterLogs()">
                                 <option value="all" selected>Tous</option>
                                 @for (level of logLevels; track $index) {
@@ -22,7 +22,7 @@
                     </th>
                     <th class="table__thead-cell">
                         <div class="table__thead-container">
-                            <label for="logTypeSelect">Type</label>
+                            <label class="table__thead-label" for="logTypeSelect">Type</label>
                             <select name="logTypeSelect" id="logTypeSelect" [(ngModel)]="logTypeSelected" (change)="filterLogs()">
                                 <option value="all" selected>Tous</option>
                                 @for (type of logTypes; track $index) {
@@ -33,7 +33,7 @@
                     </th>
                     <th class="table__thead-cell">
                         <div class="table__thead-container">
-                            <label for="logEventSelect">Évènement</label>
+                            <label class="table__thead-label" for="logEventSelect">Évènement</label>
                             <select name="logEventSelect" id="logEventSelect" [(ngModel)]="logEventSelected" (change)="filterLogs()">
                                 <option value="all" selected>Tous</option>
                                 @for (event of logEvents; track $index) {
@@ -60,7 +60,7 @@
                         <td class="table__tbody-cell" [class]="'log-level-' + log.level">{{ log.level }}</td>
                         <td class="table__tbody-cell" [class]="'log-level-' + log.level">{{ log.type }}</td>
                         <td class="table__tbody-cell" [class]="'log-level-' + log.level">{{ log.event }}</td>
-                        <td class="table__tbody-cell table__tbody-cell--right" [class]="'log-level-' + log.level">{{ log.userId ?? notConnectedUserText }}</td>
+                        <td class="table__tbody-cell table__tbody-cell--right" [class]="'log-level-' + log.level">{{ log.userId ? getUserNameWithId(+log.userId) : notConnectedUserText }}</td>
                     </tr> 
                     
                     <tr class="table__metadata-row" >
@@ -98,7 +98,7 @@
                                 @if (log.event === 'USER_ROLE_CHANGED'){
                                     <div class="table__metadata">
                                         <p class="table__metadata-label">Utilisateur (ID) concerné :</p>
-                                        <p>{{ log.metadata.targetUserId }}</p>
+                                        <p>{{ getUserNameWithId(+log.metadata.targetUserId) }}</p>
                                     </div>
                                     <div class="table__metadata">
                                         <p class="table__metadata-label">Ancien rôle :</p>

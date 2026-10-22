@@ -6,21 +6,25 @@
 
 # Class: UserCourses
 
-Defined in: [src/app/services/user-courses.ts:10](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L10)
+Defined in: [src/app/services/user-courses.ts:11](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L11)
 
 ## Constructors
 
 ### Constructor
 
-> **new UserCourses**(`http`): `UserCourses`
+> **new UserCourses**(`http`, `authService`): `UserCourses`
 
-Defined in: [src/app/services/user-courses.ts:12](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L12)
+Defined in: [src/app/services/user-courses.ts:13](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L13)
 
 #### Parameters
 
 ##### http
 
 `HttpClient`
+
+##### authService
+
+[`AuthenticationService`](../../authentication.service/classes/AuthenticationService.md)
 
 #### Returns
 
@@ -32,7 +36,7 @@ Defined in: [src/app/services/user-courses.ts:12](https://github.com/fb-lb/CEF_d
 
 > **allCursusAvailable**: `CursusData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:75](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L75)
+Defined in: [src/app/services/user-courses.ts:85](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L85)
 
 ***
 
@@ -40,7 +44,7 @@ Defined in: [src/app/services/user-courses.ts:75](https://github.com/fb-lb/CEF_d
 
 > **allElementsAvailable**: `ElementData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:77](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L77)
+Defined in: [src/app/services/user-courses.ts:87](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L87)
 
 ***
 
@@ -48,7 +52,7 @@ Defined in: [src/app/services/user-courses.ts:77](https://github.com/fb-lb/CEF_d
 
 > **allLessonsAvailable**: `LessonData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:76](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L76)
+Defined in: [src/app/services/user-courses.ts:86](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L86)
 
 ***
 
@@ -56,7 +60,7 @@ Defined in: [src/app/services/user-courses.ts:76](https://github.com/fb-lb/CEF_d
 
 > **allThemesAvailable**: `ThemeData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:74](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L74)
+Defined in: [src/app/services/user-courses.ts:84](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L84)
 
 ***
 
@@ -64,7 +68,7 @@ Defined in: [src/app/services/user-courses.ts:74](https://github.com/fb-lb/CEF_d
 
 > **currentCursus$**: `Observable`\<`CursusData` \| `null`\>
 
-Defined in: [src/app/services/user-courses.ts:95](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L95)
+Defined in: [src/app/services/user-courses.ts:105](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L105)
 
 ***
 
@@ -72,7 +76,7 @@ Defined in: [src/app/services/user-courses.ts:95](https://github.com/fb-lb/CEF_d
 
 > **currentLesson$**: `Observable`\<`LessonData` \| `null`\>
 
-Defined in: [src/app/services/user-courses.ts:98](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L98)
+Defined in: [src/app/services/user-courses.ts:108](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L108)
 
 ***
 
@@ -80,7 +84,7 @@ Defined in: [src/app/services/user-courses.ts:98](https://github.com/fb-lb/CEF_d
 
 > **currentTheme$**: `Observable`\<`ThemeData` \| `null`\>
 
-Defined in: [src/app/services/user-courses.ts:92](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L92)
+Defined in: [src/app/services/user-courses.ts:102](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L102)
 
 ***
 
@@ -88,7 +92,7 @@ Defined in: [src/app/services/user-courses.ts:92](https://github.com/fb-lb/CEF_d
 
 > **currentUserCursus**: `UserCursusData` \| `null` = `null`
 
-Defined in: [src/app/services/user-courses.ts:106](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L106)
+Defined in: [src/app/services/user-courses.ts:116](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L116)
 
 ***
 
@@ -96,7 +100,7 @@ Defined in: [src/app/services/user-courses.ts:106](https://github.com/fb-lb/CEF_
 
 > **currentUserLesson**: `UserLessonData` \| `null` = `null`
 
-Defined in: [src/app/services/user-courses.ts:108](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L108)
+Defined in: [src/app/services/user-courses.ts:118](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L118)
 
 ***
 
@@ -104,7 +108,7 @@ Defined in: [src/app/services/user-courses.ts:108](https://github.com/fb-lb/CEF_
 
 > **currentUserTheme**: `UserThemeData` \| `null` = `null`
 
-Defined in: [src/app/services/user-courses.ts:104](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L104)
+Defined in: [src/app/services/user-courses.ts:114](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L114)
 
 ***
 
@@ -112,7 +116,7 @@ Defined in: [src/app/services/user-courses.ts:104](https://github.com/fb-lb/CEF_
 
 > **cursusInCurrentTheme**: `CursusData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:114](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L114)
+Defined in: [src/app/services/user-courses.ts:124](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L124)
 
 ***
 
@@ -120,7 +124,7 @@ Defined in: [src/app/services/user-courses.ts:114](https://github.com/fb-lb/CEF_
 
 > **elementsInCurrentLesson**: `ElementData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:116](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L116)
+Defined in: [src/app/services/user-courses.ts:126](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L126)
 
 ***
 
@@ -128,7 +132,7 @@ Defined in: [src/app/services/user-courses.ts:116](https://github.com/fb-lb/CEF_
 
 > **initPromised**: `Promise`\<`void`\> \| `null` = `null`
 
-Defined in: [src/app/services/user-courses.ts:18](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L18)
+Defined in: [src/app/services/user-courses.ts:19](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L19)
 
 ***
 
@@ -136,7 +140,7 @@ Defined in: [src/app/services/user-courses.ts:18](https://github.com/fb-lb/CEF_d
 
 > **isInitialized**: `boolean` = `false`
 
-Defined in: [src/app/services/user-courses.ts:19](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L19)
+Defined in: [src/app/services/user-courses.ts:20](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L20)
 
 ***
 
@@ -144,7 +148,7 @@ Defined in: [src/app/services/user-courses.ts:19](https://github.com/fb-lb/CEF_d
 
 > **lessonsInCurrentCursus**: `LessonData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:115](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L115)
+Defined in: [src/app/services/user-courses.ts:125](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L125)
 
 ***
 
@@ -152,7 +156,7 @@ Defined in: [src/app/services/user-courses.ts:115](https://github.com/fb-lb/CEF_
 
 > **userCursusForThisUser**: `UserCursusData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:84](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L84)
+Defined in: [src/app/services/user-courses.ts:94](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L94)
 
 ***
 
@@ -160,7 +164,7 @@ Defined in: [src/app/services/user-courses.ts:84](https://github.com/fb-lb/CEF_d
 
 > **userLessonsForThisUser**: `UserLessonData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:85](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L85)
+Defined in: [src/app/services/user-courses.ts:95](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L95)
 
 ***
 
@@ -168,7 +172,7 @@ Defined in: [src/app/services/user-courses.ts:85](https://github.com/fb-lb/CEF_d
 
 > **userThemesForThisUser**: `UserThemeData`[] = `[]`
 
-Defined in: [src/app/services/user-courses.ts:83](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L83)
+Defined in: [src/app/services/user-courses.ts:93](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L93)
 
 ## Methods
 
@@ -176,7 +180,7 @@ Defined in: [src/app/services/user-courses.ts:83](https://github.com/fb-lb/CEF_d
 
 > **getCurrentCursus**(): `CursusData` \| `null`
 
-Defined in: [src/app/services/user-courses.ts:138](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L138)
+Defined in: [src/app/services/user-courses.ts:148](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L148)
 
 #### Returns
 
@@ -188,7 +192,7 @@ Defined in: [src/app/services/user-courses.ts:138](https://github.com/fb-lb/CEF_
 
 > **getCurrentLesson**(): `LessonData` \| `null`
 
-Defined in: [src/app/services/user-courses.ts:142](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L142)
+Defined in: [src/app/services/user-courses.ts:152](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L152)
 
 #### Returns
 
@@ -200,7 +204,7 @@ Defined in: [src/app/services/user-courses.ts:142](https://github.com/fb-lb/CEF_
 
 > **getCurrentTheme**(): `ThemeData` \| `null`
 
-Defined in: [src/app/services/user-courses.ts:134](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L134)
+Defined in: [src/app/services/user-courses.ts:144](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L144)
 
 #### Returns
 
@@ -212,7 +216,7 @@ Defined in: [src/app/services/user-courses.ts:134](https://github.com/fb-lb/CEF_
 
 > **init**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:22](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L22)
+Defined in: [src/app/services/user-courses.ts:23](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L23)
 
 #### Returns
 
@@ -224,7 +228,7 @@ Defined in: [src/app/services/user-courses.ts:22](https://github.com/fb-lb/CEF_d
 
 > **reset**(): `void`
 
-Defined in: [src/app/services/user-courses.ts:44](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L44)
+Defined in: [src/app/services/user-courses.ts:54](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L54)
 
 #### Returns
 
@@ -236,7 +240,7 @@ Defined in: [src/app/services/user-courses.ts:44](https://github.com/fb-lb/CEF_d
 
 > **selectCurrentCursus**(`newCursusId`): `void`
 
-Defined in: [src/app/services/user-courses.ts:334](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L334)
+Defined in: [src/app/services/user-courses.ts:337](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L337)
 
 **`Function`**
 
@@ -248,9 +252,9 @@ Retrieves and sets the current cursus.
 
 ##### newCursusId
 
-The ID of the cursus to select.
+`number` \| `null`
 
-`number` | `null`
+The ID of the cursus to select.
 
 #### Returns
 
@@ -267,7 +271,7 @@ The ID of the cursus to select.
 
 > **selectCurrentLesson**(`newLessonId`): `void`
 
-Defined in: [src/app/services/user-courses.ts:368](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L368)
+Defined in: [src/app/services/user-courses.ts:371](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L371)
 
 **`Function`**
 
@@ -279,9 +283,9 @@ Retrieves and sets the current lesson.
 
 ##### newLessonId
 
-The ID of the lesson to select.
+`number` \| `null`
 
-`number` | `null`
+The ID of the lesson to select.
 
 #### Returns
 
@@ -298,7 +302,7 @@ The ID of the lesson to select.
 
 > **selectCurrentTheme**(`newThemeId`): `void`
 
-Defined in: [src/app/services/user-courses.ts:300](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L300)
+Defined in: [src/app/services/user-courses.ts:303](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L303)
 
 **`Function`**
 
@@ -310,9 +314,9 @@ Retrieves and sets the current theme.
 
 ##### newThemeId
 
-The ID of the theme to select.
+`number` \| `null`
 
-`number` | `null`
+The ID of the theme to select.
 
 #### Returns
 
@@ -329,7 +333,7 @@ The ID of the theme to select.
 
 > **syncAllCursusAvailable**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:175](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L175)
+Defined in: [src/app/services/user-courses.ts:184](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L184)
 
 **`Function`**
 
@@ -345,7 +349,7 @@ syncAllCursusAvailable
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
 
 ***
 
@@ -353,7 +357,7 @@ Will display an alert if the server cannot respond.
 
 > **syncAllElementsAvailable**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:216](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L216)
+Defined in: [src/app/services/user-courses.ts:223](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L223)
 
 **`Function`**
 
@@ -369,7 +373,7 @@ syncAllElementsAvailable
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
 
 ***
 
@@ -377,7 +381,7 @@ Will display an alert if the server cannot respond.
 
 > **syncAllLessonsAvailable**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:196](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L196)
+Defined in: [src/app/services/user-courses.ts:204](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L204)
 
 **`Function`**
 
@@ -393,7 +397,7 @@ syncAllLessonsAvailable
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
 
 ***
 
@@ -401,7 +405,7 @@ Will display an alert if the server cannot respond.
 
 > **syncAllThemesAvailable**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:155](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L155)
+Defined in: [src/app/services/user-courses.ts:165](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L165)
 
 **`Function`**
 
@@ -417,7 +421,19 @@ syncAllThemesAvailable
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
+
+***
+
+### syncData()
+
+> **syncData**(): `Promise`\<`void`\>
+
+Defined in: [src/app/services/user-courses.ts:36](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L36)
+
+#### Returns
+
+`Promise`\<`void`\>
 
 ***
 
@@ -425,7 +441,7 @@ Will display an alert if the server cannot respond.
 
 > **syncUserCursusForThisUser**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:256](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L256)
+Defined in: [src/app/services/user-courses.ts:261](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L261)
 
 **`Function`**
 
@@ -441,7 +457,7 @@ syncUserCursusForThisUser
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
 
 ***
 
@@ -449,7 +465,7 @@ Will display an alert if the server cannot respond.
 
 > **syncUserLessonsForThisUser**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:276](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L276)
+Defined in: [src/app/services/user-courses.ts:280](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L280)
 
 **`Function`**
 
@@ -465,7 +481,7 @@ syncUserLessonsForThisUser
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
 
 ***
 
@@ -473,7 +489,7 @@ Will display an alert if the server cannot respond.
 
 > **syncUserThemesForThisUser**(): `Promise`\<`void`\>
 
-Defined in: [src/app/services/user-courses.ts:236](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/9062dea383092b0110ab0a34d38a609da725c218/src/app/services/user-courses.ts#L236)
+Defined in: [src/app/services/user-courses.ts:242](https://github.com/fb-lb/CEF_devoirs_knowledge-front/blob/6aeb25b76edb59989119140b26b6653b865e2991/src/app/services/user-courses.ts#L242)
 
 **`Function`**
 
@@ -489,4 +505,4 @@ syncUserThemesForThisUser
 
 #### Throws
 
-Will display an alert if the server cannot respond.
+If an unexpected error occurs
