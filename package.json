@@ -24,12 +24,12 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^22.1.4",
-    "@angular/compiler": "^22.1.4",
-    "@angular/core": "^22.1.4",
-    "@angular/forms": "^22.1.4",
-    "@angular/platform-browser": "^22.1.4",
-    "@angular/router": "^22.1.4",
+    "@angular/common": "^22.2.2",
+    "@angular/compiler": "^22.2.2",
+    "@angular/core": "^22.2.2",
+    "@angular/forms": "^22.2.2",
+    "@angular/platform-browser": "^22.2.2",
+    "@angular/router": "^22.2.2",
     "@fortawesome/angular-fontawesome": "^5.0.0",
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.1",
@@ -41,9 +41,9 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^22.1.4",
-    "@angular/cli": "^22.1.4",
-    "@angular/compiler-cli": "^22.1.4",
+    "@angular/build": "22.2.3",
+    "@angular/cli": "^22.2.2",
+    "@angular/compiler-cli": "^22.2.2",
     "@types/jasmine": "~5.1.0",
     "angular-cli-ghpages": "^3.1.0",
     "istanbul-lib-instrument": "^6.0.3",
@@ -63,5 +63,10 @@
     "esbuild@0.27.7": true,
     "lmdb@3.5.4": true,
     "msgpackr-extract@3.0.4": true
+  },
+  "overrides": {
+    "@angular/build@22.2.3": {
+      "vite": "8.3.4"
+    }
   }
 }
