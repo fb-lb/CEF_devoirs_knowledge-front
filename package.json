@@ -41,7 +41,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^22.2.2",
+    "@angular/build": "22.2.3",
     "@angular/cli": "^22.2.2",
     "@angular/compiler-cli": "^22.2.2",
     "@types/jasmine": "~5.1.0",
@@ -63,5 +63,10 @@
     "esbuild@0.27.7": true,
     "lmdb@3.5.4": true,
     "msgpackr-extract@3.0.4": true
+  },
+  "overrides": {
+    "@angular/build@22.2.3": {
+      "vite": "8.3.4"
+    }
   }
 }
